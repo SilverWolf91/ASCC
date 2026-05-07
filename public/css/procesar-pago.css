@@ -1,0 +1,175 @@
+﻿/**
+ * ═══════════════════════════════════════════════════════════
+ * ASCC PROCESAR PAGO - ESTILOS
+ * CSS extraído desde procesar_pago.php
+ * ═══════════════════════════════════════════════════════════
+ */
+
+body {
+    background: #f5f5f5;
+}
+
+.payment-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.payment-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.payment-header {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+    color: white;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.payment-header h1 {
+    margin: 0 0 10px 0;
+}
+
+.payment-header p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+.order-summary {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.summary-row:last-child {
+    border-bottom: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2e7d32;
+    margin-top: 10px;
+}
+
+.distance-info {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-pay-wompi {
+    width: 100%;
+    padding: 18px;
+    background: #FF4081;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-pay-wompi:hover {
+    background: #E91E63;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 64, 129, 0.3);
+}
+
+.btn-pay-wompi:active {
+    transform: translateY(0);
+}
+
+.wompi-logo {
+    width: 100px;
+    margin: 20px auto;
+    display: block;
+}
+
+.security-badge {
+    text-align: center;
+    padding: 15px;
+    background: #e3f2fd;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.security-badge p {
+    margin: 0;
+    color: #1565c0;
+    font-size: 14px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #2e7d32;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.payment-methods {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.payment-icon {
+    padding: 8px 15px;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+}
+
+.payment-icon:hover {
+    border-color: #2e7d32;
+    color: #2e7d32;
+}
+
+.warning-box {
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff3e0;
+    border-radius: 8px;
+    border-left: 4px solid #ff9800;
+}
+
+.warning-box p {
+    margin: 0;
+    color: #e65100;
+    font-size: 13px;
+}
+
+.warning-box strong {
+    display: block;
+    margin-bottom: 8px;
+}

@@ -1,0 +1,1409 @@
+﻿/**
+ * ASCC — Estilos del Módulo de Reportes
+ * Ruta: public/css/reportes.css
+ *
+ * Depende de: dark.css / light.css (variables CSS del tema)
+ * Compatible con dark mode y light mode automáticamente.
+ * Mobile-first — breakpoints: 640px, 900px, 1200px
+ */
+
+/* =============================================================================
+   1. CONTENEDOR PRINCIPAL
+============================================================================= */
+
+.rep-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.rep-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-secondary, #94a3b8);
+    text-decoration: none;
+    margin-bottom: 10px;
+    padding: 8px 14px;
+    background: var(--card-bg, #1e293b);
+    border: 1px solid var(--border-color, #334155);
+    border-radius: 8px;
+    width: fit-content;
+    transition: all 0.2s;
+}
+
+.rep-back-link::before {
+    content: '←';
+    font-size: 1rem;
+}
+
+.rep-back-link:hover {
+    border-color: #10b981;
+    color: #10b981;
+    background: rgba(16,185,129,0.06);
+}
+
+/* =============================================================================
+   EXPORTAR — CHECKBOXES
+============================================================================= */
+
+.rep-check-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 10px;
+}
+
+.rep-check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color, #334155);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.rep-check-item:hover {
+    border-color: #10b981;
+    background: rgba(16,185,129,0.04);
+}
+
+.rep-check-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #10b981;
+    flex-shrink: 0;
+    margin-top: 3px;
+    cursor: pointer;
+}
+
+.rep-check-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.rep-check-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.rep-check-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary, #f1f5f9);
+    margin-bottom: 2px;
+}
+
+.rep-check-sub {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #94a3b8);
+}
+
+/* =============================================================================
+   EXPORTAR — POWER BI PASOS
+============================================================================= */
+
+.rep-powerbi-paso {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 10px;
+    background: rgba(16,185,129,0.04);
+    border: 1px solid rgba(16,185,129,0.15);
+}
+
+.rep-powerbi-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #10b981;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.rep-powerbi-titulo {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary, #f1f5f9);
+    margin-bottom: 4px;
+}
+
+.rep-powerbi-desc {
+    font-size: 0.8rem;
+    color: var(--text-secondary, #94a3b8);
+    line-height: 1.5;
+}
+
+/* Light mode */
+[data-theme="light"] .rep-check-item { background: #fff; border-color: #e2e8f0; }
+[data-theme="light"] .rep-check-title { color: #0f172a; }
+[data-theme="light"] .rep-powerbi-titulo { color: #0f172a; }
+[data-theme="light"] .rep-powerbi-paso { background: #ecfdf5; border-color: #6ee7b7; }
+
+@media (max-width: 640px) {
+    .rep-check-grid { grid-template-columns: 1fr; }
+}
+
+/* =============================================================================
+   26. BACK LINK (already defined above, keeping section marker)
+============================================================================= */
+
+.rep-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.rep-header__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary, #f1f5f9);
+    margin: 0 0 4px 0;
+}
+
+.rep-header__subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary, #94a3b8);
+    margin: 0;
+}
+
+/* Toggle vendedor / comprador para mixtos */
+.rep-vista-toggle {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.rep-vista-btn {
+    padding: 8px 18px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color, #334155);
+    background: var(--card-bg, #1e293b);
+    color: var(--text-secondary, #94a3b8);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.rep-vista-btn:hover {
+    border-color: #10b981;
+    color: var(--text-primary, #f1f5f9);
+}
+
+.rep-vista-btn.active {
+    background: #064e3b;
+    border-color: #10b981;
+    color: #6ee7b7;
+    font-weight: 600;
+}
+
+/* =============================================================================
+   3. TABS
+============================================================================= */
+
+.rep-tabs {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    background: var(--card-bg, #1e293b);
+    border: 1px solid var(--border-color, #334155);
+    border-radius: 12px;
+    padding: 6px;
+}
+
+.rep-tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-secondary, #94a3b8);
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.rep-tab-btn:hover {
+    background: var(--hover-bg, rgba(255,255,255,0.05));
+    color: var(--text-primary, #f1f5f9);
+}
+
+.rep-tab-btn.active {
+    background: #064e3b;
+    border-color: #10b981;
+    color: #6ee7b7;
+    font-weight: 600;
+}
+
+/* =============================================================================
+   4. PANELES DE TAB
+============================================================================= */
+
+.rep-tab-panel {
+    display: none;
+}
+
+.rep-tab-panel.active {
+    display: block;
+    animation: repFadeIn 0.25s ease;
+}
+
+@keyframes repFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =============================================================================
+   5. KPI CARDS
+============================================================================= */
+
+.rep-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.rep-kpi {
+    background: var(--card-bg, #1e293b);
+    border: 1px solid var(--border-color, #334155);
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: box-shadow 0.2s;
+}
+
+.rep-kpi:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+.rep-kpi__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.rep-kpi--green  { background: rgba(16,185,129,0.12); }
+.rep-kpi--blue   { background: rgba(59,130,246,0.12); }
+.rep-kpi--amber  { background: rgba(245,158,11,0.12); }
+.rep-kpi--purple { background: rgba(139,92,246,0.12); }
+
+.rep-kpi__body {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.rep-kpi__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary, #94a3b8);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.rep-kpi__value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary, #f1f5f9);
+    line-height: 1.1;
+}
+
+.rep-kpi__delta {
+    font-size: 0.725rem;
+    font-weight: 600;
+}
+
+.delta-up   { color: #10b981; }
+.delta-down { color: #ef4444; }
+.delta-warn { color: #f59e0b; }
+
+/* =============================================================================
+   6. CARDS GENÉRICAS
+============================================================================= */
+
+.rep-card {
+    background: var(--card-bg, #1e293b);
+    border: 1px solid var(--border-color, #334155);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+}
+
+.rep-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.rep-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border-color, #334155);
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.rep-card__header h3 {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--text-primary, #f1f5f9);
+    margin: 0;
+}
+
+.rep-card__sub {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #94a3b8);
+}
+
+.rep-card__meta {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #94a3b8);
+}
+
+.rep-card__body {
+    padding: 18px;
+}
+
+.rep-card__body--flush {
+    padding: 0;
+}
+
+/* =============================================================================
+   7. GRID DE DOS COLUMNAS
+============================================================================= */
+
+.rep-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* =============================================================================
+   8. LEYENDA DE GRÁFICAS
+============================================================================= */
+
+.rep-legend {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 10px;
+    font-size: 0.75rem;
+    color: var(--text-secondary, #94a3b8);
+    flex-wrap: wrap;
+}
+
+.rep-legend span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.rep-legend-box {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    display: inline-block;
+}
+
+/* =============================================================================
+   9. RECOMENDACIONES
+============================================================================= */
+
+.rep-rec-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rep-rec-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+}
+
+.rep-rec--success {
+    background: rgba(16,185,129,0.08);
+    border-color: rgba(16,185,129,0.25);
+}
+
+.rep-rec--warning {
+    background: rgba(245,158,11,0.08);
+    border-color: rgba(245,158,11,0.25);
+}
+
+.rep-rec--danger {
+    background: rgba(239,68,68,0.08);
+    border-color: rgba(239,68,68,0.25);
+}
+
+.rep-rec__icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.rep-rec__titulo {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary, #f1f5f9);
+    margin-bottom: 4px;
+}
+
+.rep-rec__cuerpo {
+    font-size: 0.8125rem;
+    color: var(--text-secondary, #94a3b8);
+    line-height: 1.5;
+}
+
+/* =============================================================================
+   10. VISITAS
+============================================================================= */
+
+.rep-visit-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-color, #334155);
+    font-size: 0.8125rem;
+}
+
+.rep-visit-row:last-child {
+    border-bottom: none;
+}
+
+.rep-visit-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(16,185,129,0.15);
+    color: #10b981;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.rep-visit-name {
+    flex: 1;
+    color: var(--text-primary, #f1f5f9);
+    font-weight: 500;
+}
+
+.rep-visit-role {
+    color: var(--text-secondary, #94a3b8);
+    font-weight: 400;
+    font-size: 0.75rem;
+}
+
+.rep-visit-time {
+    color: var(--text-secondary, #94a3b8);
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+/* =============================================================================
+   11. RANKING
+============================================================================= */
+
+.rep-mi-posicion {
+    background: var(--card-bg, #1e293b);
+    border: 1px solid var(--border-color, #334155);
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 1.5rem;
+}
+
+.rep-pos-num {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary, #f1f5f9);
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.rep-pos-label {
+    font-size: 0.8125rem;
+    color: var(--text-secondary, #94a3b8);
+    margin-bottom: 4px;
+}
+
+.rep-pos-sub {
+    font-size: 0.8125rem;
+    color: #10b981;
+    font-weight: 600;
+}
+
+.rep-rank-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color, #334155);
+}
+
+.rep-rank-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.rep-rank-num {
+    width: 24px;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary, #94a3b8);
+    flex-shrink: 0;
+}
+
+.rep-rank-num--top {
+    color: #f59e0b;
+}
+
+.rep-rank-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(16,185,129,0.15);
+    color: #10b981;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.rep-rank-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.rep-rank-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary, #f1f5f9);
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rep-rank-stars {
+    font-size: 0.75rem;
+    color: var(--text-secondary, #94a3b8);
+    margin-bottom: 4px;
+}
+
+.rep-stars-bar {
+    height: 4px;
+    background: var(--border-color, #334155);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.rep-stars-fill {
+    height: 100%;
+    background: #10b981;
+    border-radius: 2px;
+    transition: width 0.6s ease;
+}
+
+/* =============================================================================
+   12. DENUNCIAS
+============================================================================= */
+
+.rep-den-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.rep-semaforo {
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    margin-bottom: 14px;
+}
+
+.rep-semaforo--verde {
+    background: rgba(16,185,129,0.1);
+    border-color: rgba(16,185,129,0.3);
+    color: #6ee7b7;
+}
+
+.rep-semaforo--amarillo {
+    background: rgba(245,158,11,0.1);
+    border-color: rgba(245,158,11,0.3);
+    color: #fcd34d;
+}
+
+.rep-semaforo--rojo {
+    background: rgba(239,68,68,0.1);
+    border-color: rgba(239,68,68,0.3);
+    color: #fca5a5;
+}
+
+/* =============================================================================
+   13. EXPORTAR
+============================================================================= */
+
+.rep-export-btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.rep-btn-export {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color, #334155);
+    background: var(--card-bg, #1e293b);
+    color: var(--text-primary, #f1f5f9);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rep-btn-export:hover {
+    border-color: #10b981;
+    color: #6ee7b7;
+}
+
+.rep-token-box {
+    background: var(--card-bg, #1e293b);
+    border: 1px solid var(--border-color, #334155);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 1rem;
+}
+
+.rep-token-box--empty {
+    display: none;
+}
+
+.rep-token-hint {
+    font-size: 0.8125rem;
+    color: var(--text-secondary, #94a3b8);
+    margin: 0 0 10px 0;
+}
+
+.rep-token-url {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 6px;
+    padding: 10px 14px;
+}
+
+.rep-token-url code {
+    flex: 1;
+    font-size: 0.75rem;
+    color: #6ee7b7;
+    font-family: monospace;
+    word-break: break-all;
+}
+
+.rep-btn-copy {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: background 0.15s;
+    flex-shrink: 0;
+}
+
+.rep-btn-copy:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* =============================================================================
+   14. TABLA GENÉRICA
+============================================================================= */
+
+.rep-table-wrap {
+    overflow-x: auto;
+}
+
+.rep-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+}
+
+.rep-table th {
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary, #94a3b8);
+    border-bottom: 1px solid var(--border-color, #334155);
+    white-space: nowrap;
+}
+
+.rep-table td {
+    padding: 11px 16px;
+    color: var(--text-primary, #f1f5f9);
+    border-bottom: 1px solid var(--border-color, #334155);
+    vertical-align: middle;
+}
+
+.rep-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.rep-table tbody tr:hover td {
+    background: rgba(255,255,255,0.03);
+}
+
+/* =============================================================================
+   15. BADGES
+============================================================================= */
+
+.rep-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.badge-success {
+    background: rgba(16,185,129,0.15);
+    color: #6ee7b7;
+    border: 1px solid rgba(16,185,129,0.3);
+}
+
+.badge-warning {
+    background: rgba(245,158,11,0.15);
+    color: #fcd34d;
+    border: 1px solid rgba(245,158,11,0.3);
+}
+
+.badge-info {
+    background: rgba(59,130,246,0.15);
+    color: #93c5fd;
+    border: 1px solid rgba(59,130,246,0.3);
+}
+
+.badge-muted {
+    background: rgba(148,163,184,0.1);
+    color: #94a3b8;
+    border: 1px solid rgba(148,163,184,0.2);
+}
+
+/* =============================================================================
+   16. ALERTAS
+============================================================================= */
+
+.rep-alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 14px;
+    border: 1px solid transparent;
+}
+
+.rep-alert--warning {
+    background: rgba(245,158,11,0.1);
+    border-color: rgba(245,158,11,0.3);
+    color: #fcd34d;
+}
+
+/* =============================================================================
+   17. MODAL DE DENUNCIA
+============================================================================= */
+
+.rep-modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 900;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+}
+
+.rep-modal-backdrop.open {
+    display: block;
+}
+
+.rep-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.96);
+    width: min(560px, 94vw);
+    background: var(--card-bg, #1e293b);
+    border: 1px solid var(--border-color, #334155);
+    border-radius: 16px;
+    z-index: 901;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.rep-modal.open {
+    display: block;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+.rep-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border-color, #334155);
+}
+
+.rep-modal__header h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary, #f1f5f9);
+    margin: 0;
+}
+
+.rep-modal__close {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: var(--text-secondary, #94a3b8);
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.15s;
+}
+
+.rep-modal__close:hover {
+    background: rgba(255,255,255,0.08);
+    color: var(--text-primary, #f1f5f9);
+}
+
+.rep-modal__body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.rep-modal__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 14px 20px;
+    border-top: 1px solid var(--border-color, #334155);
+}
+
+/* =============================================================================
+   18. FORMULARIO DEL MODAL
+============================================================================= */
+
+.rep-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.rep-form-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary, #94a3b8);
+}
+
+.rep-required {
+    color: #ef4444;
+    margin-left: 2px;
+}
+
+.rep-form-select,
+.rep-form-textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border-color, #334155);
+    border-radius: 8px;
+    padding: 9px 13px;
+    color: var(--text-primary, #f1f5f9);
+    font-family: inherit;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.rep-form-select:focus,
+.rep-form-textarea:focus {
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.12);
+}
+
+.rep-form-textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.5;
+}
+
+.rep-form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2394a3b8' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 10px;
+    padding-right: 34px;
+    cursor: pointer;
+}
+
+/* Tipo de denuncia — grid de radio cards */
+.rep-tipo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+.rep-tipo-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color, #334155);
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--text-secondary, #94a3b8);
+    text-align: center;
+    transition: all 0.15s;
+}
+
+.rep-tipo-card input[type="radio"] {
+    display: none;
+}
+
+.rep-tipo-card:has(input:checked) {
+    border-color: #10b981;
+    background: rgba(16,185,129,0.08);
+    color: #6ee7b7;
+}
+
+.rep-tipo-card:hover {
+    border-color: #10b981;
+    color: var(--text-primary, #f1f5f9);
+}
+
+/* Feedback dentro del modal */
+.rep-feedback {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.rep-feedback--success {
+    background: rgba(16,185,129,0.1);
+    color: #6ee7b7;
+    border: 1px solid rgba(16,185,129,0.3);
+}
+
+.rep-feedback--error {
+    background: rgba(239,68,68,0.1);
+    color: #fca5a5;
+    border: 1px solid rgba(239,68,68,0.3);
+}
+
+/* =============================================================================
+   19. BOTONES PRIMARIO / SECUNDARIO
+============================================================================= */
+
+.rep-btn-primary {
+    padding: 9px 20px;
+    background: #064e3b;
+    border: 1px solid #10b981;
+    color: #6ee7b7;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rep-btn-primary:hover {
+    background: #065f46;
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.15);
+}
+
+.rep-btn-secondary {
+    padding: 9px 20px;
+    background: transparent;
+    border: 1px solid var(--border-color, #334155);
+    color: var(--text-secondary, #94a3b8);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.rep-btn-secondary:hover {
+    border-color: var(--text-secondary, #94a3b8);
+    color: var(--text-primary, #f1f5f9);
+}
+
+/* =============================================================================
+   20. TOAST
+============================================================================= */
+
+.rep-toast {
+    position: fixed;
+    bottom: 28px;
+    right: 20px;
+    background: #064e3b;
+    border: 1px solid #10b981;
+    color: #6ee7b7;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 999;
+    pointer-events: none;
+    max-width: 320px;
+}
+
+.rep-toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.rep-toast--error {
+    background: rgba(239,68,68,0.15);
+    border-color: rgba(239,68,68,0.4);
+    color: #fca5a5;
+}
+
+/* =============================================================================
+   21. ESTADOS VACÍOS
+============================================================================= */
+
+.rep-empty {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.rep-empty p,
+.rep-empty-text {
+    color: var(--text-secondary, #94a3b8);
+    font-size: 0.875rem;
+    padding: 20px;
+}
+
+/* =============================================================================
+   22. TÍTULOS DE SECCIÓN
+============================================================================= */
+
+.rep-section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary, #f1f5f9);
+    margin: 0 0 16px 0;
+}
+
+.rep-section-sub {
+    font-size: 0.8125rem;
+    color: var(--text-secondary, #94a3b8);
+    margin: 0 0 16px 0;
+}
+
+/* =============================================================================
+   23. LIGHT MODE — sobreescrituras
+============================================================================= */
+
+body.theme-light .rep-tab-btn.active,
+[data-theme="light"] .rep-tab-btn.active {
+    background: #d1fae5;
+    border-color: #059669;
+    color: #065f46;
+}
+
+[data-theme="light"] .rep-vista-btn.active {
+    background: #d1fae5;
+    border-color: #059669;
+    color: #065f46;
+}
+
+[data-theme="light"] .rep-kpi--green  { background: rgba(5,150,105,0.1); }
+[data-theme="light"] .rep-kpi--blue   { background: rgba(37,99,235,0.1); }
+[data-theme="light"] .rep-kpi--amber  { background: rgba(217,119,6,0.1); }
+[data-theme="light"] .rep-kpi--purple { background: rgba(109,40,217,0.1); }
+
+[data-theme="light"] .rep-semaforo--verde {
+    background: #ecfdf5;
+    border-color: #6ee7b7;
+    color: #065f46;
+}
+
+[data-theme="light"] .rep-semaforo--amarillo {
+    background: #fffbeb;
+    border-color: #fcd34d;
+    color: #92400e;
+}
+
+[data-theme="light"] .rep-semaforo--rojo {
+    background: #fef2f2;
+    border-color: #fca5a5;
+    color: #991b1b;
+}
+
+[data-theme="light"] .badge-success { background: #d1fae5; color: #065f46; border-color: #6ee7b7; }
+[data-theme="light"] .badge-warning { background: #fffbeb; color: #92400e; border-color: #fcd34d; }
+[data-theme="light"] .badge-info    { background: #eff6ff; color: #1e40af; border-color: #93c5fd; }
+[data-theme="light"] .badge-muted   { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
+
+[data-theme="light"] .rep-rec--success { background: #ecfdf5; border-color: #6ee7b7; }
+[data-theme="light"] .rep-rec--warning { background: #fffbeb; border-color: #fcd34d; }
+[data-theme="light"] .rep-rec--danger  { background: #fef2f2; border-color: #fca5a5; }
+
+[data-theme="light"] .rep-rec__titulo { color: #0f172a; }
+[data-theme="light"] .rep-rec__cuerpo { color: #475569; }
+
+[data-theme="light"] .rep-mi-posicion,
+[data-theme="light"] .rep-card,
+[data-theme="light"] .rep-kpi,
+[data-theme="light"] .rep-token-box,
+[data-theme="light"] .rep-tabs {
+    background: #ffffff;
+    border-color: #e2e8f0;
+}
+
+[data-theme="light"] .rep-header__title  { color: #0f172a; }
+[data-theme="light"] .rep-card__header h3,
+[data-theme="light"] .rep-kpi__value,
+[data-theme="light"] .rep-rank-name,
+[data-theme="light"] .rep-visit-name,
+[data-theme="light"] .rep-pos-num,
+[data-theme="light"] .rep-section-title,
+[data-theme="light"] .rep-table td { color: #0f172a; }
+
+[data-theme="light"] .rep-table th,
+[data-theme="light"] .rep-card__sub,
+[data-theme="light"] .rep-card__meta,
+[data-theme="light"] .rep-kpi__label,
+[data-theme="light"] .rep-visit-time,
+[data-theme="light"] .rep-header__subtitle,
+[data-theme="light"] .rep-rank-stars,
+[data-theme="light"] .rep-section-sub { color: #475569; }
+
+[data-theme="light"] .rep-table tbody tr:hover td { background: #f8fafc; }
+[data-theme="light"] .rep-visit-row,
+[data-theme="light"] .rep-rank-row,
+[data-theme="light"] .rep-table td,
+[data-theme="light"] .rep-table th { border-color: #e2e8f0; }
+
+[data-theme="light"] .rep-btn-primary {
+    background: #d1fae5;
+    border-color: #059669;
+    color: #065f46;
+}
+
+[data-theme="light"] .rep-toast {
+    background: #ecfdf5;
+    border-color: #059669;
+    color: #065f46;
+}
+
+[data-theme="light"] .rep-token-url code { color: #065f46; }
+
+[data-theme="light"] .rep-modal {
+    background: #ffffff;
+    border-color: #e2e8f0;
+}
+
+[data-theme="light"] .rep-modal__header h2 { color: #0f172a; }
+[data-theme="light"] .rep-form-select,
+[data-theme="light"] .rep-form-textarea {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #0f172a;
+}
+
+[data-theme="light"] .rep-tipo-card {
+    border-color: #e2e8f0;
+    color: #475569;
+}
+
+[data-theme="light"] .rep-tipo-card:has(input:checked) {
+    background: #d1fae5;
+    border-color: #059669;
+    color: #065f46;
+}
+
+[data-theme="light"] .rep-stars-bar { background: #e2e8f0; }
+
+/* =============================================================================
+   24. RESPONSIVE — TABLET (max 900px)
+============================================================================= */
+
+@media (max-width: 900px) {
+    .rep-container {
+        padding: 20px 16px 60px;
+    }
+
+    .rep-grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .rep-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .rep-vista-toggle {
+        width: 100%;
+    }
+
+    .rep-vista-btn {
+        flex: 1;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .rep-tabs {
+        gap: 3px;
+        padding: 4px;
+    }
+
+    .rep-tab-btn {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+    }
+}
+
+/* =============================================================================
+   25. RESPONSIVE — MOBILE (max 640px)
+============================================================================= */
+
+@media (max-width: 640px) {
+    .rep-container {
+        padding: 14px 12px 70px;
+        gap: 14px;
+    }
+
+    .rep-header__title {
+        font-size: 1.25rem;
+    }
+
+    .rep-tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3px;
+    }
+
+    .rep-tab-btn {
+        justify-content: center;
+        font-size: 0.7rem;
+        padding: 9px 6px;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .rep-kpi-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .rep-kpi__value {
+        font-size: 1.25rem;
+    }
+
+    .rep-tipo-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rep-export-btns {
+        flex-direction: column;
+    }
+
+    .rep-btn-export {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .rep-toast {
+        left: 12px;
+        right: 12px;
+        max-width: none;
+        bottom: 16px;
+    }
+
+    .rep-table th,
+    .rep-table td {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+    }
+}

@@ -1,0 +1,812 @@
+/**
+ * ═══════════════════════════════════════════════════════════
+ * MENSAJES.CSS - CHAT ESTILO WHATSAPP
+ * ═══════════════════════════════════════════════════════════
+ */
+
+/* ══════════════════════════════════════════════════════════
+   LAYOUT PRINCIPAL
+   ══════════════════════════════════════════════════════════ */
+
+.mensajes-layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    height: 100vh;
+    background: var(--bg-primary);
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .mensajes-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .conversaciones-sidebar {
+        display: none;
+    }
+    
+    .conversaciones-sidebar.active {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   SIDEBAR: LISTA DE CONVERSACIONES
+   ══════════════════════════════════════════════════════════ */
+
+.conversaciones-sidebar {
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.conversaciones-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-primary);
+}
+
+.conversaciones-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.unread-count {
+    background: #10B981;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.conversaciones-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.conversation-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+}
+
+.conversation-item:hover {
+    background: var(--hover-bg);
+}
+
+.conversation-item.active {
+    background: var(--bg-primary);
+    border-left: 4px solid #10B981;
+}
+
+.conversation-item.unread {
+    background: var(--hover-bg);
+}
+
+.conversation-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-right: 15px;
+}
+
+.conversation-avatar-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    margin-right: 15px;
+    border: 2px solid var(--border-color);
+}
+
+.conversation-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.conversation-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    font-size: 15px;
+}
+
+.conversation-preview {
+    color: var(--text-secondary);
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.conversation-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.conversation-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.conversation-badge {
+    background: #10B981;
+    color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.empty-conversations {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.empty-conversations h3 {
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.empty-conversations p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   ÁREA DE CHAT
+   ══════════════════════════════════════════════════════════ */
+
+.chat-area {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-primary);
+    height: 100vh;
+}
+
+.chat-empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+}
+
+.chat-empty-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.chat-empty-state h3 {
+    color: var(--text-primary);
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.chat-empty-state p {
+    color: var(--text-secondary);
+    font-size: 16px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   HEADER DEL CHAT (PRODUCTO)
+   ══════════════════════════════════════════════════════════ */
+
+.chat-header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.chat-product-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+    min-width: 0;
+}
+
+.chat-product-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid var(--border-color);
+}
+
+.chat-product-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.chat-product-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 6px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-product-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #10B981;
+    margin-bottom: 4px;
+}
+
+.chat-product-quantity {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.chat-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-chat-action {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: var(--hover-bg);
+    color: var(--text-primary);
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-chat-action:hover {
+    background: var(--border-color);
+    transform: scale(1.05);
+}
+
+.btn-chat-action.btn-danger:hover {
+    background: #FEE2E2;
+    color: #DC2626;
+}
+
+/* ══════════════════════════════════════════════════════════
+   CUERPO DEL CHAT (MENSAJES)
+   ══════════════════════════════════════════════════════════ */
+
+.chat-messages-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Scrollbar personalizado */
+.chat-messages-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages-body::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+.chat-messages-body::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.chat-messages-body::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* ══════════════════════════════════════════════════════════
+   MENSAJES ESTILO WHATSAPP
+   ══════════════════════════════════════════════════════════ */
+
+.chat-message {
+    display: flex;
+    margin-bottom: 4px;
+}
+
+.chat-message.sent {
+    justify-content: flex-end;
+}
+
+.chat-message.received {
+    justify-content: flex-start;
+}
+
+.chat-message-bubble {
+    max-width: 65%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    position: relative;
+    word-wrap: break-word;
+}
+
+.chat-message.sent .chat-message-bubble {
+    background: #10B981;
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.chat-message.received .chat-message-bubble {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-bottom-left-radius: 4px;
+}
+
+.chat-message-text {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 4px;
+    white-space: pre-wrap;
+}
+
+.chat-message-time {
+    font-size: 11px;
+    opacity: 0.7;
+    text-align: right;
+    margin-top: 4px;
+}
+
+.chat-message.sent .chat-message-time {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.chat-message.received .chat-message-time {
+    color: var(--text-secondary);
+}
+
+/* Estado vacío del chat */
+.chat-empty-messages {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+}
+
+.chat-empty-messages-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+/* ══════════════════════════════════════════════════════════
+   INPUT PARA ENVIAR MENSAJES
+   ══════════════════════════════════════════════════════════ */
+
+.chat-input-container {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    padding: 16px 24px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.chat-input {
+    flex: 1;
+    border: 2px solid var(--border-color);
+    border-radius: 24px;
+    padding: 12px 20px;
+    font-size: 15px;
+    resize: none;
+    max-height: 120px;
+    min-height: 44px;
+    font-family: inherit;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+.chat-input:focus {
+    outline: none;
+    border-color: #10B981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.chat-input::placeholder {
+    color: var(--text-secondary);
+}
+
+.btn-send-message {
+    background: #10B981;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 24px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.btn-send-message:hover {
+    background: #059669;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-send-message:active {
+    transform: translateY(0);
+}
+
+.btn-send-message:disabled {
+    background: var(--border-color);
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ══════════════════════════════════════════════════════════
+   NOTIFICACIONES
+   ══════════════════════════════════════════════════════════ */
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    animation: slideIn 0.3s ease-out;
+    min-width: 300px;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.notification.success {
+    background: #10B981;
+    color: white;
+}
+
+.notification.error {
+    background: #EF4444;
+    color: white;
+}
+
+/* ══════════════════════════════════════════════════════════
+   MODAL DEL PRODUCTO
+   ══════════════════════════════════════════════════════════ */
+
+.product-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: none;
+}
+
+.product-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+.product-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    background: var(--bg-primary);
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    z-index: 1;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.product-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.product-modal-close:hover {
+    background: rgba(0, 0, 0, 0.7);
+    transform: rotate(90deg);
+}
+
+.product-modal-body {
+    overflow-y: auto;
+    max-height: 90vh;
+    padding: 30px;
+}
+
+/* Tarjeta del producto en el modal */
+.product-detail-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.product-detail-images {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.product-detail-main-image {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+    display: block;
+}
+
+.product-detail-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    width: 100%;
+}
+
+.product-detail-thumbnail {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+    display: block;
+}
+
+.product-detail-thumbnail:hover,
+.product-detail-thumbnail.active {
+    border-color: #10B981;
+    transform: scale(1.05);
+}
+
+.product-detail-info {
+    position: relative;
+    z-index: 1;
+}
+
+.product-detail-info h2 {
+    font-size: 28px;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+.product-detail-price {
+    font-size: 32px;
+    font-weight: 700;
+    color: #10B981;
+    margin-bottom: 20px;
+}
+
+.product-detail-section {
+    margin-bottom: 24px;
+}
+
+.product-detail-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.product-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.product-detail-label {
+    font-size: 15px;
+    color: var(--text-secondary);
+}
+
+.product-detail-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.product-detail-description {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+}
+
+.product-detail-location {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .product-detail-card {
+        grid-template-columns: 1fr;
+    }
+    
+    .product-modal-body {
+        padding: 20px;
+    }
+    
+    .product-detail-info h2 {
+        font-size: 24px;
+    }
+    
+    .product-detail-price {
+        font-size: 28px;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    .chat-product-info {
+        gap: 12px;
+    }
+    
+    .chat-product-image {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .chat-product-title {
+        font-size: 14px;
+    }
+    
+    .chat-product-price {
+        font-size: 16px;
+    }
+    
+    .chat-message-bubble {
+        max-width: 80%;
+    }
+    
+    .chat-input-container {
+        padding: 12px 16px;
+    }
+    
+    .btn-send-message {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .chat-header {
+        padding: 12px 16px;
+    }
+    
+    .chat-product-title {
+        font-size: 13px;
+    }
+    
+    .chat-messages-body {
+        padding: 12px;
+    }
+    
+    .chat-message-bubble {
+        max-width: 85%;
+        padding: 8px 12px;
+    }
+    
+    .btn-chat-action {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+}

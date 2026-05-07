@@ -1,0 +1,265 @@
+﻿/**
+ * ═══════════════════════════════════════════════════════════
+ * ASCC - ESTILOS NORMALIZACIÓN DE VEREDAS
+ * Archivo: public/css/vereda-normalizacion.css
+ * 
+ * Estilos para modal de sugerencias y autocompletado
+ * Compatible con tema claro y oscuro
+ * ═══════════════════════════════════════════════════════════
+ */
+
+/* ══════════════════════════════════════════════════════════
+   MODAL DE SUGERENCIA
+   ══════════════════════════════════════════════════════════ */
+
+.vereda-suggestion-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vereda-suggestion-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+.vereda-suggestion-content {
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+    z-index: 1;
+}
+
+[data-theme="dark"] .vereda-suggestion-content {
+    background: #27272A;
+    color: #F4F4F5;
+}
+
+.vereda-suggestion-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.vereda-suggestion-icon {
+    font-size: 32px;
+    line-height: 1;
+}
+
+.vereda-suggestion-header h3 {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0;
+    color: #111827;
+}
+
+[data-theme="dark"] .vereda-suggestion-header h3 {
+    color: #F4F4F5;
+}
+
+.vereda-suggestion-body {
+    margin-bottom: 20px;
+}
+
+.vereda-suggestion-body p {
+    margin: 8px 0;
+    color: #6B7280;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+[data-theme="dark"] .vereda-suggestion-body p {
+    color: #A1A1AA;
+}
+
+.vereda-suggestion-body strong {
+    color: #111827;
+    font-weight: 700;
+}
+
+[data-theme="dark"] .vereda-suggestion-body strong {
+    color: #F4F4F5;
+}
+
+.vereda-suggestion-hint {
+    font-size: 13px !important;
+    color: #F59E0B !important;
+    margin-top: 12px !important;
+    font-weight: 600;
+}
+
+[data-theme="dark"] .vereda-suggestion-hint {
+    color: #FCD34D !important;
+}
+
+.vereda-suggestion-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-sugerencia-aceptar,
+.btn-sugerencia-rechazar {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-sugerencia-aceptar {
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+}
+
+.btn-sugerencia-aceptar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.btn-sugerencia-aceptar:active {
+    transform: translateY(0);
+}
+
+.btn-sugerencia-rechazar {
+    background: #F3F4F6;
+    color: #6B7280;
+}
+
+[data-theme="dark"] .btn-sugerencia-rechazar {
+    background: #3F3F46;
+    color: #A1A1AA;
+}
+
+.btn-sugerencia-rechazar:hover {
+    background: #E5E7EB;
+}
+
+[data-theme="dark"] .btn-sugerencia-rechazar:hover {
+    background: #52525B;
+}
+
+.btn-sugerencia-rechazar:active {
+    background: #D1D5DB;
+}
+
+[data-theme="dark"] .btn-sugerencia-rechazar:active {
+    background: #71717A;
+}
+
+/* ══════════════════════════════════════════════════════════
+   LISTA DE AUTOCOMPLETADO
+   ══════════════════════════════════════════════════════════ */
+
+.vereda-autocomplete-list {
+    position: absolute;
+    z-index: 1000;
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    margin-top: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: none;
+    width: 100%;
+}
+
+[data-theme="dark"] .vereda-autocomplete-list {
+    background: #27272A;
+    border-color: #3F3F46;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.vereda-autocomplete-item {
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    color: #111827;
+    font-size: 14px;
+}
+
+[data-theme="dark"] .vereda-autocomplete-item {
+    color: #F4F4F5;
+}
+
+.vereda-autocomplete-item:hover {
+    background: #F3F4F6;
+}
+
+[data-theme="dark"] .vereda-autocomplete-item:hover {
+    background: #3F3F46;
+}
+
+.vereda-autocomplete-item:active {
+    background: #E5E7EB;
+}
+
+[data-theme="dark"] .vereda-autocomplete-item:active {
+    background: #52525B;
+}
+
+/* ══════════════════════════════════════════════════════════
+   ANIMACIONES
+   ══════════════════════════════════════════════════════════ */
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════ */
+
+@media (max-width: 640px) {
+    .vereda-suggestion-content {
+        padding: 20px;
+        max-width: 95%;
+    }
+    
+    .vereda-suggestion-header h3 {
+        font-size: 18px;
+    }
+    
+    .vereda-suggestion-icon {
+        font-size: 28px;
+    }
+    
+    .vereda-suggestion-body p {
+        font-size: 14px;
+    }
+    
+    .vereda-suggestion-actions {
+        flex-direction: column;
+    }
+    
+    .btn-sugerencia-aceptar,
+    .btn-sugerencia-rechazar {
+        white-space: normal;
+        text-align: center;
+    }
+}

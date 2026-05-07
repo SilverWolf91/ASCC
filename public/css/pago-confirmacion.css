@@ -1,0 +1,198 @@
+﻿/**
+ * ═══════════════════════════════════════════════════════════
+ * ASCC PAGO CONFIRMACIÓN - ESTILOS
+ * CSS extraído desde pago_confirmacion.php
+ * ═══════════════════════════════════════════════════════════
+ */
+
+body {
+    background: #f5f5f5;
+}
+
+.confirmation-container {
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.confirmation-card {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.status-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.status-pending {
+    color: #ff9800;
+}
+
+.status-approved {
+    color: #4caf50;
+}
+
+.status-rejected {
+    color: #f44336;
+}
+
+.confirmation-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.confirmation-message {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.transaction-details {
+    background: #f9f9f9;
+    padding: 25px;
+    border-radius: 8px;
+    margin: 30px 0;
+    text-align: left;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #666;
+}
+
+.detail-value {
+    color: #333;
+    text-align: right;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn {
+    flex: 1;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary {
+    background: #2e7d32;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #1b5e20;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: #757575;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #424242;
+    transform: translateY(-2px);
+}
+
+.loading-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #2e7d32;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.info-box {
+    background: #e3f2fd;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #1976d2;
+    margin-top: 25px;
+    text-align: left;
+}
+
+.info-box p {
+    margin: 8px 0;
+    color: #1565c0;
+    font-size: 14px;
+}
+
+.vendor-contact {
+    background: #f0f8f0;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.vendor-contact h3 {
+    color: #2e7d32;
+    margin-bottom: 15px;
+}
+
+.vendor-contact p {
+    margin: 8px 0;
+}
+
+.vendor-contact a {
+    color: #25D366;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.vendor-contact a:hover {
+    text-decoration: underline;
+}

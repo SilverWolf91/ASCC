@@ -1,0 +1,50 @@
+# ─── Secretos — NUNCA subir al repositorio ──────────────────
+.env
+
+# ─── Dependencias de Node / React ───────────────────────────
+node_modules/
+ascc-react/node_modules/
+ascc-react/dist/
+ascc-react/.vite/
+
+# ─── Imágenes y archivos subidos por usuarios ───────────────
+# Se gestionan por volumen en Railway, no en git
+public/uploads/productos/*
+public/uploads/perfiles/*
+public/uploads/avatars/*
+public/uploads/profiles/*
+public/img/perfiles/*
+frontend/users/public/uploads/productos/*
+frontend/users/public/uploads/perfiles/*
+frontend/users/public/uploads/avatars/*
+frontend/users/public/uploads/profiles/*
+frontend/users/public/img/perfiles/*
+# Conservar carpetas vacías con .gitkeep
+!public/uploads/productos/.gitkeep
+!public/uploads/perfiles/.gitkeep
+!frontend/users/public/uploads/productos/.gitkeep
+!frontend/users/public/uploads/perfiles/.gitkeep
+
+# ─── Archivos con datos sensibles de desarrollo ─────────────
+usuarios y links.txt
+docs/usuarios y links.txt
+
+# ─── Archivos de prueba / utilidades de desarrollo ──────────
+test_email.php
+test_upload.php
+generar_hash.php
+
+# ─── Sistema operativo ───────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Editores ────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ─── Logs ────────────────────────────────────────────────────
+*.log
+error_log

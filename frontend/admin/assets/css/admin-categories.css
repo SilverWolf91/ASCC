@@ -1,0 +1,417 @@
+/**
+ * ASCC - Admin Categories Styles
+ * Ruta: admin/assets/css/admin-categories.css
+ * Descripción: Estilos para la página de gestión de categorías.
+ */
+
+/* ============================================================
+   KPIs
+============================================================ */
+.ac-kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.ac-kpi {
+    background-color: var(--ag-bg-card);
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-border-radius);
+    padding: 20px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--ag-shadow-sm);
+    transition: var(--ag-transition);
+}
+
+.ac-kpi:hover {
+    box-shadow: var(--ag-shadow-md);
+    transform: translateY(-1px);
+}
+
+.ac-kpi__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.125rem;
+    flex-shrink: 0;
+}
+
+.ac-kpi__icon--cat   { background-color: rgba(6,101,74,0.10);   color: #06654a; }
+.ac-kpi__icon--prod  { background-color: rgba(59,130,246,0.10);  color: #3b82f6; }
+.ac-kpi__icon--avail { background-color: rgba(16,185,129,0.10);  color: #10b981; }
+.ac-kpi__icon--val   { background-color: rgba(139,92,246,0.10);  color: #8b5cf6; }
+
+.ac-kpi__info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.ac-kpi__num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--ag-text-primary);
+    line-height: 1;
+}
+
+.ac-kpi__num--sm {
+    font-size: 1.15rem;
+}
+
+.ac-kpi__label {
+    font-size: 0.75rem;
+    color: var(--ag-text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ============================================================
+   ESTADO VACÍO
+============================================================ */
+.ac-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 80px 24px;
+    background-color: var(--ag-bg-card);
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-border-radius);
+    text-align: center;
+}
+
+.ac-empty__icon {
+    font-size: 3rem;
+    line-height: 1;
+}
+
+.ac-empty__title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--ag-text-primary);
+    margin: 0;
+}
+
+.ac-empty__text {
+    font-size: 0.875rem;
+    color: var(--ag-text-muted);
+    max-width: 360px;
+    margin: 0;
+}
+
+.ac-empty__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    background: linear-gradient(135deg, var(--ag-brand-primary), #10b981);
+    color: #fff;
+    border-radius: var(--ag-border-radius-sm);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    transition: opacity 0.2s ease;
+    margin-top: 8px;
+}
+
+.ac-empty__btn:hover {
+    opacity: 0.88;
+}
+
+/* ============================================================
+   GRID DE CARDS
+============================================================ */
+.ac-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* ============================================================
+   CARD DE CATEGORÍA
+============================================================ */
+.ac-card {
+    background-color: var(--ag-bg-card);
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-border-radius);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: var(--ag-shadow-sm);
+    transition: var(--ag-transition);
+    position: relative;
+    overflow: hidden;
+    /* Línea de acento lateral izquierda con el color de la categoría */
+    border-left: 4px solid var(--ac-color, var(--ag-border));
+}
+
+.ac-card:hover {
+    box-shadow: var(--ag-shadow-md);
+    transform: translateY(-2px);
+}
+
+/* Badge "Top" */
+.ac-card--top {
+    border-color: var(--ac-color);
+    box-shadow: 0 0 0 1px var(--ac-color), var(--ag-shadow-sm);
+}
+
+.ac-card__top-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: linear-gradient(135deg, var(--ag-brand-primary), #10b981);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 3px 8px;
+    border-radius: 20px;
+}
+
+/* Header */
+.ac-card__header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.ac-card__icon {
+    font-size: 2rem;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--ag-bg-body);
+    border: 1px solid var(--ag-border);
+    border-radius: 12px;
+}
+
+.ac-card__title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.ac-card__name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--ag-text-primary);
+    margin: 0;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ac-card__count {
+    font-size: 0.75rem;
+    color: var(--ag-text-muted);
+    font-weight: 500;
+}
+
+/* Barra de progreso */
+.ac-card__bar-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.ac-card__bar-track {
+    width: 100%;
+    height: 6px;
+    background-color: var(--ag-border);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.ac-card__bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ac-card__bar-label {
+    font-size: 0.72rem;
+    color: var(--ag-text-muted);
+    font-weight: 600;
+}
+
+/* Stats de 3 columnas */
+.ac-card__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 14px 0;
+    border-top: 1px solid var(--ag-border);
+    border-bottom: 1px solid var(--ag-border);
+}
+
+.ac-card__stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    text-align: center;
+}
+
+.ac-card__stat-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--ag-text-primary);
+    line-height: 1;
+}
+
+.ac-card__stat-val--green { color: #059669; }
+.ac-card__stat-val--amber { color: #d97706; }
+
+.ac-card__stat-label {
+    font-size: 0.65rem;
+    color: var(--ag-text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Footer */
+.ac-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.ac-card__footer-price {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ac-card__footer-label {
+    font-size: 0.65rem;
+    color: var(--ag-text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.ac-card__footer-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--ag-brand-primary);
+}
+
+.ac-card__footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.775rem;
+    font-weight: 600;
+    color: var(--ag-brand-primary);
+    background-color: var(--ag-bg-body);
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-border-radius-sm);
+    padding: 6px 12px;
+    transition: var(--ag-transition);
+    white-space: nowrap;
+}
+
+.ac-card__footer-link:hover {
+    background-color: var(--ag-brand-primary);
+    color: #fff;
+    border-color: var(--ag-brand-primary);
+}
+
+.ac-card__footer-link i {
+    font-size: 0.7rem;
+    transition: transform 0.2s ease;
+}
+
+.ac-card__footer-link:hover i {
+    transform: translateX(3px);
+}
+
+/* ============================================================
+   SECCIÓN DE GRÁFICA
+============================================================ */
+.ac-chart-section {
+    margin-top: 4px;
+}
+
+.ac-chart-card {
+    background-color: var(--ag-bg-card);
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-border-radius);
+    box-shadow: var(--ag-shadow-sm);
+    overflow: hidden;
+}
+
+.ac-chart-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px 14px;
+    border-bottom: 1px solid var(--ag-border);
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.ac-chart-card__header h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--ag-text-primary);
+    margin: 0;
+}
+
+.ac-chart-card__sub {
+    font-size: 0.775rem;
+    color: var(--ag-text-muted);
+    background-color: var(--ag-bg-body);
+    border: 1px solid var(--ag-border);
+    border-radius: 6px;
+    padding: 3px 10px;
+}
+
+.ac-chart-card__body {
+    padding: 24px;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 1200px) {
+    .ac-grid { grid-template-columns: repeat(2, 1fr); }
+    .ac-kpi-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .ac-grid { grid-template-columns: 1fr; }
+    .ac-kpi-row { grid-template-columns: repeat(2, 1fr); }
+    .ac-card__stats { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 480px) {
+    .ac-kpi-row { grid-template-columns: 1fr; }
+    .ac-card__footer { flex-direction: column; align-items: flex-start; }
+    .ac-card__footer-link { width: 100%; justify-content: center; }
+}

@@ -1,0 +1,305 @@
+/**
+ * ASCC - Admin Login Styles
+ * Ruta: admin/assets/css/admin-login.css
+ * Layout: pantalla completa — formulario centrado
+ * Temas: light = fondo verde | dark = fondo azul marino
+ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ============================================================
+   VARIABLES POR TEMA
+============================================================ */
+:root,
+html[data-theme="light"] {
+    --login-bg-from:    #052e1c;
+    --login-bg-mid:     #064e3b;
+    --login-bg-to:      #06654a;
+    --login-card-bg:    rgba(6, 40, 28, 0.75);
+    --login-card-border:rgba(255, 255, 255, 0.1);
+    --login-input-bg:   rgba(255, 255, 255, 0.08);
+    --login-input-border:rgba(255, 255, 255, 0.15);
+    --login-input-focus-bg: rgba(255, 255, 255, 0.12);
+}
+
+html[data-theme="dark"] {
+    --login-bg-from:    #020817;
+    --login-bg-mid:     #0f172a;
+    --login-bg-to:      #1e293b;
+    --login-card-bg:    rgba(15, 23, 42, 0.85);
+    --login-card-border:rgba(51, 65, 85, 0.6);
+    --login-input-bg:   rgba(30, 41, 59, 0.8);
+    --login-input-border:rgba(51, 65, 85, 0.8);
+    --login-input-focus-bg: rgba(30, 41, 59, 1);
+}
+
+/* ============================================================
+   BASE
+============================================================ */
+body {
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(145deg, var(--login-bg-from) 0%, var(--login-bg-mid) 50%, var(--login-bg-to) 100%);
+    color: #f1f5f9;
+    transition: background 0.3s ease;
+}
+
+/* ============================================================
+   WRAPPER — ocupa toda la pantalla
+============================================================ */
+.ag-login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+}
+
+/* Patrón de puntos sutil sobre el fondo */
+.ag-login-wrapper::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 20% 80%, rgba(255,255,255,0.04) 1px, transparent 1px),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+}
+
+/* ============================================================
+   PANEL — tarjeta del formulario
+============================================================ */
+.ag-login-form-panel {
+    position: relative;
+    z-index: 1;
+    background-color: var(--login-card-bg);
+    border: 1px solid var(--login-card-border);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 48px 44px;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Botón de tema */
+.ag-login-theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8125rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+.ag-login-theme-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+/* ============================================================
+   WRAPPER INTERIOR
+============================================================ */
+.ag-login-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ============================================================
+   HEADER
+============================================================ */
+.ag-login-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.ag-login-header__icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #10b981, #06654a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.35);
+    margin-bottom: 4px;
+}
+
+.ag-login-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.625rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+}
+
+.ag-login-header p {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.5;
+}
+
+/* ============================================================
+   ALERTA DE ERROR
+============================================================ */
+.ag-alert {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.ag-alert--error {
+    background-color: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+}
+
+.ag-alert--error i { color: #ef4444; }
+
+/* ============================================================
+   FORMULARIO
+============================================================ */
+.ag-login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.ag-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.ag-form-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ag-form-label i { font-size: 0.75rem; }
+
+.ag-form-input-wrapper {
+    position: relative;
+}
+
+.ag-form-input {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: var(--login-input-bg);
+    border: 1px solid var(--login-input-border);
+    border-radius: 10px;
+    color: #f1f5f9;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9375rem;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.ag-form-input::placeholder { color: rgba(255, 255, 255, 0.3); }
+
+.ag-form-input:focus {
+    border-color: #10b981;
+    background-color: var(--login-input-focus-bg);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+/* Input de contraseña con botón ojo */
+.ag-form-input-wrapper .ag-form-input {
+    padding-right: 46px;
+}
+
+.ag-form-password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    padding: 4px;
+    font-size: 0.875rem;
+    transition: color 0.2s ease;
+}
+.ag-form-password-toggle:hover { color: rgba(255, 255, 255, 0.8); }
+
+/* ============================================================
+   BOTÓN SUBMIT
+============================================================ */
+.ag-login-submit {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #10b981, #06654a);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    margin-top: 4px;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+}
+
+.ag-login-submit:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+}
+
+.ag-login-submit:active { transform: translateY(0); }
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.ag-login-footer {
+    text-align: center;
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.ag-login-footer a {
+    color: #34d399;
+    font-weight: 600;
+    text-decoration: none;
+}
+.ag-login-footer a:hover { color: #6ee7b7; }
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 480px) {
+    .ag-login-form-panel { padding: 36px 24px; }
+}

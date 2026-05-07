@@ -1,0 +1,783 @@
+﻿/* ============================================================
+   ASCC — Modal Actualizar Datos
+   Colores extraídos del dashboard real (capturas Light + Dark)
+   ============================================================ */
+
+:root {
+    /* Marca */
+    --agro-green-primary:   #1d6d3b;
+    --agro-green-accent:    #4ade80;
+    --agro-green-soft:      rgba(74, 222, 128, 0.12);
+    --agro-green-border:    rgba(74, 222, 128, 0.28);
+    --agro-green-hover:     #155a2e;
+
+    /* Light Mode — extraído de captura 1 */
+    --modal-overlay:        rgba(0, 0, 0, 0.38);
+    --modal-bg:             #ffffff;
+    --modal-header-bg:      #f7faf8;
+    --modal-footer-bg:      #f7faf8;
+    --modal-border:         rgba(0, 0, 0, 0.08);
+    --modal-input-bg:       #f4f6f5;
+    --modal-input-border:   rgba(0, 0, 0, 0.12);
+    --modal-input-focus:    #1d6d3b;
+    --modal-text-primary:   #111827;
+    --modal-text-secondary: #6b7280;
+    --modal-text-hint:      #9ca3af;
+    --modal-section-label:  #9ca3af;
+    --modal-tab-active-bg:  rgba(29, 109, 59, 0.06);
+    --modal-item-bg:        #f4f6f5;
+    --modal-item-border:    rgba(0, 0, 0, 0.06);
+    --modal-toggle-off:     #d1d5db;
+    --modal-toggle-knob:    #ffffff;
+    --modal-avatar-bg:      #d1fae5;
+    --modal-avatar-color:   #065f46;
+    --modal-select-opt:     #ffffff;
+    --modal-scrollbar:      rgba(0, 0, 0, 0.10);
+    --modal-verified-bg:    rgba(29, 109, 59, 0.08);
+    --modal-verified-bdr:   rgba(29, 109, 59, 0.22);
+    --modal-verified-color: #1d6d3b;
+}
+
+/* Dark Mode — extraído de captura 2 */
+[data-theme="dark"] {
+    --modal-overlay:        rgba(0, 0, 0, 0.62);
+    --modal-bg:             #252d32;
+    --modal-header-bg:      #1e2428;
+    --modal-footer-bg:      #1e2428;
+    --modal-border:         rgba(255, 255, 255, 0.07);
+    --modal-input-bg:       rgba(255, 255, 255, 0.05);
+    --modal-input-border:   rgba(255, 255, 255, 0.11);
+    --modal-input-focus:    #4ade80;
+    --modal-text-primary:   #eef2f0;
+    --modal-text-secondary: rgba(255, 255, 255, 0.50);
+    --modal-text-hint:      rgba(255, 255, 255, 0.28);
+    --modal-section-label:  rgba(255, 255, 255, 0.30);
+    --modal-tab-active-bg:  rgba(74, 222, 128, 0.06);
+    --modal-item-bg:        rgba(255, 255, 255, 0.04);
+    --modal-item-border:    rgba(255, 255, 255, 0.06);
+    --modal-toggle-off:     rgba(255, 255, 255, 0.16);
+    --modal-toggle-knob:    #ffffff;
+    --modal-avatar-bg:      #1d6d3b;
+    --modal-avatar-color:   #a7f3c4;
+    --modal-select-opt:     #252d32;
+    --modal-scrollbar:      rgba(255, 255, 255, 0.09);
+    --modal-verified-bg:    rgba(74, 222, 128, 0.10);
+    --modal-verified-bdr:   rgba(74, 222, 128, 0.24);
+    --modal-verified-color: #4ade80;
+}
+
+/* ── Backdrop ── */
+.agro-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: var(--modal-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease;
+}
+
+.agro-modal-backdrop.is-open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* ── Contenedor ── */
+.agro-modal {
+    background: var(--modal-bg);
+    border: 0.5px solid var(--modal-border);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 640px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(14px) scale(0.98);
+    transition: transform 0.22s ease;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.16);
+}
+
+.agro-modal-backdrop.is-open .agro-modal {
+    transform: translateY(0) scale(1);
+}
+
+/* ── Header ── */
+.agro-modal__header {
+    background: var(--modal-header-bg);
+    border-bottom: 0.5px solid var(--modal-border);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.agro-modal__title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--modal-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.agro-modal__title svg {
+    width: 17px;
+    height: 17px;
+    color: var(--agro-green-accent);
+    flex-shrink: 0;
+}
+
+.agro-modal__close {
+    background: none;
+    border: 0.5px solid var(--modal-input-border);
+    border-radius: 8px;
+    color: var(--modal-text-secondary);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+}
+
+.agro-modal__close:hover {
+    background: var(--modal-item-bg);
+    color: var(--modal-text-primary);
+}
+
+/* ── Pestañas ── */
+.agro-modal__body {
+    overflow-y: auto;
+    flex: 1;
+    padding: 20px;
+}
+
+.agro-modal__body::-webkit-scrollbar {
+    width: 4px;
+}
+
+.agro-modal__body::-webkit-scrollbar-thumb {
+    background: var(--modal-scrollbar);
+    border-radius: 4px;
+}
+
+.agro-modal__body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.agro-modal__tabs::-webkit-scrollbar { display: none; }
+
+.agro-modal__tab {
+    flex: 1;
+    min-width: max-content;
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--modal-text-secondary);
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    font-family: inherit;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.agro-modal__tab:hover {
+    color: var(--modal-text-primary);
+    background: var(--modal-item-bg);
+}
+
+.agro-modal__tab.is-active {
+    color: var(--agro-green-accent);
+    border-bottom-color: var(--agro-green-accent);
+    background: var(--modal-tab-active-bg);
+}
+
+/* ── Cuerpo ── */
+.agro-modal__body {
+    overflow-y: auto;
+    flex: 1;
+    padding: 20px;
+}
+
+.agro-modal__body::-webkit-scrollbar {
+    width: 4px;
+}
+
+.agro-modal__body::-webkit-scrollbar-thumb {
+    background: var(--modal-scrollbar);
+    border-radius: 4px;
+}
+
+.agro-modal__body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.agro-modal__body::-webkit-scrollbar { width: 4px; }
+.agro-modal__body::-webkit-scrollbar-thumb {
+    background: var(--modal-scrollbar);
+    border-radius: 4px;
+}
+
+/* ── Paneles ── */
+.agro-tab-panel { display: none; }
+.agro-tab-panel.is-active { display: block; }
+
+/* ── Etiquetas de sección ── */
+.agro-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--modal-section-label);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 10px 0;
+}
+
+.agro-section-label + * { margin-top: 0; }
+
+/* ── Avatar ── */
+.agro-avatar-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--modal-item-bg);
+    border: 0.5px solid var(--modal-item-border);
+    border-radius: 12px;
+    padding: 14px 16px;
+}
+
+.agro-avatar-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--modal-avatar-bg);
+    color: var(--modal-avatar-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    border: 2px solid var(--agro-green-border);
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.agro-avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.agro-avatar-info { flex: 1; }
+
+.agro-avatar-info p {
+    font-size: 12px;
+    color: var(--modal-text-secondary);
+    margin: 0 0 8px 0;
+}
+
+.agro-btn-upload {
+    font-size: 12px;
+    padding: 5px 14px;
+    border: 0.5px solid var(--agro-green-accent);
+    color: var(--agro-green-accent);
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+}
+
+.agro-btn-upload:hover { background: var(--agro-green-soft); }
+
+/* ── Grilla de campos ── */
+.agro-field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.agro-field-grid--full { grid-template-columns: 1fr; }
+
+.agro-field--span2 { grid-column: span 2; }
+
+/* ── Campo individual ── */
+.agro-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.agro-field label {
+    font-size: 12px;
+    color: var(--modal-text-secondary);
+}
+
+.agro-field input,
+.agro-field select,
+.agro-field textarea {
+    background: var(--modal-input-bg);
+    border: 0.5px solid var(--modal-input-border);
+    border-radius: 8px;
+    color: var(--modal-text-primary);
+    font-size: 13px;
+    padding: 8px 12px;
+    font-family: inherit;
+    outline: none;
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.agro-field input::placeholder,
+.agro-field textarea::placeholder {
+    color: var(--modal-text-hint);
+}
+
+.agro-field input:focus,
+.agro-field select:focus,
+.agro-field textarea:focus {
+    border-color: var(--modal-input-focus);
+    box-shadow: 0 0 0 3px var(--agro-green-soft);
+}
+
+.agro-field input.is-error,
+.agro-field select.is-error,
+.agro-field textarea.is-error {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.10);
+}
+
+.agro-field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 34px;
+    cursor: pointer;
+}
+
+.agro-field select option {
+    background: var(--modal-select-opt);
+    color: var(--modal-text-primary);
+}
+
+.agro-field textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.55;
+}
+
+.agro-field__hint {
+    font-size: 11px;
+    color: var(--modal-text-hint);
+    line-height: 1.4;
+}
+
+.agro-field__error {
+    font-size: 11px;
+    color: #ef4444;
+    display: none;
+    line-height: 1.4;
+}
+
+.agro-field__error.is-visible { display: block; }
+
+/* ── Badge verificado ── */
+.agro-badge-verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--modal-verified-bg);
+    border: 0.5px solid var(--modal-verified-bdr);
+    color: var(--modal-verified-color);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-top: 6px;
+}
+
+/* ── Filas toggle ── */
+.agro-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--modal-item-bg);
+    border: 0.5px solid var(--modal-item-border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    gap: 12px;
+    transition: background 0.15s;
+}
+
+.agro-toggle-row:hover { background: var(--modal-tab-active-bg); }
+
+.agro-toggle-row__info { flex: 1; min-width: 0; }
+
+.agro-toggle-row__info p {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--modal-text-primary);
+    margin: 0 0 2px 0;
+}
+
+.agro-toggle-row__info span {
+    font-size: 11px;
+    color: var(--modal-text-secondary);
+}
+
+/* ── Toggle switch ── */
+.agro-toggle {
+    width: 40px;
+    height: 22px;
+    background: var(--modal-toggle-off);
+    border-radius: 999px;
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+    border: none;
+    outline: none;
+    padding: 0;
+    transition: background 0.2s;
+}
+
+.agro-toggle:focus-visible {
+    box-shadow: 0 0 0 3px var(--agro-green-soft);
+}
+
+.agro-toggle::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background: var(--modal-toggle-knob);
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    transition: left 0.2s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.20);
+}
+
+.agro-toggle.is-on { background: var(--agro-green-primary); }
+.agro-toggle.is-on::after { left: 21px; }
+
+/* ── Fortaleza contraseña ── */
+.agro-password-strength { margin-top: 6px; }
+
+.agro-password-strength__bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 4px;
+}
+
+.agro-password-strength__segment {
+    flex: 1;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--modal-input-border);
+    transition: background 0.25s;
+}
+
+.agro-password-strength__segment.level-1 { background: #ef4444; }
+.agro-password-strength__segment.level-2 { background: #f59e0b; }
+.agro-password-strength__segment.level-3 { background: #3b82f6; }
+.agro-password-strength__segment.level-4 { background: #22c55e; }
+
+.agro-password-strength__label {
+    font-size: 11px;
+    color: var(--modal-text-hint);
+    min-height: 14px;
+    display: block;
+}
+
+/* ── Footer ── */
+.agro-modal__footer {
+    padding: 13px 20px;
+    border-top: 0.5px solid var(--modal-border);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    background: var(--modal-footer-bg);
+    flex-shrink: 0;
+}
+
+.agro-btn-cancel {
+    padding: 8px 20px;
+    background: transparent;
+    border: 0.5px solid var(--modal-input-border);
+    color: var(--modal-text-secondary);
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.agro-btn-cancel:hover {
+    background: var(--modal-item-bg);
+    color: var(--modal-text-primary);
+}
+
+.agro-btn-save {
+    padding: 8px 22px;
+    background: var(--agro-green-primary);
+    border: 0.5px solid var(--agro-green-accent);
+    color: var(--agro-green-accent);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: background 0.15s, opacity 0.15s;
+}
+
+.agro-btn-save:hover { background: var(--agro-green-hover); }
+.agro-btn-save:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.agro-btn-save__spinner {
+    width: 13px;
+    height: 13px;
+    border: 2px solid rgba(74, 222, 128, 0.25);
+    border-top-color: var(--agro-green-accent);
+    border-radius: 50%;
+    animation: agro-spin 0.7s linear infinite;
+    display: none;
+    flex-shrink: 0;
+}
+
+.agro-btn-save.is-loading .agro-btn-save__spinner { display: block; }
+.agro-btn-save.is-loading .agro-btn-save__text { opacity: 0.7; }
+
+@keyframes agro-spin { to { transform: rotate(360deg); } }
+
+/* ── Toast ── */
+.agro-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--modal-bg);
+    border: 0.5px solid var(--modal-border);
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 13px;
+    color: var(--modal-text-primary);
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease, transform 0.22s ease;
+    white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.14);
+}
+
+.agro-toast.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.agro-toast--success {
+    border-color: var(--agro-green-border);
+    color: var(--agro-green-accent);
+}
+
+.agro-toast--error {
+    border-color: rgba(239, 68, 68, 0.28);
+    color: #ef4444;
+}
+
+/* ── 2FA / OTP ── */
+.agro-otp-section {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: rgba(29, 109, 59, 0.05);
+    border: 0.5px solid var(--agro-green-border);
+    border-radius: 10px;
+}
+
+.agro-otp-info {
+    font-size: 12px;
+    color: var(--modal-text-secondary);
+    margin: 0 0 10px;
+    line-height: 1.5;
+}
+
+.agro-btn-otp {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    background: transparent;
+    border: 0.5px solid var(--agro-green-primary);
+    color: var(--agro-green-primary);
+    border-radius: 7px;
+    font-size: 12px;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.agro-btn-otp:hover:not(:disabled) {
+    background: var(--agro-green-primary);
+    color: #fff;
+}
+
+.agro-btn-otp:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.agro-otp-input-wrapper {
+    margin-top: 12px;
+}
+
+.agro-otp-input-wrapper .agro-field input {
+    font-size: 22px;
+    letter-spacing: 8px;
+    text-align: center;
+    font-family: monospace;
+    font-weight: 600;
+}
+
+.agro-otp-timer {
+    display: block;
+    font-size: 11px;
+    color: var(--modal-text-hint);
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Mostrar / Ocultar contraseña ── */
+.agro-pass-wrap {
+    position: relative;
+}
+
+.agro-pass-wrap input {
+    padding-right: 42px;
+}
+
+.agro-pass-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: var(--modal-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: color 0.15s;
+    line-height: 0;
+}
+
+.agro-pass-toggle:hover {
+    color: var(--agro-green-primary);
+}
+
+/* ── GPS / Geolocalización ── */
+.agro-gps-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.agro-btn-gps {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: var(--agro-green-soft);
+    border: 0.5px solid var(--agro-green-border);
+    border-radius: 8px;
+    color: var(--agro-green-primary);
+    font-size: 12px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+    white-space: nowrap;
+}
+
+.agro-btn-gps:hover:not(:disabled) {
+    background: rgba(74, 222, 128, 0.22);
+}
+
+.agro-btn-gps:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.agro-btn-gps svg {
+    flex-shrink: 0;
+}
+
+.agro-gps-hint {
+    font-size: 11px;
+    color: var(--modal-text-hint);
+    line-height: 1.4;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .agro-modal-backdrop {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .agro-modal {
+        max-height: 92vh;
+        border-radius: 16px 16px 0 0;
+        border-bottom: none;
+        transform: translateY(100%);
+    }
+
+    .agro-modal-backdrop.is-open .agro-modal {
+        transform: translateY(0);
+    }
+
+    .agro-field-grid { grid-template-columns: 1fr; }
+
+    .agro-field--span2 { grid-column: span 1; }
+
+    .agro-modal__footer {
+        flex-direction: column-reverse;
+        padding: 12px 16px 20px;
+    }
+
+    .agro-btn-cancel,
+    .agro-btn-save {
+        width: 100%;
+        justify-content: center;
+    }
+}

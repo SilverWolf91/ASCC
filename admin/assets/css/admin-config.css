@@ -1,0 +1,1024 @@
+/**
+ * ASCC — Admin Configuration Styles
+ * Ruta: admin/assets/css/admin-config.css
+ * Depende de: admin-dashboard.css (variables --ag-*)
+ */
+
+/* =============================================================================
+   1. PAGE LAYOUT
+============================================================================= */
+
+.cfg-body {
+    flex: 1;
+    padding: 28px 28px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.cfg-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.cfg-page-header__title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ag-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cfg-page-header__subtitle {
+    font-size: 0.875rem;
+    color: var(--ag-text-secondary);
+    margin-top: 4px;
+}
+
+.cfg-save-all-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    background: var(--ag-brand-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--ag-border-radius-sm);
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--ag-transition);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.cfg-save-all-btn:hover {
+    background: var(--ag-brand-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--ag-shadow-md);
+}
+
+.cfg-save-all-btn:active {
+    transform: translateY(0);
+}
+
+/* =============================================================================
+   2. TABS
+============================================================================= */
+
+.cfg-tabs-wrapper {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    background: var(--ag-bg-card);
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-border-radius);
+    padding: 6px;
+}
+
+.cfg-tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 16px;
+    border-radius: var(--ag-border-radius-sm);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--ag-text-secondary);
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--ag-transition);
+    white-space: nowrap;
+}
+
+.cfg-tab-btn:hover {
+    color: var(--ag-text-primary);
+    background: var(--ag-bg-input);
+}
+
+.cfg-tab-btn.active {
+    background: var(--ag-brand-primary);
+    color: #fff;
+    border-color: var(--ag-brand-primary);
+    font-weight: 600;
+}
+
+.cfg-tab-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+/* =============================================================================
+   3. TAB PANELS
+============================================================================= */
+
+.cfg-tab-panel {
+    display: none;
+}
+
+.cfg-tab-panel.active {
+    display: block;
+    animation: cfg-fade-in 0.25s ease;
+}
+
+@keyframes cfg-fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =============================================================================
+   4. GRIDS
+============================================================================= */
+
+.cfg-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.cfg-grid--single {
+    grid-template-columns: 1fr;
+}
+
+.cfg-grid--full {
+    grid-column: 1 / -1;
+}
+
+/* =============================================================================
+   5. CONFIG CARDS
+============================================================================= */
+
+.cfg-card {
+    background: var(--ag-bg-card);
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-border-radius);
+    padding: 22px;
+    box-shadow: var(--ag-shadow-sm);
+    transition: var(--ag-transition);
+}
+
+.cfg-card:hover {
+    box-shadow: var(--ag-shadow-md);
+}
+
+.cfg-card__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--ag-border);
+}
+
+.cfg-card__icon {
+    width: 38px;
+    height: 38px;
+    background: var(--ag-color-success-bg);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+}
+
+.cfg-card__title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--ag-text-primary);
+}
+
+.cfg-card__subtitle {
+    font-size: 0.75rem;
+    color: var(--ag-text-secondary);
+    margin-top: 2px;
+}
+
+/* =============================================================================
+   6. FORM FIELDS
+============================================================================= */
+
+.cfg-field {
+    margin-bottom: 16px;
+}
+
+.cfg-field:last-child {
+    margin-bottom: 0;
+}
+
+.cfg-field__label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ag-text-secondary);
+    margin-bottom: 6px;
+    letter-spacing: 0.01em;
+}
+
+.cfg-field__required {
+    color: var(--ag-color-danger);
+    margin-left: 3px;
+}
+
+.cfg-field__hint {
+    font-size: 0.725rem;
+    color: var(--ag-text-muted);
+    margin-top: 5px;
+    line-height: 1.4;
+}
+
+/* Inputs base */
+.cfg-input,
+.cfg-select,
+.cfg-textarea {
+    width: 100%;
+    background: var(--ag-bg-input);
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-border-radius-sm);
+    padding: 9px 13px;
+    color: var(--ag-text-primary);
+    font-family: inherit;
+    font-size: 0.875rem;
+    transition: var(--ag-transition);
+    outline: none;
+}
+
+.cfg-input:focus,
+.cfg-select:focus,
+.cfg-textarea:focus {
+    border-color: var(--ag-brand-primary);
+    box-shadow: 0 0 0 3px rgba(6, 101, 74, 0.12);
+}
+
+.cfg-input::placeholder,
+.cfg-textarea::placeholder {
+    color: var(--ag-text-muted);
+}
+
+.cfg-input--mono {
+    font-family: 'DM Mono', 'Courier New', monospace;
+    font-size: 0.8125rem;
+    letter-spacing: 0.02em;
+}
+
+.cfg-textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.5;
+}
+
+/* Select custom arrow */
+.cfg-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2394a3b8' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 13px center;
+    padding-right: 34px;
+    cursor: pointer;
+}
+
+/* Password wrapper */
+.cfg-input-group {
+    position: relative;
+}
+
+.cfg-input-group .cfg-input {
+    padding-right: 42px;
+}
+
+.cfg-input-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ag-text-muted);
+    font-size: 15px;
+    padding: 3px;
+    transition: var(--ag-transition);
+    line-height: 1;
+}
+
+.cfg-input-toggle:hover {
+    color: var(--ag-text-secondary);
+}
+
+/* =============================================================================
+   7. TOGGLE SWITCHES
+============================================================================= */
+
+.cfg-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--ag-border);
+}
+
+.cfg-toggle-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.cfg-toggle-row:first-child {
+    padding-top: 0;
+}
+
+.cfg-toggle-info {
+    flex: 1;
+}
+
+.cfg-toggle-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ag-text-primary);
+}
+
+.cfg-toggle-desc {
+    font-size: 0.75rem;
+    color: var(--ag-text-secondary);
+    margin-top: 2px;
+}
+
+/* Switch */
+.cfg-switch {
+    position: relative;
+    width: 42px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.cfg-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.cfg-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: var(--ag-border-strong);
+    border-radius: 24px;
+    transition: var(--ag-transition);
+}
+
+.cfg-slider::before {
+    content: '';
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: var(--ag-transition);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.cfg-switch input:checked + .cfg-slider {
+    background: var(--ag-brand-primary);
+}
+
+.cfg-switch input:checked + .cfg-slider::before {
+    transform: translateX(18px);
+}
+
+/* =============================================================================
+   8. UPLOAD ZONES
+============================================================================= */
+
+.cfg-upload-zone {
+    border: 2px dashed var(--ag-border-strong);
+    border-radius: var(--ag-border-radius-sm);
+    padding: 22px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--ag-transition);
+    position: relative;
+}
+
+.cfg-upload-zone:hover {
+    border-color: var(--ag-brand-primary);
+    background: var(--ag-color-success-bg);
+}
+
+.cfg-upload-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+}
+
+.cfg-upload-icon {
+    font-size: 26px;
+    margin-bottom: 7px;
+    display: block;
+}
+
+.cfg-upload-preview {
+    width: 72px;
+    height: 72px;
+    border-radius: 10px;
+    background: var(--ag-color-success-bg);
+    border: 2px solid var(--ag-brand-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 10px;
+}
+
+.cfg-upload-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ag-text-secondary);
+    display: block;
+}
+
+.cfg-upload-hint {
+    font-size: 0.7rem;
+    color: var(--ag-text-muted);
+    margin-top: 4px;
+    display: block;
+}
+
+/* =============================================================================
+   9. COLOR PICKER ROW
+============================================================================= */
+
+.cfg-color-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cfg-color-input {
+    width: 40px;
+    height: 38px;
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-border-radius-sm);
+    cursor: pointer;
+    padding: 2px;
+    background: none;
+    flex-shrink: 0;
+}
+
+.cfg-color-hex {
+    flex: 1;
+}
+
+/* =============================================================================
+   10. STATUS BADGES
+============================================================================= */
+
+.cfg-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.cfg-badge--success {
+    background: var(--ag-color-success-bg);
+    color: var(--ag-color-success);
+    border: 1px solid rgba(16,185,129,0.2);
+}
+
+.cfg-badge--warning {
+    background: var(--ag-color-warning-bg);
+    color: var(--ag-color-warning);
+    border: 1px solid rgba(245,158,11,0.2);
+}
+
+.cfg-badge--danger {
+    background: var(--ag-color-danger-bg);
+    color: var(--ag-color-danger);
+    border: 1px solid rgba(239,68,68,0.2);
+}
+
+.cfg-badge__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+}
+
+/* =============================================================================
+   11. PAYMENT GATEWAY SELECTOR
+============================================================================= */
+
+.cfg-gateway-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.cfg-gateway-card {
+    background: var(--ag-bg-input);
+    border: 2px solid var(--ag-border);
+    border-radius: var(--ag-border-radius-sm);
+    padding: 16px;
+    cursor: pointer;
+    transition: var(--ag-transition);
+    position: relative;
+}
+
+.cfg-gateway-card:hover {
+    border-color: var(--ag-brand-primary);
+}
+
+.cfg-gateway-card.selected {
+    border-color: var(--ag-brand-primary);
+    background: var(--ag-color-success-bg);
+}
+
+.cfg-gateway-logo {
+    font-size: 22px;
+    margin-bottom: 6px;
+}
+
+.cfg-gateway-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--ag-text-primary);
+}
+
+.cfg-gateway-desc {
+    font-size: 0.7rem;
+    color: var(--ag-text-secondary);
+    margin-top: 3px;
+    line-height: 1.3;
+}
+
+.cfg-gateway-check {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--ag-brand-primary);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.cfg-gateway-card.selected .cfg-gateway-check {
+    display: flex;
+}
+
+/* Hidden radio */
+.cfg-gateway-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* =============================================================================
+   12. RANGE SLIDERS
+============================================================================= */
+
+.cfg-range-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cfg-range {
+    flex: 1;
+    height: 5px;
+    accent-color: var(--ag-brand-primary);
+    cursor: pointer;
+}
+
+.cfg-range-value {
+    min-width: 38px;
+    text-align: center;
+    background: var(--ag-color-success-bg);
+    border: 1px solid var(--ag-brand-primary);
+    color: var(--ag-color-success);
+    border-radius: 6px;
+    padding: 3px 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    font-family: 'DM Mono', monospace;
+    flex-shrink: 0;
+}
+
+/* =============================================================================
+   13. MAINTENANCE BANNER
+============================================================================= */
+
+.cfg-maint-banner {
+    background: var(--ag-color-warning-bg);
+    border: 1px solid rgba(245,158,11,0.35);
+    border-radius: var(--ag-border-radius-sm);
+    padding: 13px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.cfg-maint-banner--hidden {
+    display: none;
+}
+
+.cfg-maint-banner__icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.cfg-maint-banner__title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--ag-color-warning);
+}
+
+.cfg-maint-banner__sub {
+    font-size: 0.75rem;
+    color: var(--ag-text-secondary);
+    margin-top: 2px;
+}
+
+/* =============================================================================
+   14. SOCIAL ICONS ROW
+============================================================================= */
+
+.cfg-social-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.cfg-social-field:last-child {
+    margin-bottom: 0;
+}
+
+.cfg-social-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+}
+
+.cfg-social-icon--fb { background: rgba(59,89,152,0.15); }
+.cfg-social-icon--ig { background: rgba(225,48,108,0.15); }
+.cfg-social-icon--wa { background: rgba(37,211,102,0.15); }
+.cfg-social-icon--tk { background: rgba(255,255,255,0.08); border: 1px solid var(--ag-border); }
+.cfg-social-icon--yt { background: rgba(255,0,0,0.12); }
+
+/* =============================================================================
+   15. TEST SMTP BUTTON
+============================================================================= */
+
+.cfg-test-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid var(--ag-color-info);
+    color: var(--ag-color-info);
+    border-radius: var(--ag-border-radius-sm);
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--ag-transition);
+    margin-top: 10px;
+}
+
+.cfg-test-btn:hover {
+    background: var(--ag-color-info-bg);
+}
+
+/* =============================================================================
+   16. STICKY FOOTER
+============================================================================= */
+
+.cfg-footer {
+    position: sticky;
+    bottom: 0;
+    background: var(--ag-bg-topbar);
+    border-top: 1px solid var(--ag-border);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    z-index: 80;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+}
+
+.cfg-footer__hint {
+    font-size: 0.75rem;
+    color: var(--ag-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cfg-footer__hint code {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    background: var(--ag-bg-input);
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: 1px solid var(--ag-border);
+    color: var(--ag-text-secondary);
+}
+
+.cfg-footer__actions {
+    display: flex;
+    gap: 10px;
+}
+
+.cfg-btn-cancel {
+    padding: 8px 20px;
+    background: transparent;
+    border: 1px solid var(--ag-border);
+    color: var(--ag-text-secondary);
+    border-radius: var(--ag-border-radius-sm);
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--ag-transition);
+}
+
+.cfg-btn-cancel:hover {
+    border-color: var(--ag-text-secondary);
+    color: var(--ag-text-primary);
+}
+
+.cfg-btn-save {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 22px;
+    background: var(--ag-brand-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--ag-border-radius-sm);
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--ag-transition);
+}
+
+.cfg-btn-save:hover {
+    background: var(--ag-brand-dark);
+}
+
+/* =============================================================================
+   17. TOAST NOTIFICATION
+============================================================================= */
+
+.cfg-toast {
+    position: fixed;
+    bottom: 80px;
+    right: 24px;
+    background: var(--ag-brand-primary);
+    color: #fff;
+    padding: 13px 22px;
+    border-radius: var(--ag-border-radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 999;
+    box-shadow: var(--ag-shadow-lg);
+    pointer-events: none;
+    max-width: 340px;
+}
+
+.cfg-toast.cfg-toast--show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.cfg-toast.cfg-toast--error {
+    background: var(--ag-color-danger);
+}
+
+/* =============================================================================
+   18. RESPONSIVE — TABLET (max 1200px)
+============================================================================= */
+
+@media (max-width: 1200px) {
+    .cfg-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cfg-grid--full {
+        grid-column: 1;
+    }
+
+    .cfg-gateway-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* =============================================================================
+   19. RESPONSIVE — TABLET SMALL (max 900px)
+============================================================================= */
+
+@media (max-width: 900px) {
+    .cfg-body {
+        padding: 20px 20px 80px;
+    }
+
+    .cfg-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cfg-save-all-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .cfg-tabs-wrapper {
+        gap: 3px;
+        padding: 5px;
+    }
+
+    .cfg-tab-btn {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+    }
+
+    .cfg-tab-icon {
+        font-size: 13px;
+    }
+
+    .cfg-footer {
+        padding: 12px 20px;
+    }
+
+    .cfg-footer__hint {
+        display: none;
+    }
+
+    .cfg-footer__actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+/* =============================================================================
+   20. RESPONSIVE — MOBILE (max 640px)
+============================================================================= */
+
+@media (max-width: 640px) {
+    .cfg-body {
+        padding: 16px 16px 90px;
+        gap: 16px;
+    }
+
+    .cfg-page-header__title {
+        font-size: 1.25rem;
+    }
+
+    .cfg-tabs-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3px;
+    }
+
+    .cfg-tab-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 9px 8px;
+        font-size: 0.7rem;
+    }
+
+    /* Ocultar texto de tab, solo ícono en muy pequeño */
+    .cfg-tab-label {
+        display: none;
+    }
+
+    .cfg-tab-btn {
+        flex-direction: column;
+        gap: 3px;
+        padding: 10px 6px;
+        font-size: 0.65rem;
+    }
+
+    /* Mostrar label corto en móvil */
+    .cfg-tab-label-short {
+        display: block;
+    }
+
+    .cfg-card {
+        padding: 16px;
+    }
+
+    .cfg-gateway-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .cfg-gateway-card {
+        padding: 12px 10px;
+    }
+
+    .cfg-gateway-logo {
+        font-size: 18px;
+    }
+
+    .cfg-gateway-name {
+        font-size: 0.8rem;
+    }
+
+    .cfg-gateway-desc {
+        display: none;
+    }
+
+    .cfg-range-wrapper {
+        gap: 8px;
+    }
+
+    .cfg-footer {
+        padding: 10px 16px;
+    }
+
+    .cfg-btn-cancel {
+        display: none;
+    }
+
+    .cfg-btn-save,
+    .cfg-save-all-btn {
+        padding: 10px 16px;
+        font-size: 0.8125rem;
+    }
+
+    .cfg-footer__actions {
+        width: 100%;
+    }
+
+    .cfg-btn-save {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .cfg-toast {
+        bottom: 70px;
+        right: 12px;
+        left: 12px;
+        max-width: none;
+        font-size: 0.8125rem;
+    }
+}
+
+/* =============================================================================
+   21. RESPONSIVE — EXTRA SMALL (max 400px)
+============================================================================= */
+
+@media (max-width: 400px) {
+    .cfg-tabs-wrapper {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .cfg-tab-btn {
+        padding: 8px 4px;
+    }
+}
