@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * ASCC — API de Datos para Módulo de Reportes

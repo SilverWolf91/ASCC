@@ -2,7 +2,7 @@
 /**
  * ASCC - Admin Logout
  * Ruta: admin/logout.php
- * Descripción: Cierra la sesión del administrador de forma segura
+ * DescripciÃ³n: Cierra la sesiÃ³n del administrador de forma segura
  */
 
 session_start();
@@ -10,7 +10,7 @@ session_start();
 // Verificar que era realmente admin antes de destruir
 $was_admin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 
-// Destruir toda la sesión
+// Destruir toda la sesiÃ³n
 $_SESSION = [];
 
 if (ini_get('session.use_cookies')) {
@@ -27,6 +27,6 @@ if (ini_get('session.use_cookies')) {
 
 session_destroy();
 
-// Redirigir siempre al login de admin (nunca al público)
+// Redirigir siempre al login de admin (nunca al pÃºblico)
 header('Location: login.php?logout=1');
 exit;

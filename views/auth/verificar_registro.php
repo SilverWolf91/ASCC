@@ -1,13 +1,13 @@
 <?php
 
 /**
- * ═══════════════════════════════════════════════════════════
- * ASCC — Verificación de Cuenta (Registro)
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * ASCC â€” VerificaciÃ³n de Cuenta (Registro)
  * Ruta: views/auth/verificar_registro.php
  *
  * Muestra el formulario para ingresar el token enviado por email.
  * Requiere $_SESSION['pending_registro'] activo.
- * ═══════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  */
 
 session_start();
@@ -39,9 +39,9 @@ $error_msg = '';
 $error_param = $_GET['error'] ?? '';
 if ($error_param === 'token_invalido') {
     $restantes = (int)($_GET['restantes'] ?? (3 - $intentos));
-    $error_msg = "❌ Código incorrecto. Te quedan <strong>{$restantes}</strong> intento(s).";
+    $error_msg = "âŒ CÃ³digo incorrecto. Te quedan <strong>{$restantes}</strong> intento(s).";
 } elseif ($error_param === 'error_servidor') {
-    $error_msg = '❌ Error al crear tu cuenta. Por favor intenta de nuevo.';
+    $error_msg = 'âŒ Error al crear tu cuenta. Por favor intenta de nuevo.';
 }
 ?>
 <!DOCTYPE html>
@@ -49,7 +49,7 @@ if ($error_param === 'token_invalido') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificar Cuenta — ASCC</title>
+    <title>Verificar Cuenta â€” ASCC</title>
     <link rel="icon" type="image/png" href="/ascc/public/img/logo.png">
     <link rel="stylesheet" href="/ascc/public/css/verificar-registro.css">
 </head>
@@ -57,40 +57,40 @@ if ($error_param === 'token_invalido') {
 
     <div class="verify-card">
 
-        <!-- ── HEADER ── -->
+        <!-- â”€â”€ HEADER â”€â”€ -->
         <div class="vc-header">
-            <span class="vc-logo">🌾</span>
+            <span class="vc-logo">ðŸŒ¾</span>
             <div class="vc-brand">Aromas y Sabores de mi Campo Colombiano</div>
             <div class="vc-title">Verifica tu cuenta</div>
-            <div class="vc-sub">Ya casi terminas — solo un paso más</div>
+            <div class="vc-sub">Ya casi terminas â€” solo un paso mÃ¡s</div>
         </div>
 
-        <!-- ── CUERPO ── -->
+        <!-- â”€â”€ CUERPO â”€â”€ -->
         <div class="vc-body">
 
-            <!-- Email al que se envió el código -->
+            <!-- Email al que se enviÃ³ el cÃ³digo -->
             <div class="email-info">
-                <span class="email-icon">📬</span>
+                <span class="email-icon">ðŸ“¬</span>
                 <div class="email-text">
-                    Enviamos un código de 8 caracteres a<br>
+                    Enviamos un cÃ³digo de 8 caracteres a<br>
                     <strong><?= htmlspecialchars($email_masked) ?></strong><br>
-                    Revisa también tu carpeta de spam.
+                    Revisa tambiÃ©n tu carpeta de spam.
                 </div>
             </div>
 
             <!-- Error -->
             <?php if ($error_msg): ?>
             <div class="alert-error">
-                <span>⚠️</span>
+                <span>âš ï¸</span>
                 <span><?= $error_msg ?></span>
             </div>
             <?php endif; ?>
 
-            <!-- Formulario de verificación -->
+            <!-- Formulario de verificaciÃ³n -->
             <form id="formVerificar" action="/ascc/controllers/verificar_token_registro.php" method="POST">
 
                 <label class="field-label" for="tokenInput">
-                    🔐 Ingresa el código de verificación
+                    ðŸ” Ingresa el cÃ³digo de verificaciÃ³n
                 </label>
 
                 <div class="token-input-wrap">
@@ -108,45 +108,45 @@ if ($error_param === 'token_invalido') {
                     >
                 </div>
                 <span class="field-hint">
-                    8 caracteres · distingue mayúsculas y minúsculas
+                    8 caracteres Â· distingue mayÃºsculas y minÃºsculas
                 </span>
 
                 <!-- Contador regresivo -->
                 <div class="countdown-wrap">
-                    <div class="countdown-label">El código expira en:</div>
+                    <div class="countdown-label">El cÃ³digo expira en:</div>
                     <div class="countdown-timer" id="countdownTimer">05:00</div>
                     <div class="countdown-expired" id="countdownExpired">
-                        ⏱ El código expiró. Solicita uno nuevo.
+                        â± El cÃ³digo expirÃ³. Solicita uno nuevo.
                     </div>
                 </div>
 
-                <!-- Timestamp de expiración para el JS -->
+                <!-- Timestamp de expiraciÃ³n para el JS -->
                 <input type="hidden" id="expiryTs" value="<?= (int)$expiry ?>">
 
-                <!-- Botón verificar -->
+                <!-- BotÃ³n verificar -->
                 <button type="submit" class="btn-verify" id="btnVerify">
-                    <span class="btn-icon">✅</span>
+                    <span class="btn-icon">âœ…</span>
                     Verificar mi cuenta
                 </button>
 
             </form>
 
-            <!-- Reenviar código -->
+            <!-- Reenviar cÃ³digo -->
             <button type="button" class="btn-resend" id="btnResend">
-                <span class="resend-text">📨 Reenviar código</span>
+                <span class="resend-text">ðŸ“¨ Reenviar cÃ³digo</span>
                 <span class="resend-loading">Enviando...</span>
             </button>
 
             <!-- Volver al registro -->
             <a href="/ascc/views/auth/registro.php" class="back-link">
-                ← Volver al formulario de registro
+                â† Volver al formulario de registro
             </a>
 
         </div><!-- /.vc-body -->
 
     </div><!-- /.verify-card -->
 
-    <p class="vc-footer">© 2025 ASCC · Marketplace Agropecuario de Colombia 🇨🇴</p>
+    <p class="vc-footer">Â© 2025 ASCC Â· Marketplace Agropecuario de Colombia ðŸ‡¨ðŸ‡´</p>
 
     <script src="/ascc/public/js/verificar-registro.js"></script>
 

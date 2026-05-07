@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * ASCC — Conexión a la Base de Datos

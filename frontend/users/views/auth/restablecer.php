@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . "/../../../../backend/users/config/database.php";
 
 $token = $_GET['token'] ?? '';

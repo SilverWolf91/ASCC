@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * ASCC — AJAX: Guardar Configuración del Sistema

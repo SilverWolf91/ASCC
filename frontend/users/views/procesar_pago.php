@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 require_once __DIR__ . "/../../../backend/users/config/app.php";
 require_once __DIR__ . "/../../../backend/users/config/database.php";

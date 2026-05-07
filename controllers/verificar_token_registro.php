@@ -1,13 +1,13 @@
 <?php
 
 /**
- * ═══════════════════════════════════════════════════════════
- * ASCC — Controlador: Verificar Token de Registro
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+ * ASCC â€” Controlador: Verificar Token de Registro
  * Ruta: controllers/verificar_token_registro.php
  *
  * Recibe POST desde views/auth/verificar_registro.php
  * Valida el token OTP y, si es correcto, crea el usuario en BD.
- * ═══════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  */
 
 session_start();
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-/* ── Verificar que exista registro pendiente ─────────────── */
+/* â”€â”€ Verificar que exista registro pendiente â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 if (!isset($_SESSION['pending_registro'])) {
     header('Location: /ascc/views/auth/registro.php?error=sesion_expirada');
     exit;
@@ -27,21 +27,21 @@ if (!isset($_SESSION['pending_registro'])) {
 
 $pending = $_SESSION['pending_registro'];
 
-/* ── Verificar expiración ────────────────────────────────── */
+/* â”€â”€ Verificar expiraciÃ³n â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 if (time() > ($pending['expiry'] ?? 0)) {
     unset($_SESSION['pending_registro']);
     header('Location: /ascc/views/auth/registro.php?error=token_expirado');
     exit;
 }
 
-/* ── Verificar intentos máximos (3) ─────────────────────── */
+/* â”€â”€ Verificar intentos mÃ¡ximos (3) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 if (($pending['intentos'] ?? 0) >= 3) {
     unset($_SESSION['pending_registro']);
     header('Location: /ascc/views/auth/registro.php?error=demasiados_intentos');
     exit;
 }
 
-/* ── Validar token enviado por el usuario ────────────────── */
+/* â”€â”€ Validar token enviado por el usuario â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 $token_ingresado = trim($_POST['token'] ?? '');
 
 if (!hash_equals($pending['token'], $token_ingresado)) {
@@ -51,7 +51,7 @@ if (!hash_equals($pending['token'], $token_ingresado)) {
     exit;
 }
 
-/* ── Token correcto: crear cuenta en BD ──────────────────── */
+/* â”€â”€ Token correcto: crear cuenta en BD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 try {
     $sql = "INSERT INTO usuarios (nombre, email, password, telefono, cedula, rol)
             VALUES (:nombre, :email, :password, :telefono, :cedula, :rol)";
@@ -73,7 +73,7 @@ try {
     /* Enviar email de bienvenida */
     $email_bienvenida = enviarEmailBienvenida($pending['email'], $pending['nombre']);
 
-    /* Iniciar sesión */
+    /* Iniciar sesiÃ³n */
     $_SESSION['id_usuario'] = $id_usuario;
     $_SESSION['nombre']     = $pending['nombre'];
     $_SESSION['rol']        = $pending['rol'];
@@ -83,7 +83,7 @@ try {
     exit;
 
 } catch (PDOException $e) {
-    error_log('[ASCC] Error al crear usuario tras verificación: ' . $e->getMessage());
+    error_log('[ASCC] Error al crear usuario tras verificaciÃ³n: ' . $e->getMessage());
     header('Location: /ascc/views/auth/verificar_registro.php?error=error_servidor');
     exit;
 }

@@ -1,16 +1,16 @@
 <?php
 
 /**
- * ═══════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  * DESCUENTOS CONTROLLER
- * Gestión de descuentos para productos
- * ═══════════════════════════════════════════════════════════
+ * GestiÃ³n de descuentos para productos
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  */
 
 session_start();
 require_once __DIR__ . "/../config/database.php";
 
-// Verificar autenticación
+// Verificar autenticaciÃ³n
 if (!isset($_SESSION['id_usuario'])) {
     http_response_code(401);
     echo json_encode(['error' => 'No autenticado']);
@@ -210,7 +210,7 @@ switch ($accion) {
         break;
 
     /**
-     * OBTENER PRODUCTOS CON DESCUENTO (PÚBLICO)
+     * OBTENER PRODUCTOS CON DESCUENTO (PÃšBLICO)
      */
     case 'obtener_productos_descuento':
         try {
@@ -254,6 +254,6 @@ switch ($accion) {
 
     default:
         http_response_code(400);
-        echo json_encode(['error' => 'Acción no válida']);
+        echo json_encode(['error' => 'AcciÃ³n no vÃ¡lida']);
         break;
 }

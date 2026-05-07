@@ -1,10 +1,10 @@
 <?php
 
 /**
- * ═══════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  * VISTAS CONTROLLER
  * Tracking de vistas de productos
- * ═══════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  */
 
 session_start();
@@ -64,7 +64,7 @@ switch ($accion) {
                 'mensaje' => 'Vista registrada'
             ]);
         } catch (PDOException $e) {
-            // No es crítico si falla
+            // No es crÃ­tico si falla
             echo json_encode([
                 'success' => false,
                 'error' => 'Error al registrar vista'
@@ -73,7 +73,7 @@ switch ($accion) {
         break;
 
     /**
-     * OBTENER PRODUCTOS MÁS VISTOS (TENDENCIA)
+     * OBTENER PRODUCTOS MÃS VISTOS (TENDENCIA)
      */
     case 'obtener_tendencias':
         $dias = $_GET['dias'] ?? 7;
@@ -111,7 +111,7 @@ switch ($accion) {
         break;
 
     /**
-     * OBTENER MIS PRODUCTOS MÁS VISTOS
+     * OBTENER MIS PRODUCTOS MÃS VISTOS
      */
     case 'mis_productos_mas_vistos':
         if (!isset($_SESSION['id_usuario'])) {
@@ -155,7 +155,7 @@ switch ($accion) {
         break;
 
     /**
-     * OBTENER ESTADÍSTICAS DE VISTAS
+     * OBTENER ESTADÃSTICAS DE VISTAS
      */
     case 'estadisticas_vistas':
         if (!isset($_SESSION['id_usuario'])) {
@@ -190,7 +190,7 @@ switch ($accion) {
             $stmt->execute();
             $hoy = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Vistas últimos 7 días
+            // Vistas Ãºltimos 7 dÃ­as
             $stmt = $conexion->prepare("
                 SELECT COUNT(*) as vistas_semana
                 FROM vistas_productos v
@@ -212,12 +212,12 @@ switch ($accion) {
             ]);
         } catch (PDOException $e) {
             http_response_code(500);
-            echo json_encode(['error' => 'Error al obtener estadísticas: ' . $e->getMessage()]);
+            echo json_encode(['error' => 'Error al obtener estadÃ­sticas: ' . $e->getMessage()]);
         }
         break;
 
     /**
-     * QUIÉN HA VISTO MIS PRODUCTOS
+     * QUIÃ‰N HA VISTO MIS PRODUCTOS
      */
     case 'quien_vio_mis_productos':
         if (!isset($_SESSION['id_usuario'])) {
@@ -237,7 +237,7 @@ switch ($accion) {
                     u.nombre as visitante,
                     CASE 
                         WHEN v.id_usuario IS NOT NULL THEN 'Usuario registrado'
-                        ELSE 'Visitante anónimo'
+                        ELSE 'Visitante anÃ³nimo'
                     END as tipo_visitante
                 FROM vistas_productos v
                 INNER JOIN productos p ON v.id_producto = p.id_producto
@@ -263,6 +263,6 @@ switch ($accion) {
 
     default:
         http_response_code(400);
-        echo json_encode(['error' => 'Acción no válida']);
+        echo json_encode(['error' => 'AcciÃ³n no vÃ¡lida']);
         break;
 }

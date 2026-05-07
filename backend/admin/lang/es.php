@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * ASCC - Archivo de idioma Español

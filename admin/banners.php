@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * ASCC - Admin Banners

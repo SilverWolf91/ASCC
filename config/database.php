@@ -1,16 +1,16 @@
 <?php
 
 /**
- * ASCC — Conexión a la Base de Datos
+ * ASCC â€” ConexiÃ³n a la Base de Datos
  * Ruta: config/database.php
  *
- * Patrón Singleton via static variable.
- * Compatible hacia atrás: $conexion sigue disponible para módulos existentes.
+ * PatrÃ³n Singleton via static variable.
+ * Compatible hacia atrÃ¡s: $conexion sigue disponible para mÃ³dulos existentes.
  */
 
 require_once __DIR__ . '/env_loader.php';
 
-// ── Configuración ─────────────────────────────────────────────────────────────
+// â”€â”€ ConfiguraciÃ³n â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 define('DB_HOST',    getenv('DB_HOST')    ?: 'localhost');
 define('DB_NAME',    getenv('DB_NAME')    ?: 'ASCC');
 define('DB_USER',    getenv('DB_USER')    ?: 'root');
@@ -18,11 +18,11 @@ define('DB_PASS',    getenv('DB_PASS')    ?: '');
 define('DB_PORT',    getenv('DB_PORT')    ?: '3306');
 define('DB_CHARSET', 'utf8mb4');
 
-// ── Función Singleton (módulos nuevos) ────────────────────────────────────────
+// â”€â”€ FunciÃ³n Singleton (mÃ³dulos nuevos) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 /**
- * Retorna siempre la misma instancia PDO durante toda la ejecución.
- * No importa cuántas veces se llame — una sola conexión abierta.
+ * Retorna siempre la misma instancia PDO durante toda la ejecuciÃ³n.
+ * No importa cuÃ¡ntas veces se llame â€” una sola conexiÃ³n abierta.
  */
 function getDBConnection(): PDO
 {
@@ -44,7 +44,7 @@ function getDBConnection(): PDO
     return $pdo;
 }
 
-// ── Compatibilidad hacia atrás (módulos existentes usan $conexion) ────────────
+// â”€â”€ Compatibilidad hacia atrÃ¡s (mÃ³dulos existentes usan $conexion) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Los archivos que ya funcionan con $conexion->query() siguen igual.
-// No toques esta línea.
+// No toques esta lÃ­nea.
 $conexion = getDBConnection();

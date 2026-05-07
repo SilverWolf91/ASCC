@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Controlador de Pagos
  * Maneja el procesamiento de pagos con Wompi

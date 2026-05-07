@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * ═══════════════════════════════════════════════════════════
  * ASCC - Aromas y Sabores de mi Campo Colombiano - SISTEMA DE MENSAJERÍA

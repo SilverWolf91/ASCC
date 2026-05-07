@@ -17,7 +17,7 @@ if (empty($departamento) || empty($municipio)) {
 }
 
 if ($municipio === 'Otro (No aparece en la lista)') {
-    echo json_encode(['Otro (No está en la lista)']);
+    echo json_encode(['Otro (No estÃ¡ en la lista)']);
     exit;
 }
 
@@ -37,9 +37,9 @@ try {
     $veredas = array_values(array_filter($veredas, function ($v) {
         return !empty(trim($v));
     }));
-    $veredas[] = 'Otro (No está en la lista)';
+    $veredas[] = 'Otro (No estÃ¡ en la lista)';
 
     echo json_encode($veredas, JSON_UNESCAPED_UNICODE);
 } catch (Exception $e) {
-    echo json_encode(['Otro (No está en la lista)']);
+    echo json_encode(['Otro (No estÃ¡ en la lista)']);
 }

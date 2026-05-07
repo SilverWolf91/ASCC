@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * ASCC — Módulo de Reportes del Usuario

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /**
  * Controlador de Autenticación

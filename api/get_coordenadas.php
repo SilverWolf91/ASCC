@@ -18,8 +18,8 @@ if (empty($departamento)) {
 }
 
 try {
-    /* Buscar coordenadas del nivel más específico disponible */
-    if (!empty($vereda) && $vereda !== 'Otro (No está en la lista)' && !empty($municipio)) {
+    /* Buscar coordenadas del nivel mÃ¡s especÃ­fico disponible */
+    if (!empty($vereda) && $vereda !== 'Otro (No estÃ¡ en la lista)' && !empty($municipio)) {
         $stmt = $conexion->prepare("
             SELECT lat, lng FROM ubicaciones
             WHERE departamento = :depto AND municipio = :muni AND vereda = :vereda

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * Sistema de Gestion de Idiomas
  * ASCC - Multilenguaje
