@@ -8,4 +8,14 @@ sed -i "s/<VirtualHost \*:80>/<VirtualHost *:$PORT>/" /etc/apache2/sites-availab
 a2dismod mpm_event mpm_worker 2>/dev/null || true
 a2enmod mpm_prefork 2>/dev/null || true
 
+# Railway inyecta las variables, pero Apache no se las pasa a PHP por defecto.
+# Así que las guardamos en un .env que la app ya sabe leer.
+cat <<EOF > /var/www/html/ascc/.env
+DB_HOST=$DB_HOST
+DB_NAME=$DB_NAME
+DB_USER=$DB_USER
+DB_PASS=$DB_PASS
+DB_PORT=$DB_PORT
+EOF
+
 exec "$@"
