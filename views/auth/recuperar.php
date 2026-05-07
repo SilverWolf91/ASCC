@@ -80,6 +80,8 @@
                         echo "❌ Error de base de datos. Por favor revisa los logs o contacta al administrador.";
                     } elseif ($_GET['error'] === 'email_vacio') {
                         echo "❌ Debes ingresar un correo electrónico";
+                    } elseif ($_GET['error'] === 'envio_fallido') {
+                        echo "❌ No se pudo enviar el correo. Revisa la configuración de Gmail (variables GMAIL_USER y GMAIL_PASSWORD en Railway).";
                     } else {
                         echo "❌ Error al procesar la solicitud. Intenta nuevamente";
                     }

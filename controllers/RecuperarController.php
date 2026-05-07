@@ -101,13 +101,13 @@ function solicitarRecuperacion($conexion)
 
     if ($emailEnviado) {
         error_log("✅ Email de recuperación enviado exitosamente a: $email");
+        header("Location: /ascc/views/auth/recuperar.php?success=1");
+        exit;
     } else {
         error_log("❌ Error al enviar email a: $email - Revisa la configuración de Gmail");
+        header("Location: /ascc/views/auth/recuperar.php?error=envio_fallido");
+        exit;
     }
-
-    // Redirigir con mensaje de éxito
-    header("Location: /ascc/views/auth/recuperar.php?success=1");
-    exit;
 }
 
 /**
