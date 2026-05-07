@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ═══════════════════════════════════════════════════════════
  * ASCC - DASHBOARD JS - CORREGIDO
  * Ruta: public/js/dashboard.js
@@ -421,7 +421,7 @@ function previewPhoto(event) {
     if (!allowed.includes(file.type)) {
         showNotification('Solo JPG, PNG o WebP', 'error'); return;
     }
-    if (file.size > 5 * 1024 * 1024) {
+    if (file.size > 20 * 1024 * 1024) {
         showNotification('Máximo 5MB', 'error'); return;
     }
     selectedFile = file;

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ═══════════════════════════════════════════════════════════
  * ASCC — Modal Actualizar Datos
  * Ruta: C:\xampp\htdocs\ascc\public\js\modal-perfil.js
@@ -102,7 +102,7 @@
             showToast('error', agroLang.avatar_type_error);
             return;
         }
-        if (file.size > 2 * 1024 * 1024) {
+        if (file.size > 20 * 1024 * 1024) {
             showToast('error', agroLang.avatar_size_error);
             return;
         }

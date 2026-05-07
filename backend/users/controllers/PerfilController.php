@@ -1,16 +1,16 @@
 <?php
 
 /**
- * ═══════════════════════════════════════════════════════════
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  * PERFIL CONTROLLER
- * Gestión de perfil de usuario y foto
- * ═══════════════════════════════════════════════════════════
+ * GestiÃ³n de perfil de usuario y foto
+ * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  */
 
 session_start();
 require_once __DIR__ . "/../config/database.php";
 
-// Verificar autenticación
+// Verificar autenticaciÃ³n
 if (!isset($_SESSION['id_usuario'])) {
     http_response_code(401);
     echo json_encode(['error' => 'No autenticado']);
@@ -28,7 +28,7 @@ switch ($accion) {
     case 'subir_foto':
 
         if (!isset($_FILES['foto']) || $_FILES['foto']['error'] !== UPLOAD_ERR_OK) {
-            echo json_encode(['error' => 'No se recibió ninguna foto']);
+            echo json_encode(['error' => 'No se recibiÃ³ ninguna foto']);
             exit;
         }
 
@@ -41,8 +41,8 @@ switch ($accion) {
             exit;
         }
 
-        // Validar tamaño (max 5MB)
-        if ($foto['size'] > 5 * 1024 * 1024) {
+        // Validar tamaÃ±o (max 5MB)
+        if ($foto['size'] > 20 * 1024 * 1024) {
             echo json_encode(['error' => 'La foto no debe superar 5MB']);
             exit;
         }
@@ -61,7 +61,7 @@ switch ($accion) {
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
             $foto_anterior = $usuario['foto_perfil'];
 
-            // Generar nombre único
+            // Generar nombre Ãºnico
             $extension = pathinfo($foto['name'], PATHINFO_EXTENSION);
             $nombre_archivo = 'perfil_' . $id_usuario . '_' . time() . '.' . $extension;
             $ruta_completa = $directorio_fotos . $nombre_archivo;
@@ -161,7 +161,7 @@ switch ($accion) {
             $stmt->bindParam(':id_usuario', $id_usuario);
             $stmt->execute();
 
-            // Actualizar sesión
+            // Actualizar sesiÃ³n
             $_SESSION['nombre'] = $nombre;
 
             echo json_encode([
@@ -216,6 +216,6 @@ switch ($accion) {
 
     default:
         http_response_code(400);
-        echo json_encode(['error' => 'Acción no válida']);
+        echo json_encode(['error' => 'AcciÃ³n no vÃ¡lida']);
         break;
 }

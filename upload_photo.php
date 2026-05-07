@@ -18,7 +18,7 @@ ob_start();
 
 session_start();
 
-// Verificar autenticación
+// Verificar autenticaciÃ³n
 if (!isset($_SESSION['id_usuario'])) {
     ob_clean();
     header('Content-Type: application/json');
@@ -26,14 +26,14 @@ if (!isset($_SESSION['id_usuario'])) {
     die(json_encode(['success' => false, 'error' => 'No autenticado']));
 }
 
-// Incluir conexión a base de datos
+// Incluir conexiÃ³n a base de datos
 require_once __DIR__ . "/config/database.php";
 
 // Verificar que existe la variable $conexion
 if (!isset($conexion)) {
     ob_clean();
     header('Content-Type: application/json');
-    die(json_encode(['success' => false, 'error' => 'Error de conexión a base de datos']));
+    die(json_encode(['success' => false, 'error' => 'Error de conexiÃ³n a base de datos']));
 }
 
 // Verificar que sea POST
@@ -41,14 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     ob_clean();
     header('Content-Type: application/json');
     http_response_code(405);
-    die(json_encode(['success' => false, 'error' => 'Método no permitido']));
+    die(json_encode(['success' => false, 'error' => 'MÃ©todo no permitido']));
 }
 
 // Verificar que venga un archivo
 if (!isset($_FILES['foto_perfil'])) {
     ob_clean();
     header('Content-Type: application/json');
-    die(json_encode(['success' => false, 'error' => 'No se recibió el campo foto_perfil']));
+    die(json_encode(['success' => false, 'error' => 'No se recibiÃ³ el campo foto_perfil']));
 }
 
 if ($_FILES['foto_perfil']['error'] !== UPLOAD_ERR_OK) {
@@ -61,10 +61,10 @@ if ($_FILES['foto_perfil']['error'] !== UPLOAD_ERR_OK) {
             $error_msg .= 'El archivo excede MAX_FILE_SIZE';
             break;
         case UPLOAD_ERR_PARTIAL:
-            $error_msg .= 'El archivo se subió parcialmente';
+            $error_msg .= 'El archivo se subiÃ³ parcialmente';
             break;
         case UPLOAD_ERR_NO_FILE:
-            $error_msg .= 'No se subió ningún archivo';
+            $error_msg .= 'No se subiÃ³ ningÃºn archivo';
             break;
         default:
             $error_msg .= 'Error desconocido (' . $_FILES['foto_perfil']['error'] . ')';
@@ -79,24 +79,24 @@ $archivo = $_FILES['foto_perfil'];
 
 // VALIDACIONES
 $extensiones_permitidas = ['jpg', 'jpeg', 'png', 'webp'];
-$tamano_maximo = 5 * 1024 * 1024; // 5MB
+$tamano_maximo = 20 * 1024 * 1024; // 5MB
 
-// Obtener extensión
+// Obtener extensiÃ³n
 $nombre_archivo = $archivo['name'];
 $extension = strtolower(pathinfo($nombre_archivo, PATHINFO_EXTENSION));
 
-// Validar extensión
+// Validar extensiÃ³n
 if (!in_array($extension, $extensiones_permitidas)) {
     ob_clean();
     header('Content-Type: application/json');
     die(json_encode(['success' => false, 'error' => 'Formato no permitido. Solo JPG, PNG o WebP']));
 }
 
-// Validar tamaño
+// Validar tamaÃ±o
 if ($archivo['size'] > $tamano_maximo) {
     ob_clean();
     header('Content-Type: application/json');
-    die(json_encode(['success' => false, 'error' => 'La imagen es muy grande. Máximo 5MB']));
+    die(json_encode(['success' => false, 'error' => 'La imagen es muy grande. MÃ¡ximo 5MB']));
 }
 
 // Validar que sea una imagen real
@@ -104,7 +104,7 @@ $imagen_info = @getimagesize($archivo['tmp_name']);
 if ($imagen_info === false) {
     ob_clean();
     header('Content-Type: application/json');
-    die(json_encode(['success' => false, 'error' => 'El archivo no es una imagen válida']));
+    die(json_encode(['success' => false, 'error' => 'El archivo no es una imagen vÃ¡lida']));
 }
 
 // PROCESAR IMAGEN
@@ -137,7 +137,7 @@ try {
     $ancho_original = imagesx($imagen_original);
     $alto_original = imagesy($imagen_original);
 
-    // Tamaño final (cuadrado, alta calidad)
+    // TamaÃ±o final (cuadrado, alta calidad)
     $tamano_final = 400;
 
     // Calcular dimensiones para recorte centrado
@@ -188,7 +188,7 @@ try {
         throw new Exception('Error al redimensionar imagen');
     }
 
-    // Generar nombre único
+    // Generar nombre Ãºnico
     $nombre_nuevo = 'perfil_' . $id_usuario . '_' . time() . '.jpg';
 
     // Ruta del directorio (crear carpeta profiles dentro de uploads)
