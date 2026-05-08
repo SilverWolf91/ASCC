@@ -7,6 +7,11 @@
  * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  */
 
+ob_start();
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+error_reporting(E_ALL);
+
 session_start();
 require_once __DIR__ . "/../config/database.php";
 require_once __DIR__ . "/../config/image_helper.php";
@@ -29,7 +34,8 @@ switch ($accion) {
     case 'subir_foto':
 
         if (!isset($_FILES['foto']) || $_FILES['foto']['error'] !== UPLOAD_ERR_OK) {
-            echo json_encode(['error' => 'No se recibiÃ³ ninguna foto']);
+            ob_clean();
+            echo json_encode(['error' => 'No se recibiÃ³ ninguna foto (Error: ' . ($_FILES['foto']['error'] ?? 'Desconocido') . ')']);
             exit;
         }
 
@@ -38,13 +44,15 @@ switch ($accion) {
         // Validar tipo de archivo
         $tipos_permitidos = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
         if (!in_array($foto['type'], $tipos_permitidos)) {
+            ob_clean();
             echo json_encode(['error' => 'Tipo de archivo no permitido. Solo JPG, PNG, GIF o WEBP']);
             exit;
         }
 
         // Validar tamaÃ±o (max 5MB)
         if ($foto['size'] > 20 * 1024 * 1024) {
-            echo json_encode(['error' => 'La foto no debe superar 5MB']);
+            ob_clean();
+            echo json_encode(['error' => 'La foto no debe superar 20MB']);
             exit;
         }
 
@@ -76,15 +84,18 @@ switch ($accion) {
                 $stmt->bindParam(':id_usuario', $id_usuario);
                 $stmt->execute();
 
+                ob_clean();
                 echo json_encode([
                     'success' => true,
                     'ruta_foto' => $urlImagen,
                     'mensaje' => 'Foto actualizada correctamente'
                 ]);
             } else {
+                ob_clean();
                 echo json_encode(['error' => 'Error al subir la foto a la nube']);
             }
         } catch (PDOException $e) {
+            ob_clean();
             http_response_code(500);
             echo json_encode(['error' => 'Error en la base de datos: ' . $e->getMessage()]);
         }
