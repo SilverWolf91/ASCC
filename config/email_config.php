@@ -19,6 +19,60 @@ require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/SMTP.php';
 require_once __DIR__ . '/env_loader.php';
 
 // ═══════════════════════════════════════════════════════════
+// FUNCIÓN HELPER: ENVIAR POR BREVO API (HTTP)
+// ═══════════════════════════════════════════════════════════
+
+function enviarPorBrevoAPI($toEmail, $toName, $subject, $htmlContent) {
+    $apiKey = getenv('BREVO_API_KEY') ?: ($_ENV['BREVO_API_KEY'] ?? '');
+    
+    if (empty($apiKey)) {
+        error_log("Error: BREVO_API_KEY no está configurada.");
+        return "Error: BREVO_API_KEY no configurada en Railway.";
+    }
+
+    $senderEmail = getenv('GMAIL_USER') ?: 'lopeztorresjosesamuel@gmail.com';
+    $senderName = getenv('GMAIL_NAME') ?: 'ASCC Colombia';
+
+    $data = [
+        'sender' => [
+            'name' => $senderName,
+            'email' => $senderEmail
+        ],
+        'to' => [
+            [
+                'email' => $toEmail,
+                'name' => $toName
+            ]
+        ],
+        'subject' => $subject,
+        'htmlContent' => $htmlContent
+    ];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, 'https://api.brevo.com/v3/smtp/email');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'accept: application/json',
+        'api-key: ' . $apiKey,
+        'content-type: application/json'
+    ]);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($httpCode >= 200 && $httpCode < 300) {
+        return true;
+    } else {
+        error_log("Brevo API Error ($httpCode): " . $response);
+        return "Error de API ($httpCode)";
+    }
+}
+
+// ═══════════════════════════════════════════════════════════
 // CONFIGURACIÓN DE GMAIL — variables de entorno
 // ═══════════════════════════════════════════════════════════
 
@@ -34,40 +88,10 @@ define('APP_URL',        rtrim(getenv('APP_URL') ?: 'http://localhost/ascc', '/'
 
 function enviarEmailRecuperacion($email, $nombre, $token)
 {
-    $mail = new PHPMailer(true);
+    $url_recuperacion = APP_URL . "/views/auth/restablecer.php?token=" . urlencode($token);
+    $subject = '🔑 Recupera tu contraseña - ASCC';
 
-    try {
-        $mail->isSMTP();
-        $mail->CharSet = 'UTF-8';
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        // Si getenv falla, intentar con $_ENV o $_SERVER
-        $mail->Username   = getenv('GMAIL_USER') ?: ($_ENV['GMAIL_USER'] ?? '');
-        $mail->Password   = getenv('GMAIL_PASSWORD') ?: ($_ENV['GMAIL_PASSWORD'] ?? '');
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port       = 465;
-        $mail->Timeout    = 10; // Timeout de 10 segundos
-
-        $mail->SMTPOptions = array(
-            'ssl' => array(
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-                'allow_self_signed' => true,
-                'peer_name' => 'smtp.gmail.com',
-                'SNI_enabled' => true,
-                'SNI_server_name' => 'smtp.gmail.com'
-            )
-        );
-
-        $mail->setFrom(GMAIL_USER, GMAIL_NAME);
-        $mail->addAddress($email, $nombre);
-
-        $url_recuperacion = APP_URL . "/views/auth/restablecer.php?token=" . urlencode($token);
-
-        $mail->isHTML(true);
-        $mail->Subject = '🔑 Recupera tu contraseña - ASCC';
-
-        $mail->Body = "
+    $htmlContent = "
         <!DOCTYPE html>
         <html lang='es'>
         <head>
@@ -116,14 +140,7 @@ function enviarEmailRecuperacion($email, $nombre, $token)
         </html>
         ";
 
-        $mail->AltBody = "Hola $nombre,\n\nRecibimos una solicitud para recuperar tu contraseña.\n\nVisita este enlace:\n$url_recuperacion\n\nEste enlace expira en 24 horas.";
-
-        $mail->send();
-        return true;
-    } catch (Exception $e) {
-        error_log("Error email recuperación: " . $mail->ErrorInfo);
-        return $mail->ErrorInfo;
-    }
+        return enviarPorBrevoAPI($email, $nombre, $subject, $htmlContent);
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -132,40 +149,11 @@ function enviarEmailRecuperacion($email, $nombre, $token)
 
 function enviarEmailBienvenida($email, $nombre)
 {
-    $mail = new PHPMailer(true);
+    $url_dashboard      = APP_URL . "/dashboard.php";
+    $url_crear_producto = APP_URL . "/crear_producto.php";
+    $subject = '🌾 ¡Bienvenido a ASCC! - Cuenta creada exitosamente';
 
-    try {
-        $mail->isSMTP();
-        $mail->CharSet = 'UTF-8';
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = getenv('GMAIL_USER') ?: ($_ENV['GMAIL_USER'] ?? '');
-        $mail->Password   = getenv('GMAIL_PASSWORD') ?: ($_ENV['GMAIL_PASSWORD'] ?? '');
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port       = 465;
-        $mail->Timeout    = 10;
-
-        $mail->SMTPOptions = array(
-            'ssl' => array(
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-                'allow_self_signed' => true,
-                'peer_name' => 'smtp.gmail.com',
-                'SNI_enabled' => true,
-                'SNI_server_name' => 'smtp.gmail.com'
-            )
-        );
-
-        $mail->setFrom(GMAIL_USER, GMAIL_NAME);
-        $mail->addAddress($email, $nombre);
-
-        $url_dashboard      = APP_URL . "/dashboard.php";
-        $url_crear_producto = APP_URL . "/crear_producto.php";
-
-        $mail->isHTML(true);
-        $mail->Subject = '🌾 ¡Bienvenido a ASCC! - Cuenta creada exitosamente';
-
-        $mail->Body = "
+    $htmlContent = "
         <!DOCTYPE html>
         <html lang='es'>
         <head>
@@ -245,14 +233,7 @@ function enviarEmailBienvenida($email, $nombre)
         </html>
         ";
 
-        $mail->AltBody = "¡Bienvenido a ASCC, $nombre!\n\nTu cuenta ha sido creada exitosamente.\n\nYa puedes:\n- Publicar productos\n- Gestionar ventas\n- Conectar con compradores\n\nVisita tu dashboard: $url_dashboard\n\n¡Bienvenido a la familia ASCC! 🌾";
-
-        $mail->send();
-        return true;
-    } catch (Exception $e) {
-        error_log("Error email bienvenida: " . $mail->ErrorInfo);
-        return false;
-    }
+        return enviarPorBrevoAPI($email, $nombre, $subject, $htmlContent);
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -278,36 +259,9 @@ function generarTokenRegistro(): string
 
 function enviarEmailVerificacionRegistro(string $email, string $nombre, string $token): bool
 {
-    $mail = new PHPMailer(true);
+    $subject = '🌾 Verifica tu cuenta en ASCC — Código de seguridad';
 
-    try {
-        $mail->isSMTP();
-        $mail->CharSet    = 'UTF-8';
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = getenv('GMAIL_USER') ?: ($_ENV['GMAIL_USER'] ?? '');
-        $mail->Password   = getenv('GMAIL_PASSWORD') ?: ($_ENV['GMAIL_PASSWORD'] ?? '');
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port       = 465;
-        $mail->Timeout    = 10;
-
-        $mail->SMTPOptions = [
-            'ssl' => [
-                'verify_peer'       => false,
-                'verify_peer_name'  => false,
-                'allow_self_signed' => true,
-                'peer_name' => 'smtp.gmail.com',
-                'SNI_enabled' => true,
-                'SNI_server_name' => 'smtp.gmail.com'
-            ],
-        ];
-
-        $mail->setFrom(GMAIL_USER, GMAIL_NAME);
-        $mail->addAddress($email, $nombre);
-        $mail->isHTML(true);
-        $mail->Subject = '🌾 Verifica tu cuenta en ASCC — Código de seguridad';
-
-        $mail->Body = "
+    $htmlContent = "
 <!DOCTYPE html>
 <html lang='es'>
 <head>
@@ -428,13 +382,5 @@ function enviarEmailVerificacionRegistro(string $email, string $nombre, string $
 </body>
 </html>";
 
-        $mail->AltBody = "Hola $nombre,\n\nTu código de verificación para ASCC es:\n\n$token\n\nVálido por 5 minutos. No lo compartas con nadie.\n\n— El equipo de ASCC";
-
-        $mail->send();
-        return true;
-
-    } catch (Exception $e) {
-        error_log('[ASCC] Email verificación registro: ' . $mail->ErrorInfo);
-        return false;
-    }
+        return enviarPorBrevoAPI($email, $nombre, $subject, $htmlContent);
 }
