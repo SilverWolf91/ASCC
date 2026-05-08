@@ -20,9 +20,10 @@ require_once __DIR__ . '/../vendor/phpmailer/phpmailer/src/SMTP.php';
 // CONFIGURACIÓN DE GMAIL - LISTO PARA USAR
 // ═══════════════════════════════════════════════════════════
 
-define('GMAIL_USER', 'lopeztorresjosesamuel@gmail.com');
-define('GMAIL_PASSWORD', 'wgbvwdqagwmkvney');
-define('GMAIL_NAME', 'ASCC Colombia');
+define('GMAIL_USER', getenv('GMAIL_USER') ?: 'lopeztorresjosesamuel@gmail.com');
+define('GMAIL_PASSWORD', getenv('GMAIL_PASSWORD') ?: 'wgbvwdqagwmkvney');
+define('GMAIL_NAME', getenv('GMAIL_NAME') ?: 'ASCC Colombia');
+define('APP_URL', rtrim(getenv('APP_URL') ?: 'http://localhost/ascc', '/'));
 
 // ═══════════════════════════════════════════════════════════
 // FUNCIÓN: ENVIAR EMAIL DE RECUPERACIÓN DE CONTRASEÑA
@@ -54,7 +55,7 @@ function enviarEmailRecuperacion($email, $nombre, $token)
         $mail->addAddress($email, $nombre);
 
         // URL CORREGIDA - debe apuntar a restablecer.php
-        $url_recuperacion = "http://localhost/ascc/frontend/users/views/auth/restablecer.php?token=" . urlencode($token);
+        $url_recuperacion = APP_URL . "/frontend/users/views/auth/restablecer.php?token=" . urlencode($token);
 
         $mail->isHTML(true);
         $mail->Subject = '🔑 Recupera tu contraseña - ASCC';
@@ -147,8 +148,8 @@ function enviarEmailBienvenida($email, $nombre)
         $mail->setFrom(GMAIL_USER, GMAIL_NAME);
         $mail->addAddress($email, $nombre);
 
-        $url_dashboard = "http://localhost/ascc/frontend/users/views/dashboard.php";
-        $url_crear_producto = "http://localhost/ascc/frontend/users/views/crear_producto.php";
+        $url_dashboard = APP_URL . "/frontend/users/views/dashboard.php";
+        $url_crear_producto = APP_URL . "/frontend/users/views/crear_producto.php";
 
         $mail->isHTML(true);
         $mail->Subject = '🌾 ¡Bienvenido a ASCC! - Cuenta creada exitosamente';
