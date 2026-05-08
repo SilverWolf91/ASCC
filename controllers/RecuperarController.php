@@ -1,4 +1,6 @@
 <?php
+// Búfer de salida para prevenir cualquier error de 'headers already sent'
+ob_start();
 session_start();
 require_once __DIR__ . "/../config/database.php";
 
