@@ -86,8 +86,10 @@ function initMobileMenu() {
         if (window.innerWidth > 1024) { return; }
         var sidebar = document.querySelector('.sidebar');
         var toggle  = document.querySelector('.sidebar-toggle');
+        var floatToggle = document.querySelector('.sidebar-float-toggle');
         if (!sidebar || sidebar.classList.contains('collapsed')) { return; }
         if (toggle && toggle.contains(e.target)) { return; }
+        if (floatToggle && floatToggle.contains(e.target)) { return; }
         if (!sidebar.contains(e.target)) {
             sidebar.classList.add('collapsed');
             DashboardState.sidebarCollapsed = true;
