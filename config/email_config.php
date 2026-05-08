@@ -39,12 +39,15 @@ function enviarEmailRecuperacion($email, $nombre, $token)
     try {
         $mail->isSMTP();
         $mail->CharSet = 'UTF-8';
-        $mail->Host       = 'smtp.gmail.com';
+        // Forzar IPv4 para evitar que se quede colgado (timeout) en Railway si IPv6 falla
+        $mail->Host       = gethostbyname('smtp.gmail.com');
         $mail->SMTPAuth   = true;
-        $mail->Username   = GMAIL_USER;
-        $mail->Password   = GMAIL_PASSWORD;
+        // Si getenv falla, intentar con $_ENV o $_SERVER
+        $mail->Username   = getenv('GMAIL_USER') ?: ($_ENV['GMAIL_USER'] ?? '');
+        $mail->Password   = getenv('GMAIL_PASSWORD') ?: ($_ENV['GMAIL_PASSWORD'] ?? '');
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
+        $mail->Timeout    = 10; // Timeout de 10 segundos
 
         $mail->SMTPOptions = array(
             'ssl' => array(
@@ -132,12 +135,13 @@ function enviarEmailBienvenida($email, $nombre)
     try {
         $mail->isSMTP();
         $mail->CharSet = 'UTF-8';
-        $mail->Host       = 'smtp.gmail.com';
+        $mail->Host       = gethostbyname('smtp.gmail.com');
         $mail->SMTPAuth   = true;
-        $mail->Username   = GMAIL_USER;
-        $mail->Password   = GMAIL_PASSWORD;
+        $mail->Username   = getenv('GMAIL_USER') ?: ($_ENV['GMAIL_USER'] ?? '');
+        $mail->Password   = getenv('GMAIL_PASSWORD') ?: ($_ENV['GMAIL_PASSWORD'] ?? '');
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
+        $mail->Timeout    = 10;
 
         $mail->SMTPOptions = array(
             'ssl' => array(
@@ -274,12 +278,13 @@ function enviarEmailVerificacionRegistro(string $email, string $nombre, string $
     try {
         $mail->isSMTP();
         $mail->CharSet    = 'UTF-8';
-        $mail->Host       = 'smtp.gmail.com';
+        $mail->Host       = gethostbyname('smtp.gmail.com');
         $mail->SMTPAuth   = true;
-        $mail->Username   = GMAIL_USER;
-        $mail->Password   = GMAIL_PASSWORD;
+        $mail->Username   = getenv('GMAIL_USER') ?: ($_ENV['GMAIL_USER'] ?? '');
+        $mail->Password   = getenv('GMAIL_PASSWORD') ?: ($_ENV['GMAIL_PASSWORD'] ?? '');
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
+        $mail->Timeout    = 10;
 
         $mail->SMTPOptions = [
             'ssl' => [
