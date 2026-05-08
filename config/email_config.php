@@ -39,7 +39,7 @@ function enviarEmailRecuperacion($email, $nombre, $token)
     try {
         $mail->isSMTP();
         $mail->CharSet = 'UTF-8';
-        $mail->Host       = gethostbyname('smtp.gmail.com');
+        $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         // Si getenv falla, intentar con $_ENV o $_SERVER
         $mail->Username   = getenv('GMAIL_USER') ?: ($_ENV['GMAIL_USER'] ?? '');
@@ -137,7 +137,7 @@ function enviarEmailBienvenida($email, $nombre)
     try {
         $mail->isSMTP();
         $mail->CharSet = 'UTF-8';
-        $mail->Host       = gethostbyname('smtp.gmail.com');
+        $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = getenv('GMAIL_USER') ?: ($_ENV['GMAIL_USER'] ?? '');
         $mail->Password   = getenv('GMAIL_PASSWORD') ?: ($_ENV['GMAIL_PASSWORD'] ?? '');
@@ -283,7 +283,7 @@ function enviarEmailVerificacionRegistro(string $email, string $nombre, string $
     try {
         $mail->isSMTP();
         $mail->CharSet    = 'UTF-8';
-        $mail->Host       = gethostbyname('smtp.gmail.com');
+        $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = getenv('GMAIL_USER') ?: ($_ENV['GMAIL_USER'] ?? '');
         $mail->Password   = getenv('GMAIL_PASSWORD') ?: ($_ENV['GMAIL_PASSWORD'] ?? '');
