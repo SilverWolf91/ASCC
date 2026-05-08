@@ -44,7 +44,6 @@ function enviarEmailRecuperacion($email, $nombre, $token)
         // Si getenv falla, intentar con $_ENV o $_SERVER
         $mail->Username   = getenv('GMAIL_USER') ?: ($_ENV['GMAIL_USER'] ?? '');
         $mail->Password   = getenv('GMAIL_PASSWORD') ?: ($_ENV['GMAIL_PASSWORD'] ?? '');
-        echo "DEBUG: Username=" . $mail->Username . " Password=" . $mail->Password . "\n";
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
         $mail->Timeout    = 10; // Timeout de 10 segundos
