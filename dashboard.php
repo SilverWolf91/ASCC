@@ -223,7 +223,7 @@ function tendenciaEmoji(string $cat, string $tipo): string {
     <?= ascc_theme_css() ?>
 
     <!-- CSS específico del dashboard -->
-    <link rel="stylesheet" href="/ascc/public/css/dashboard.css">
+    <link rel="stylesheet" href="/ascc/public/css/dashboard.css?v=<?= time() ?>">
 
     <!-- CSS modal actualizar datos -->
     <link rel="stylesheet" href="/ascc/public/css/modal-perfil.css">
@@ -810,7 +810,7 @@ function tendenciaEmoji(string $cat, string $tipo): string {
     </script>
     <script src="/ascc/public/js/sync-global.js" defer></script>
     <script src="/ascc/public/js/dashboard-sync.js" defer></script>
-    <script src="/ascc/public/js/dashboard.js" defer></script>
+    <script src="/ascc/public/js/dashboard.js?v=<?= time() ?>" defer></script>
     <script src="/ascc/public/js/modal-perfil.js" defer></script>
 
 </body>
