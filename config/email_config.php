@@ -39,12 +39,12 @@ function enviarEmailRecuperacion($email, $nombre, $token)
     try {
         $mail->isSMTP();
         $mail->CharSet = 'UTF-8';
-        // Forzar IPv4 para evitar que se quede colgado (timeout) en Railway si IPv6 falla
-        $mail->Host       = gethostbyname('smtp.gmail.com');
+        $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         // Si getenv falla, intentar con $_ENV o $_SERVER
         $mail->Username   = getenv('GMAIL_USER') ?: ($_ENV['GMAIL_USER'] ?? '');
         $mail->Password   = getenv('GMAIL_PASSWORD') ?: ($_ENV['GMAIL_PASSWORD'] ?? '');
+        echo "DEBUG: Username=" . $mail->Username . " Password=" . $mail->Password . "\n";
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
         $mail->Timeout    = 10; // Timeout de 10 segundos
@@ -53,7 +53,10 @@ function enviarEmailRecuperacion($email, $nombre, $token)
             'ssl' => array(
                 'verify_peer' => false,
                 'verify_peer_name' => false,
-                'allow_self_signed' => true
+                'allow_self_signed' => true,
+                'peer_name' => 'smtp.gmail.com',
+                'SNI_enabled' => true,
+                'SNI_server_name' => 'smtp.gmail.com'
             )
         );
 
@@ -147,7 +150,10 @@ function enviarEmailBienvenida($email, $nombre)
             'ssl' => array(
                 'verify_peer' => false,
                 'verify_peer_name' => false,
-                'allow_self_signed' => true
+                'allow_self_signed' => true,
+                'peer_name' => 'smtp.gmail.com',
+                'SNI_enabled' => true,
+                'SNI_server_name' => 'smtp.gmail.com'
             )
         );
 
@@ -291,6 +297,9 @@ function enviarEmailVerificacionRegistro(string $email, string $nombre, string $
                 'verify_peer'       => false,
                 'verify_peer_name'  => false,
                 'allow_self_signed' => true,
+                'peer_name' => 'smtp.gmail.com',
+                'SNI_enabled' => true,
+                'SNI_server_name' => 'smtp.gmail.com'
             ],
         ];
 

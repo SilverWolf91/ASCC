@@ -17,9 +17,12 @@ if (file_exists($_env_file)) {
             [$key, $value] = explode('=', $line, 2);
             $key   = trim($key);
             $value = trim($value, " \t\n\r\0\x0B\"'");
-            if ($key !== '' && !array_key_exists($key, $_ENV)) {
-                $_ENV[$key] = $value;
-                putenv("$key=$value");
+            if ($key !== '') {
+                // Solo cargar si no existe ya en getenv() o en $_ENV
+                if (getenv($key) === false && !array_key_exists($key, $_ENV)) {
+                    $_ENV[$key] = $value;
+                    putenv("$key=$value");
+                }
             }
         }
     }
