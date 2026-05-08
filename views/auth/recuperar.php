@@ -81,7 +81,12 @@
                     } elseif ($_GET['error'] === 'email_vacio') {
                         echo "❌ Debes ingresar un correo electrónico";
                     } elseif ($_GET['error'] === 'envio_fallido') {
-                        echo "❌ No se pudo enviar el correo. Revisa la configuración de Gmail (variables GMAIL_USER y GMAIL_PASSWORD en Railway).";
+                        echo "❌ No se pudo enviar el correo. ";
+                        if (!empty($_GET['detalle'])) {
+                            echo "<br><br><strong>Detalle del error (PHPMailer):</strong> " . htmlspecialchars($_GET['detalle']);
+                        } else {
+                            echo "Revisa la configuración de Gmail (variables GMAIL_USER y GMAIL_PASSWORD en Railway).";
+                        }
                     } else {
                         echo "❌ Error al procesar la solicitud. Intenta nuevamente";
                     }

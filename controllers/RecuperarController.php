@@ -101,13 +101,14 @@ function solicitarRecuperacion($conexion)
     // Enviar email usando PHPMailer
     $emailEnviado = enviarEmailRecuperacion($email, $usuario['nombre'], $token);
 
-    if ($emailEnviado) {
+    if ($emailEnviado === true) {
         error_log("✅ Email de recuperación enviado exitosamente a: $email");
         header("Location: /ascc/views/auth/recuperar.php?success=1");
         exit;
     } else {
-        error_log("❌ Error al enviar email a: $email - Revisa la configuración de Gmail");
-        header("Location: /ascc/views/auth/recuperar.php?error=envio_fallido");
+        error_log("❌ Error al enviar email a: $email - " . $emailEnviado);
+        $errorUrl = urlencode(substr($emailEnviado, 0, 150));
+        header("Location: /ascc/views/auth/recuperar.php?error=envio_fallido&detalle=" . $errorUrl);
         exit;
     }
 }

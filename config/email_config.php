@@ -39,7 +39,7 @@ function enviarEmailRecuperacion($email, $nombre, $token)
     try {
         $mail->isSMTP();
         $mail->CharSet = 'UTF-8';
-        $mail->Host       = 'smtp.gmail.com';
+        $mail->Host       = gethostbyname('smtp.gmail.com');
         $mail->SMTPAuth   = true;
         // Si getenv falla, intentar con $_ENV o $_SERVER
         $mail->Username   = getenv('GMAIL_USER') ?: ($_ENV['GMAIL_USER'] ?? '');
@@ -122,7 +122,7 @@ function enviarEmailRecuperacion($email, $nombre, $token)
         return true;
     } catch (Exception $e) {
         error_log("Error email recuperación: " . $mail->ErrorInfo);
-        return false;
+        return $mail->ErrorInfo;
     }
 }
 
