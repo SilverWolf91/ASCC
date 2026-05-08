@@ -42,6 +42,7 @@ function enviarEmailRecuperacion($email, $nombre, $token)
         $mail->Password   = GMAIL_PASSWORD;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
+        $mail->Timeout    = 5;
 
         $mail->SMTPOptions = array(
             'ssl' => array(
