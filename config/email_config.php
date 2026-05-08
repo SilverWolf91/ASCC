@@ -44,8 +44,8 @@ function enviarEmailRecuperacion($email, $nombre, $token)
         // Si getenv falla, intentar con $_ENV o $_SERVER
         $mail->Username   = getenv('GMAIL_USER') ?: ($_ENV['GMAIL_USER'] ?? '');
         $mail->Password   = getenv('GMAIL_PASSWORD') ?: ($_ENV['GMAIL_PASSWORD'] ?? '');
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port       = 465;
         $mail->Timeout    = 10; // Timeout de 10 segundos
 
         $mail->SMTPOptions = array(
@@ -141,8 +141,8 @@ function enviarEmailBienvenida($email, $nombre)
         $mail->SMTPAuth   = true;
         $mail->Username   = getenv('GMAIL_USER') ?: ($_ENV['GMAIL_USER'] ?? '');
         $mail->Password   = getenv('GMAIL_PASSWORD') ?: ($_ENV['GMAIL_PASSWORD'] ?? '');
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port       = 465;
         $mail->Timeout    = 10;
 
         $mail->SMTPOptions = array(
@@ -287,8 +287,8 @@ function enviarEmailVerificacionRegistro(string $email, string $nombre, string $
         $mail->SMTPAuth   = true;
         $mail->Username   = getenv('GMAIL_USER') ?: ($_ENV['GMAIL_USER'] ?? '');
         $mail->Password   = getenv('GMAIL_PASSWORD') ?: ($_ENV['GMAIL_PASSWORD'] ?? '');
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port       = 465;
         $mail->Timeout    = 10;
 
         $mail->SMTPOptions = [
