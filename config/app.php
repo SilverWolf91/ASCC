@@ -145,3 +145,7 @@ function ascc_theme_css(): string
     return '<link rel="stylesheet" id="ascc-theme-css"'
         . ' href="/ascc/public/css/' . $file . '?v=' . $version . '">';
 }
+
+// ── 12. HELPER: IMÁGENES (IMGBB) ──────────────────────────────
+require_once __DIR__ . '/image_helper.php';
+

@@ -1029,7 +1029,7 @@ $visitante_id       = $visitante_logueado ? (int)$_SESSION['id_usuario'] : 0;
                         </div>
                         <?php endif; ?>
 
-                        <img src="/ascc/public/<?= $prod['ruta_imagen'] ?? 'img/no-image.png' ?>"
+                        <img src="<?= htmlspecialchars(getImageUrl($prod['ruta_imagen'])) ?>"
                             alt="<?= htmlspecialchars($prod['tipo_producto']) ?>" class="producto-imagen"
                             onerror="this.src='/ascc/public/img/no-image.png'">
 

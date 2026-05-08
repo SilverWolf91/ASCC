@@ -9,6 +9,7 @@
 
 session_start();
 require_once __DIR__ . "/../config/database.php";
+require_once __DIR__ . "/../config/image_helper.php";
 
 // Verificar autenticaciÃ³n
 if (!isset($_SESSION['id_usuario'])) {
@@ -61,37 +62,27 @@ switch ($accion) {
             $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
             $foto_anterior = $usuario['foto_perfil'];
 
-            // Generar nombre Ãºnico
-            $extension = pathinfo($foto['name'], PATHINFO_EXTENSION);
-            $nombre_archivo = 'perfil_' . $id_usuario . '_' . time() . '.' . $extension;
-            $ruta_completa = $directorio_fotos . $nombre_archivo;
-            $ruta_bd = 'img/perfiles/' . $nombre_archivo;
+            // Subir a ImgBB
+            $urlImagen = subirImagenImgBB($foto['tmp_name']);
 
-            // Mover archivo
-            if (move_uploaded_file($foto['tmp_name'], $ruta_completa)) {
-
-                // Actualizar en base de datos
+            if ($urlImagen) {
+                // Actualizar en base de datos con la URL de ImgBB
                 $stmt = $conexion->prepare("
                     UPDATE usuarios 
                     SET foto_perfil = :foto_perfil 
                     WHERE id_usuario = :id_usuario
                 ");
-                $stmt->bindParam(':foto_perfil', $ruta_bd);
+                $stmt->bindParam(':foto_perfil', $urlImagen);
                 $stmt->bindParam(':id_usuario', $id_usuario);
                 $stmt->execute();
 
-                // Eliminar foto anterior si existe
-                if ($foto_anterior && file_exists(__DIR__ . '/../public/' . $foto_anterior)) {
-                    unlink(__DIR__ . '/../public/' . $foto_anterior);
-                }
-
                 echo json_encode([
                     'success' => true,
-                    'ruta_foto' => '/ascc/public/' . $ruta_bd,
+                    'ruta_foto' => $urlImagen,
                     'mensaje' => 'Foto actualizada correctamente'
                 ]);
             } else {
-                echo json_encode(['error' => 'Error al guardar la foto']);
+                echo json_encode(['error' => 'Error al subir la foto a la nube']);
             }
         } catch (PDOException $e) {
             http_response_code(500);

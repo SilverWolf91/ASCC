@@ -120,7 +120,7 @@ foreach ($conversaciones as $conv) {
                     data-conversation-id="<?= $conv['id_conversacion'] ?>"
                     onclick="selectConversation(<?= $conv['id_conversacion'] ?>)">
                     <?php if (!empty($conv['foto_otro_usuario'])): ?>
-                    <img src="/ascc/public/<?= htmlspecialchars($conv['foto_otro_usuario']) ?>"
+                    <img src="<?= htmlspecialchars(getImageUrl($conv['foto_otro_usuario'])) ?>"
                         alt="<?= htmlspecialchars($conv['nombre_otro_usuario']) ?>" class="conversation-avatar-img"
                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                     <div class="conversation-avatar" style="display:none;"><?= $iniciales ?></div>

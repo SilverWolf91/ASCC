@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ═══════════════════════════════════════════════════════════
  * MENSAJES.JS - LÓGICA DEL CHAT
  * ═══════════════════════════════════════════════════════════
@@ -14,6 +14,12 @@ let SESSION_USER_ID = null;
 let conversacionActiva = null;
 let pollingInterval = null;
 let ultimoMensajeId = 0;
+
+function getImageUrl(path) {
+    if (!path) return '/ascc/public/img/no-image.png';
+    if (path.startsWith('http://') || path.startsWith('https://')) return path;
+    return '/ascc/public/' + (path.startsWith('/') ? path.substring(1) : path);
+}
 
 // ══════════════════════════════════════════════════════════
 // INICIALIZACIÓN
@@ -115,7 +121,7 @@ function renderChat(mensajes, producto, esVendedor) {
     header.className = 'chat-header';
     
     const imagenUrl = producto.imagen 
-        ? `/ascc/public/${producto.imagen}` 
+        ? getImageUrl(producto.imagen) 
         : '/ascc/public/img/no-image.png';
     
     header.innerHTML = `
@@ -417,13 +423,13 @@ function mostrarProductoEnModal(producto) {
     
     // Preparar imágenes
     const imagenes = producto.imagenes || [];
-    const imagenPrincipal = imagenes.length > 0 ? `/ascc/public/${imagenes[0]}` : '/ascc/public/img/no-image.png';
+    const imagenPrincipal = imagenes.length > 0 ? getImageUrl(imagenes[0]) : '/ascc/public/img/no-image.png';
     
     // Generar thumbnails
     let thumbnailsHTML = '';
     if (imagenes.length > 1) {
         thumbnailsHTML = imagenes.map((img, index) => `
-            <img src="/ascc/public/${img}" 
+            <img src="${getImageUrl(img)}" 
                  class="product-detail-thumbnail ${index === 0 ? 'active' : ''}" 
                  onclick="cambiarImagenProducto(${index})"
                  onerror="this.src='/ascc/public/img/no-image.png'">
@@ -518,7 +524,7 @@ function cambiarImagenProducto(index) {
     const thumbnails = document.querySelectorAll('.product-detail-thumbnail');
     
     // Cambiar imagen principal
-    mainImage.src = `/ascc/public/${productoActual.imagenes[index]}`;
+    mainImage.src = getImageUrl(productoActual.imagenes[index]);
     
     // Actualizar thumbnails activos
     thumbnails.forEach((thumb, i) => {
@@ -616,7 +622,7 @@ function actualizarSidebarConversaciones(conversaciones) {
             let avatarHtml = '';
             if (conv.foto_otro_usuario) {
                 avatarHtml = `
-                    <img src="/ascc/public/${conv.foto_otro_usuario}" 
+                    <img src="${getImageUrl(conv.foto_otro_usuario)}" 
                          alt="${conv.nombre_otro_usuario}" 
                          class="conversation-avatar-img"
                          onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ASCC — reviews.js
  * Ruta: public/js/reviews.js
  *
@@ -266,8 +266,12 @@
 
             var esAutor = parseInt(r.autor_id, 10) === usuarioActId;
 
+            var urlFoto = '';
+            if (r.autor_foto) {
+                urlFoto = r.autor_foto.startsWith('http') ? r.autor_foto : '/ascc/public/' + r.autor_foto;
+            }
             var avatarHtml = r.autor_foto
-                ? '<img src="/ascc/public/' + esc(r.autor_foto) + '"' +
+                ? '<img src="' + esc(urlFoto) + '"' +
                   ' alt="' + esc(r.autor_nombre) + '" class="rv-avatar" loading="lazy">'
                 : '<div class="rv-avatar-letra" aria-hidden="true">' +
                   esc(r.autor_nombre.charAt(0).toUpperCase()) + '</div>';

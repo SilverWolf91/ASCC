@@ -339,7 +339,7 @@ function tendenciaEmoji(string $cat, string $tipo): string {
             <div class="sidebar-footer">
                 <div class="user-profile">
                     <?php if (!empty($usuario['foto_perfil'])): ?>
-                    <img src="/ascc/public/<?= htmlspecialchars($usuario['foto_perfil']) ?>"
+                    <img src="<?= htmlspecialchars(getImageUrl($usuario['foto_perfil'])) ?>"
                         alt="<?= htmlspecialchars($usuario['nombre']) ?>" class="user-avatar-img"
                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                     <div class="user-avatar" style="display:none;">
@@ -456,7 +456,7 @@ function tendenciaEmoji(string $cat, string $tipo): string {
                         <div class="profile-card">
                             <div class="profile-photo-container">
                                 <?php if (!empty($usuario['foto_perfil'])): ?>
-                                <img src="/ascc/public/<?= htmlspecialchars($usuario['foto_perfil']) ?>"
+                                <img src="<?= htmlspecialchars(getImageUrl($usuario['foto_perfil'])) ?>"
                                     alt="<?= htmlspecialchars($usuario['nombre']) ?>" class="profile-photo-img"
                                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                                 <div class="profile-photo" style="display:none;">
@@ -651,7 +651,7 @@ function tendenciaEmoji(string $cat, string $tipo): string {
                             $thumb = !empty($imgs) ? $imgs[0] : 'img/no-image.png';
                         ?>
                         <div class="product-card">
-                            <img src="/ascc/public/<?= $thumb ?>"
+                            <img src="<?= htmlspecialchars(getImageUrl($thumb)) ?>"
                                 alt="<?= htmlspecialchars($producto['tipo_producto']) ?>" class="product-image"
                                 onerror="this.src='/ascc/public/img/no-image.png'">
                             <div class="product-card-body">
@@ -703,7 +703,7 @@ function tendenciaEmoji(string $cat, string $tipo): string {
                         ?>
                         <div class="product-card sold-card">
                             <div class="sold-badge"><?= t('sold_badge') ?></div>
-                            <img src="/ascc/public/<?= $thumb ?>"
+                            <img src="<?= htmlspecialchars(getImageUrl($thumb)) ?>"
                                 alt="<?= htmlspecialchars($producto['tipo_producto']) ?>" class="product-image"
                                 onerror="this.src='/ascc/public/img/no-image.png'">
                             <div class="product-card-body">
@@ -760,8 +760,8 @@ function tendenciaEmoji(string $cat, string $tipo): string {
                 <div class="photo-preview-container">
                     <div class="photo-preview" id="photoPreview">
                         <?php if (!empty($usuario['foto_perfil'])): ?>
-                        <img src="/ascc/public/<?= htmlspecialchars($usuario['foto_perfil']) ?>" alt="Preview"
-                            id="previewImage">
+                        <img src="<?= htmlspecialchars(getImageUrl($usuario['foto_perfil'])) ?>" alt="Preview"
+                            id="previewImage" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                         <?php else: ?>
                         <div class="photo-preview-placeholder">
                             <span style="font-size:64px;">📷</span>

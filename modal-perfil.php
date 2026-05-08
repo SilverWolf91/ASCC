@@ -53,7 +53,7 @@ defined('ASCC') or die('Acceso directo no permitido.');
                     <div class="agro-avatar-row">
                         <div class="agro-avatar-circle agro-dash-avatar">
                             <?php if (!empty($usuario['foto_perfil'])): ?>
-                            <img src="/ascc/public/<?= htmlspecialchars($usuario['foto_perfil']) ?>"
+                            <img src="<?= htmlspecialchars(getImageUrl($usuario['foto_perfil'])) ?>"
                                 alt="<?= t('avatar_alt') ?>">
                             <?php else: ?>
                             <?= strtoupper(

@@ -6,6 +6,7 @@ error_reporting(E_ALL);
 session_start();
 require_once __DIR__ . "/../config/database.php";
 require_once __DIR__ . "/../config/palabras_bloqueadas.php";
+require_once __DIR__ . "/../config/image_helper.php";
 
 if (!isset($_SESSION["id_usuario"])) {
     header("Location: /ascc/views/auth/login.php");
@@ -225,20 +226,18 @@ function crearProducto($conexion, $id_usuario)
                     continue;
                 }
 
-                // Generar nombre Ãºnico
-                $nuevoNombre = 'prod_' . $id_producto . '_' . time() . '_' . $i . '.' . $extension;
-                $rutaDestino = $uploadDir . $nuevoNombre;
+                // Subir a ImgBB
+                $urlImagen = subirImagenImgBB($tmpName);
 
-                if (move_uploaded_file($tmpName, $rutaDestino)) {
-                    // Guardar en BD
-                    $rutaRelativa = 'uploads/productos/' . $nuevoNombre;
+                if ($urlImagen) {
+                    // Guardar en BD la URL completa de ImgBB
                     $stmt = $conexion->prepare("
                         INSERT INTO imagenes_productos (id_producto, ruta_imagen) 
                         VALUES (:id_prod, :ruta)
                     ");
                     $stmt->execute([
                         ':id_prod' => $id_producto,
-                        ':ruta' => $rutaRelativa
+                        ':ruta' => $urlImagen
                     ]);
                 }
             }
