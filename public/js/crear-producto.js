@@ -1439,7 +1439,7 @@
         })
         .then(function(data) {
             if (data.success) {
-                window.location.href = '/ascc/dashboard.php?success=producto_creado';
+                window.top.location.href = '/ascc/dashboard.php?success=producto_creado';
             } else {
                 mostrarError(data.error || 'Error al publicar');
                 if (btnSubmit) {
