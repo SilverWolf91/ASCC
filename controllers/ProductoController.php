@@ -70,6 +70,9 @@ function crearProducto($conexion, $id_usuario)
     $producto_especifico = trim($_POST['producto_especifico'] ?? '');
 
     if (empty($tipo_producto) || empty($descripcion) || $precio <= 0 || $cantidad <= 0 || empty($unidad)) {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === '1') {
+            ob_clean(); echo json_encode(['success' => false, 'error' => 'Datos incompletos']); exit;
+        }
         header("Location: /ascc/crear_producto.php?error=datos_incompletos");
         exit;
     }
@@ -78,12 +81,18 @@ function crearProducto($conexion, $id_usuario)
     $textoTotal = $tipo_producto . ' ' . $producto_especifico . ' ' . mb_substr($descripcion, 0, 500);
     $bloqueo    = verificarPalabrasBloqueadas($textoTotal);
     if ($bloqueo['bloqueado']) {
-        error_log('[ASCC] Producto bloqueado por contenido (' . $bloqueo['categoria'] . '): ' . $bloqueo['palabra'] . ' â€” usuario ' . $id_usuario);
+        error_log('[ASCC] Producto bloqueado por contenido (' . $bloqueo['categoria'] . '): ' . $bloqueo['palabra'] . ' — usuario ' . $id_usuario);
+        if (isset($_POST['ajax']) && $_POST['ajax'] === '1') {
+            ob_clean(); echo json_encode(['success' => false, 'error' => 'Contenido bloqueado: ' . $bloqueo['palabra']]); exit;
+        }
         header("Location: /ascc/crear_producto.php?error=contenido_bloqueado");
         exit;
     }
 
     if (empty($departamento) || empty($municipio) || empty($vereda) || empty($lat) || empty($lng)) {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === '1') {
+            ob_clean(); echo json_encode(['success' => false, 'error' => 'Ubicación incompleta']); exit;
+        }
         header("Location: /ascc/crear_producto.php?error=ubicacion_incompleta");
         exit;
     }
@@ -92,13 +101,19 @@ function crearProducto($conexion, $id_usuario)
     $latF = (float)$lat;
     $lngF = (float)$lng;
     if ($latF < -4.5 || $latF > 13.0 || $lngF < -79.5 || $lngF > -66.5) {
-        error_log('[ASCC] UbicaciÃ³n fuera de Colombia: lat=' . $latF . ' lng=' . $lngF . ' â€” usuario ' . $id_usuario);
+        error_log('[ASCC] Ubicación fuera de Colombia: lat=' . $latF . ' lng=' . $lngF . ' — usuario ' . $id_usuario);
+        if (isset($_POST['ajax']) && $_POST['ajax'] === '1') {
+            ob_clean(); echo json_encode(['success' => false, 'error' => 'La ubicación debe estar dentro de Colombia']); exit;
+        }
         header("Location: /ascc/crear_producto.php?error=fuera_de_colombia");
         exit;
     }
 
     // Verificar imÃ¡genes
     if (!isset($_FILES['imagenes']) || empty($_FILES['imagenes']['name'][0])) {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === '1') {
+            ob_clean(); echo json_encode(['success' => false, 'error' => 'Sin imágenes']); exit;
+        }
         header("Location: /ascc/crear_producto.php?error=sin_imagenes");
         exit;
     }
@@ -257,6 +272,9 @@ function crearProducto($conexion, $id_usuario)
     } catch (Exception $e) {
         $conexion->rollBack();
         error_log("Error al crear producto: " . $e->getMessage());
+        if (isset($_POST['ajax']) && $_POST['ajax'] === '1') {
+            ob_clean(); echo json_encode(['success' => false, 'error' => 'Error de servidor: ' . $e->getMessage()]); exit;
+        }
         header("Location: /ascc/crear_producto.php?error=1");
         exit;
     }
