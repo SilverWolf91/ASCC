@@ -1377,9 +1377,10 @@
     ══════════════════════════════════════════════════════ */
 
     function validarFormularioCompleto(e) {
+        e.preventDefault();
+        
         var imagenes = document.getElementById('imagenes');
         if (!imagenes || imagenes.files.length === 0) {
-            e.preventDefault();
             mostrarError(msg('upload_image'));
             return false;
         }
@@ -1417,8 +1418,6 @@
             }
             veredaSelect.value = vrVal;
         }
-
-        e.preventDefault();
 
         var btnSubmit = document.getElementById('submitBtn');
         if (btnSubmit) {
@@ -2469,9 +2468,13 @@
     function init() {
         console.log('[ASCC] Iniciando crear-producto.js v3 — Dropdown combinado catálogo + BD');
 
-        renderCategories();
-        iniciarDropZone();
-        iniciarUbicacion();
+        try {
+            renderCategories();
+            iniciarDropZone();
+            iniciarUbicacion();
+        } catch (err) {
+            console.error('[ASCC] Error en setup:', err);
+        }
 
         /* El mapa se inicializa lazy en _setStep() al llegar al paso 5,
            cuando el div #map ya es visible y tiene dimensiones reales. */

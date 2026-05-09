@@ -251,7 +251,7 @@ function crearProducto($conexion, $id_usuario)
         if (isset($_POST['ajax']) && $_POST['ajax'] === '1') {
             echo json_encode(['success' => true]);
         } else {
-            header("Location: /ascc/dashboard.php?success=producto_creado");
+            echo "<script>window.top.location.href = '/ascc/dashboard.php?success=producto_creado';</script>";
         }
         exit;
     } catch (Exception $e) {
