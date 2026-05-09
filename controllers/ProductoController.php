@@ -246,9 +246,13 @@ function crearProducto($conexion, $id_usuario)
 
         $conexion->commit();
 
-        // Redirigir con Ã©xito al Dashboard
+        // Redirigir con Ã©xito al Dashboard o devolver JSON si es AJAX
         ob_clean();
-        header("Location: /ascc/dashboard.php?success=producto_creado");
+        if (isset($_POST['ajax']) && $_POST['ajax'] === '1') {
+            echo json_encode(['success' => true]);
+        } else {
+            header("Location: /ascc/dashboard.php?success=producto_creado");
+        }
         exit;
     } catch (Exception $e) {
         $conexion->rollBack();

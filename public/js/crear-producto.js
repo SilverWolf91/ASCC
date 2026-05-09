@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ═══════════════════════════════════════════════════════════
  * ASCC - FORMULARIO CREAR PRODUCTO
  * Archivo : public/js/crear-producto.js
@@ -1417,6 +1417,45 @@
             }
             veredaSelect.value = vrVal;
         }
+
+        e.preventDefault();
+
+        var btnSubmit = document.getElementById('submitBtn');
+        if (btnSubmit) {
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '⏳ ' + (getLang() === 'es' ? 'Publicando...' : 'Publishing...');
+        }
+
+        var form = e.target;
+        var formData = new FormData(form);
+        formData.append('ajax', '1');
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(function(res) {
+            return res.json();
+        })
+        .then(function(data) {
+            if (data.success) {
+                window.location.href = '/ascc/dashboard.php?success=producto_creado';
+            } else {
+                mostrarError(data.error || 'Error al publicar');
+                if (btnSubmit) {
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = '🚀 ' + (getLang() === 'es' ? 'Publicar' : 'Publish');
+                }
+            }
+        })
+        .catch(function(err) {
+            console.error(err);
+            mostrarError('Error de conexión');
+            if (btnSubmit) {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = '🚀 ' + (getLang() === 'es' ? 'Publicar' : 'Publish');
+            }
+        });
     }
 
     /* ══════════════════════════════════════════════════════
