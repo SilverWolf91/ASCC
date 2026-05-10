@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ASCC — Estilos compartidos
  * Usado por: visitas_detalle.php y perfil_comprador.php
  * Ruta: public/css/visitas-detalle.css
@@ -915,6 +915,7 @@
 
     .pc-kpi { align-items: flex-start; }
     .pc-contactar { grid-column: 1 / -1; }
+    .pc-hero-card { padding: 16px; gap: 12px 16px; }
 }
 
 @media (max-width: 480px) {

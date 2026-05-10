@@ -391,7 +391,7 @@ form {
 @media (max-width: 1200px) {
     .page-wrapper {
         grid-template-columns: 1fr;
-        padding: 100px 20px 40px;
+        padding: 80px 15px 30px;
     }
     
     .banner-left,
@@ -407,7 +407,7 @@ form {
 
 @media (max-width: 640px) {
     .recovery-container {
-        padding: 32px 24px;
+        padding: 24px 16px;
     }
     
     .logo-section img {

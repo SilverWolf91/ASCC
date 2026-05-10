@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ═══════════════════════════════════════════════════════════
  * ASCC CREAR PRODUCTO - ESTILOS COMPLETOS
  * Incluye diseño de 7 pasos, categorías expandidas y MODO OSCURO
@@ -788,15 +788,17 @@ body {
     }
 
     .form-container {
-        padding: 25px;
+        padding: 15px;
     }
 
     .category-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
     .product-list {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
     .step-label {
@@ -817,6 +819,14 @@ body {
 @media (max-width: 480px) {
     .category-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .product-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .file-upload-area {
+        padding: 20px;
     }
 }
 

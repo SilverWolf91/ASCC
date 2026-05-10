@@ -290,7 +290,7 @@ form {
 
 @media (max-width: 640px) {
     .reset-container {
-        padding: 32px 24px;
+        padding: 24px 16px;
     }
     
     .logo-section img {

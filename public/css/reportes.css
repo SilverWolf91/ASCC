@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ASCC — Estilos del Módulo de Reportes
  * Ruta: public/css/reportes.css
  *
@@ -1405,5 +1405,9 @@ body.theme-light .rep-tab-btn.active,
     .rep-table td {
         padding: 8px 12px;
         font-size: 0.75rem;
+    }
+    
+    .rep-card {
+        padding: 15px;
     }
 }
