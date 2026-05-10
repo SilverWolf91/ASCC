@@ -63,7 +63,9 @@ if (empty($producto['mp_access_token']) || empty($producto['mp_public_key'])) {
 $url_preference = "https://api.mercadopago.com/checkout/preferences";
 $access_token = $producto['mp_access_token'];
 
-$base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/ascc";
+$is_https = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || 
+            (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
+$base_url = ($is_https ? "https" : "http") . "://$_SERVER[HTTP_HOST]/ascc";
 
 $data_preference = [
     "items" => [
