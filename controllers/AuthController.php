@@ -120,9 +120,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $password = $_POST["password"];
 
         try {
-            // Buscar usuario por email — se trae también el campo estado y foto
+            // Buscar usuario por email — se trae también el campo estado y foto_perfil
             $stmt = $conexion->prepare(
-                "SELECT id_usuario, nombre, email, password, rol, estado, foto
+                "SELECT id_usuario, nombre, email, password, rol, estado, foto_perfil
                  FROM   usuarios
                  WHERE  email = :email
                  LIMIT  1"
@@ -156,7 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["id_usuario"] = $usuario["id_usuario"];
             $_SESSION["nombre"]     = $usuario["nombre"];
             $_SESSION["rol"]        = $usuario["rol"];
-            $_SESSION["foto"]       = $usuario["foto"] ?? '';
+            $_SESSION["foto"]       = $usuario["foto_perfil"] ?? '';
 
             header("Location: /ascc/dashboard.php");
             exit;
