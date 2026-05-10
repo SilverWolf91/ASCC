@@ -427,7 +427,10 @@ defined('ASCC') or die('Acceso directo no permitido.');
                 <?php if (in_array($usuario['rol'] ?? '', ['vendedor', 'mixto'])): ?>
                 <div class="agro-tab-panel" id="panelPagos">
                     <p class="agro-section-label">Configuración de Pagos (Mercado Pago Marketplace)</p>
-                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">Para recibir los pagos directamente a tu cuenta, ingresa tus credenciales de Mercado Pago.</p>
+                    <div style="background: #eef2ff; border-left: 4px solid #4f46e5; padding: 12px; margin-bottom: 15px; border-radius: 4px;">
+                        <p style="font-size: 0.9em; color: #333; margin: 0 0 8px 0;"><strong>⚠️ ¡Importante para recibir tus pagos!</strong></p>
+                        <p style="font-size: 0.85em; color: #555; margin: 0;">Para que el dinero de tus ventas llegue directo a tu cuenta bancaria o Nequi, debes crear una cuenta en Mercado Pago y pegar aquí tus dos "Llaves de Producción". Si no lo haces, los compradores no podrán pagarte.</p>
+                    </div>
 
                     <div class="agro-field">
                         <label for="inputMpAccessToken">Access Token de Producción</label>
