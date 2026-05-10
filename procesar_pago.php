@@ -78,13 +78,9 @@ $data_preference = [
             "title" => $producto['tipo_producto'] . " - " . ($producto['producto_especifico'] ?: 'ASCC'),
             "description" => "Compra en ASCC",
             "quantity" => (int)$cantidad,
-            "unit_price" => (float)($producto['precio'] + ($costo_envio / $cantidad)),
+            "unit_price" => (int)round($producto['precio'] + ($costo_envio / $cantidad)),
             "currency_id" => "COP"
         ]
-    ],
-    "payer" => [
-        "name" => $comprador['nombre'],
-        "email" => $comprador['email']
     ],
     "back_urls" => [
         "success" => $base_url . "/controllers/pago_confirmacion.php?estado=success&ref=" . $referencia_pago,
