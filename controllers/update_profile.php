@@ -60,6 +60,10 @@ $municipio     = trim($_POST['municipio']       ?? '');
 $vereda        = trim($_POST['vereda']          ?? '');
 $rol           = trim($_POST['rol']             ?? 'vendedor');
 
+/* Mercado Pago (Marketplace) */
+$mp_access_token = trim($_POST['mp_access_token'] ?? '');
+$mp_public_key   = trim($_POST['mp_public_key']   ?? '');
+
 /* Notificaciones (el JS siempre envÃ­a '1' o '0') */
 $notif_mensajes    = ($_POST['notif_mensajes']    ?? '0') === '1' ? 1 : 0;
 $notif_ventas      = ($_POST['notif_ventas']      ?? '0') === '1' ? 1 : 0;
@@ -296,6 +300,8 @@ $campos = [
     'notif_ventas      = :notif_ventas',
     'notif_visitas     = :notif_visitas',
     'notif_promociones = :notif_promociones',
+    'mp_access_token   = :mp_access_token',
+    'mp_public_key     = :mp_public_key',
 ];
 
 $params = [
@@ -315,6 +321,8 @@ $params = [
     ':notif_ventas'      => $notif_ventas,
     ':notif_visitas'     => $notif_visitas,
     ':notif_promociones' => $notif_promociones,
+    ':mp_access_token'   => $mp_access_token ?: null,
+    ':mp_public_key'     => $mp_public_key   ?: null,
     ':id'               => $id_usuario,
 ];
 

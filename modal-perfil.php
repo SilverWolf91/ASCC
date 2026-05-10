@@ -37,6 +37,9 @@ defined('ASCC') or die('Acceso directo no permitido.');
             <button class="agro-modal__tab" role="tab"><?= t('tab_contact') ?></button>
             <button class="agro-modal__tab" role="tab"><?= t('tab_security') ?></button>
             <button class="agro-modal__tab" role="tab"><?= t('tab_notifications') ?></button>
+            <?php if (in_array($usuario['rol'] ?? '', ['vendedor', 'mixto'])): ?>
+            <button class="agro-modal__tab" role="tab">💳 Pagos (Mercado Pago)</button>
+            <?php endif; ?>
         </div>
 
         <!-- ── FORMULARIO ── -->
@@ -419,6 +422,28 @@ defined('ASCC') or die('Acceso directo no permitido.');
                     <?php endforeach; ?>
 
                 </div><!-- /panelNotificaciones -->
+
+                <!-- ════ PANEL 5: PAGOS (MERCADO PAGO) ════ -->
+                <?php if (in_array($usuario['rol'] ?? '', ['vendedor', 'mixto'])): ?>
+                <div class="agro-tab-panel" id="panelPagos">
+                    <p class="agro-section-label">Configuración de Pagos (Mercado Pago Marketplace)</p>
+                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">Para recibir los pagos directamente a tu cuenta, ingresa tus credenciales de Mercado Pago.</p>
+
+                    <div class="agro-field">
+                        <label for="inputMpAccessToken">Access Token de Producción</label>
+                        <input type="text" id="inputMpAccessToken" name="mp_access_token"
+                            value="<?= htmlspecialchars($usuario['mp_access_token'] ?? '') ?>"
+                            placeholder="APP_USR-..." autocomplete="off">
+                    </div>
+
+                    <div class="agro-field" style="margin-top: 15px;">
+                        <label for="inputMpPublicKey">Public Key de Producción</label>
+                        <input type="text" id="inputMpPublicKey" name="mp_public_key"
+                            value="<?= htmlspecialchars($usuario['mp_public_key'] ?? '') ?>"
+                            placeholder="APP_USR-..." autocomplete="off">
+                    </div>
+                </div><!-- /panelPagos -->
+                <?php endif; ?>
 
             </div><!-- /.agro-modal__body -->
 

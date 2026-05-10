@@ -23,7 +23,9 @@ $stmt = $conexion->prepare("
         u.lat,
         u.lng,
         usr.nombre as vendedor_nombre,
-        usr.email as vendedor_email
+        usr.email as vendedor_email,
+        usr.mp_access_token,
+        usr.mp_public_key
     FROM productos p
     INNER JOIN ubicaciones u ON p.id_ubicacion = u.id_ubicacion
     INNER JOIN usuarios usr ON p.id_usuario = usr.id_usuario
@@ -52,14 +54,65 @@ $costo_envio = 0;
 // Generar referencia única de pago
 $referencia_pago = 'ASCC-' . time() . '-' . $id_producto;
 
-// CONFIGURACIÓN WOMPI
-// IMPORTANTE: Cambia estas keys cuando te registres en Wompi
-$WOMPI_PUBLIC_KEY = "pub_test_Q5jHHMYFUOMJUtYWGCTyKqNO7cMd4RCp"; // Llave de prueba
-$WOMPI_PRIVATE_KEY = "prv_test_as45sd78hjk9lqw34ert56yui8op90"; // Llave de prueba
+// Verificar si el vendedor tiene configurado Mercado Pago
+if (empty($producto['mp_access_token']) || empty($producto['mp_public_key'])) {
+    die("<h2>Error: El vendedor aún no ha configurado su cuenta para recibir pagos.</h2><p><a href='/ascc/catalogo.php'>Volver al catálogo</a></p>");
+}
 
-// En producción usa:
-// $WOMPI_PUBLIC_KEY = "pub_prod_TU_LLAVE_PUBLICA";
-// $WOMPI_PRIVATE_KEY = "prv_prod_TU_LLAVE_PRIVADA";
+// Crear preferencia de Mercado Pago vía cURL
+$url_preference = "https://api.mercadopago.com/checkout/preferences";
+$access_token = $producto['mp_access_token'];
+
+$base_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/ascc";
+
+$data_preference = [
+    "items" => [
+        [
+            "id" => $id_producto,
+            "title" => $producto['tipo_producto'] . " - " . ($producto['producto_especifico'] ?: 'ASCC'),
+            "description" => "Compra en ASCC",
+            "quantity" => (int)$cantidad,
+            "unit_price" => (float)($producto['precio'] + ($costo_envio / $cantidad)),
+            "currency_id" => "COP"
+        ]
+    ],
+    "payer" => [
+        "name" => $comprador['nombre'],
+        "email" => $comprador['email']
+    ],
+    "back_urls" => [
+        "success" => $base_url . "/controllers/pago_confirmacion.php?estado=success&ref=" . $referencia_pago,
+        "failure" => $base_url . "/controllers/pago_confirmacion.php?estado=failure&ref=" . $referencia_pago,
+        "pending" => $base_url . "/controllers/pago_confirmacion.php?estado=pending&ref=" . $referencia_pago
+    ],
+    "auto_return" => "approved",
+    "external_reference" => $referencia_pago
+];
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url_preference);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data_preference));
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Authorization: Bearer " . $access_token,
+    "Content-Type: application/json"
+]);
+
+$response = curl_exec($ch);
+$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+$mp_response = json_decode($response, true);
+$init_point = "";
+
+if ($http_code == 200 || $http_code == 201) {
+    $init_point = $mp_response['init_point']; // URL de redirección al Checkout Pro
+} else {
+    // Si hay error al crear la preferencia
+    $error_msg = $mp_response['message'] ?? 'Error desconocido en Mercado Pago';
+    die("<h2>Error al inicializar el pago: " . htmlspecialchars($error_msg) . "</h2><p><a href='/ascc/catalogo.php'>Volver al catálogo</a></p>");
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?= $lang ?>">
@@ -74,17 +127,10 @@ $WOMPI_PRIVATE_KEY = "prv_test_as45sd78hjk9lqw34ert56yui8op90"; // Llave de prue
     <link rel="stylesheet" href="/ascc/public/css/dashboard.css">
     <link rel="stylesheet" href="/ascc/public/css/procesar-pago.css">
 
-    <!-- WOMPI SDK -->
-    <script src="https://checkout.wompi.co/widget.js"></script>
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
 </head>
 
-<body data-wompi-public-key="<?= htmlspecialchars($WOMPI_PUBLIC_KEY) ?>"
-    data-comprador-email="<?= htmlspecialchars($comprador['email']) ?>"
-    data-comprador-nombre="<?= htmlspecialchars($comprador['nombre']) ?>"
-    data-comprador-telefono="<?= preg_replace('/[^0-9]/', '', $comprador['telefono']) ?>"
-    data-comprador-cedula="<?= htmlspecialchars($comprador['cedula']) ?>"
-    data-producto-municipio="<?= htmlspecialchars($producto['municipio']) ?>"
-    data-producto-departamento="<?= htmlspecialchars($producto['departamento']) ?>">
+<body>
 
     <div class="header">
         <div class="logo" style="display: flex; align-items: center; gap: 12px;">
@@ -102,7 +148,7 @@ $WOMPI_PRIVATE_KEY = "prv_test_as45sd78hjk9lqw34ert56yui8op90"; // Llave de prue
 
         <div class="payment-header">
             <h1>💳 Procesar Pago</h1>
-            <p>Pago seguro con Wompi - PSE, Tarjetas y más</p>
+            <p>Pago seguro con Mercado Pago - PSE, Tarjetas y Efectivo</p>
         </div>
 
         <div class="payment-card">
@@ -149,7 +195,7 @@ $WOMPI_PRIVATE_KEY = "prv_test_as45sd78hjk9lqw34ert56yui8op90"; // Llave de prue
             </div>
 
             <div style="text-align: center; margin: 30px 0;">
-                <img src="https://wompi.co/wp-content/uploads/2021/03/logo-wompi.svg" alt="Wompi" class="wompi-logo">
+                <img src="https://http2.mlstatic.com/frontend-assets/ui-navigation/5.19.5/mercadopago/logo__large.png" alt="Mercado Pago" style="height: 40px; object-fit: contain;">
                 <p style="color: #666; font-size: 14px; margin-top: 10px;">
                     Paga con el método de tu preferencia
                 </p>
@@ -163,14 +209,9 @@ $WOMPI_PRIVATE_KEY = "prv_test_as45sd78hjk9lqw34ert56yui8op90"; // Llave de prue
                 <div class="payment-icon">🏪 Corresponsales</div>
             </div>
 
-            <form id="wompiForm">
-                <input type="hidden" id="referencia" value="<?= $referencia_pago ?>">
-                <input type="hidden" id="total" value="<?= ($total + $costo_envio) * 100 ?>">
-                <input type="hidden" id="producto_id" value="<?= $id_producto ?>">
-                <input type="hidden" id="cantidad" value="<?= $cantidad ?>">
-
-                <button type="button" class="btn-pay-wompi" onclick="pagarConWompi()">
-                    💳 Pagar con Wompi - $<?= number_format($total + $costo_envio, 0, ",", ".") ?> COP
+            <form id="mpForm" action="<?= $init_point ?>" method="GET">
+                <button type="submit" class="btn-pay-wompi" style="background-color: #009ee3; color: white;">
+                    💳 Pagar con Mercado Pago - $<?= number_format($total + $costo_envio, 0, ",", ".") ?> COP
                 </button>
             </form>
 
@@ -178,23 +219,23 @@ $WOMPI_PRIVATE_KEY = "prv_test_as45sd78hjk9lqw34ert56yui8op90"; // Llave de prue
                 <p>
                     🔐 <strong>Pago 100% Seguro</strong><br>
                     Tu información está protegida con encriptación SSL<br>
-                    Procesado por Wompi - Pagos seguros certificados en Colombia
+                    Procesado por Mercado Pago - Pagos seguros certificados en Colombia
                 </p>
             </div>
 
             <div class="warning-box">
                 <p>
                     <strong>⚠️ Importante:</strong><br>
-                    • Serás redirigido a la pasarela de pago de Wompi<br>
-                    • Puedes pagar con PSE, tarjetas de crédito/débito, Nequi, Daviplata<br>
-                    • El vendedor será notificado cuando se confirme el pago<br>
+                    • Serás redirigido a la pasarela de Mercado Pago<br>
+                    • Puedes pagar con PSE, tarjetas de crédito/débito y efectivo<br>
+                    • El vendedor recibirá el dinero directamente en su cuenta<br>
                     • Conserva el comprobante que te llegará por email
                 </p>
             </div>
         </div>
     </div>
 
-    <script src="/ascc/public/js/procesar-pago.js"></script>
+
 </body>
 
 </html>

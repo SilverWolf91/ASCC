@@ -8,9 +8,10 @@ if (!isset($_SESSION["id_usuario"])) {
     exit;
 }
 
-$referencia = $_GET['ref'] ?? '';
-$id_producto = $_GET['producto'] ?? 0;
-$cantidad = $_GET['cantidad'] ?? 0;
+$estado_mp = $_GET['status'] ?? '';
+$payment_id = $_GET['payment_id'] ?? '';
+$referencia = $_GET['external_reference'] ?? $_GET['ref'] ?? '';
+$estado_query = $_GET['estado'] ?? ''; // success, failure, pending
 
 // Buscar la transacción en la base de datos
 $stmt = $conexion->prepare("SELECT * FROM transacciones WHERE referencia = :ref");
@@ -20,6 +21,79 @@ $transaccion = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $estado_pago = $transaccion['estado'] ?? 'PENDIENTE';
 $total = $transaccion['total'] ?? 0;
+
+// Si viene de Mercado Pago y no existe la transacción, o está pendiente, la procesamos
+if ($estado_query === 'success' && $estado_mp === 'approved' && $payment_id) {
+    
+    // Si la transacción no existe, la creamos basándonos en la referencia (ASCC-time-id_producto)
+    $partes_ref = explode('-', $referencia);
+    if (count($partes_ref) >= 3 && !$transaccion) {
+        $id_producto_ref = (int)end($partes_ref);
+        
+        // Obtener info del producto
+        $stmt_prod = $conexion->prepare("SELECT * FROM productos WHERE id_producto = :id");
+        $stmt_prod->bindParam(":id", $id_producto_ref);
+        $stmt_prod->execute();
+        $prod_info = $stmt_prod->fetch(PDO::FETCH_ASSOC);
+        
+        if ($prod_info) {
+            $cantidad_comprada = 1; // Para simplificar, asumimos 1 si no lo tenemos en la URL
+            $total_pagado = $prod_info['precio'];
+            $id_vendedor = $prod_info['id_usuario'];
+            
+            $sql = "INSERT INTO transacciones 
+                    (referencia, id_producto, id_comprador, id_vendedor, cantidad, precio_unitario, total, estado, metodo_pago, banco, datos_pago)
+                    VALUES (:ref, :prod, :comp, :vend, :cant, :precio, :total, 'APPROVED', 'MERCADO_PAGO', 'MERCADO_PAGO', :datos)";
+            
+            $datos_mp = json_encode(['payment_id' => $payment_id]);
+            $stmt_ins = $conexion->prepare($sql);
+            $stmt_ins->bindParam(":ref", $referencia);
+            $stmt_ins->bindParam(":prod", $id_producto_ref);
+            $stmt_ins->bindParam(":comp", $_SESSION["id_usuario"]);
+            $stmt_ins->bindParam(":vend", $id_vendedor);
+            $stmt_ins->bindParam(":cant", $cantidad_comprada);
+            $stmt_ins->bindParam(":precio", $prod_info['precio']);
+            $stmt_ins->bindParam(":total", $total_pagado);
+            $stmt_ins->bindParam(":datos", $datos_mp);
+            $stmt_ins->execute();
+            
+            // Actualizar stock
+            $nuevo_stock = $prod_info['cantidad'] - $cantidad_comprada;
+            if ($nuevo_stock <= 0) {
+                $conexion->query("UPDATE productos SET cantidad = 0, estado = 'vendido', fecha_venta = NOW() WHERE id_producto = $id_producto_ref");
+            } else {
+                $conexion->query("UPDATE productos SET cantidad = $nuevo_stock WHERE id_producto = $id_producto_ref");
+            }
+            
+            $estado_pago = 'APPROVED';
+            $total = $total_pagado;
+            $id_producto = $id_producto_ref;
+            $cantidad = $cantidad_comprada;
+        }
+    } else if ($transaccion && $estado_pago !== 'APPROVED') {
+        // Actualizar transacción existente
+        $conexion->query("UPDATE transacciones SET estado = 'APPROVED', metodo_pago = 'MERCADO_PAGO' WHERE referencia = '$referencia'");
+        $estado_pago = 'APPROVED';
+        
+        // Actualizar stock
+        $id_producto_ref = $transaccion['id_producto'];
+        $conexion->query("UPDATE productos SET cantidad = cantidad - {$transaccion['cantidad']} WHERE id_producto = $id_producto_ref");
+        $conexion->query("UPDATE productos SET estado = 'vendido', fecha_venta = NOW() WHERE id_producto = $id_producto_ref AND cantidad <= 0");
+    }
+} else if ($estado_query === 'failure' || $estado_mp === 'rejected') {
+    $estado_pago = 'REJECTED';
+    if ($transaccion) {
+        $conexion->query("UPDATE transacciones SET estado = 'REJECTED' WHERE referencia = '$referencia'");
+    }
+}
+
+if (!$id_producto && $transaccion) {
+    $id_producto = $transaccion['id_producto'];
+    $cantidad = $transaccion['cantidad'];
+} else if (!$id_producto) {
+    $partes_ref = explode('-', $referencia);
+    $id_producto = (int)end($partes_ref);
+}
 
 // Obtener información del producto
 $stmt = $conexion->prepare("
@@ -304,7 +378,7 @@ $comprador = $stmt->fetch(PDO::FETCH_ASSOC);
             <div class="status-icon status-pending">⏳</div>
             <h1 class="confirmation-title">Procesando Pago...</h1>
             <p class="confirmation-message">
-                Estamos verificando tu pago con Wompi.<br>
+                Estamos verificando tu pago con Mercado Pago.<br>
                 Esto puede tardar unos segundos.
             </p>
             <div class="loading-spinner"></div>
