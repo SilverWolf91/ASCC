@@ -201,7 +201,7 @@ if ($http_code == 200 || $http_code == 201) {
 
             <!-- Íconos de pago removidos a petición del usuario, Mercado Pago lo maneja todo -->
 
-            <form id="mpForm" action="<?= $init_point ?>" method="GET">
+            <form id="mpForm" action="<?= $init_point ?>" method="GET" target="_top">
                 <button type="submit" class="btn-pay-wompi" style="background-color: #009ee3; color: white;">
                     💳 Pagar con Mercado Pago - $<?= number_format($total + $costo_envio, 0, ",", ".") ?> COP
                 </button>
