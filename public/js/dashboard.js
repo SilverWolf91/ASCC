@@ -94,6 +94,8 @@ function initMobileMenu() {
             sidebar.classList.add('collapsed');
             DashboardState.sidebarCollapsed = true;
             localStorage.setItem('ascc_sidebar', 'closed');
+            var overlay = document.getElementById('sidebarOverlay');
+            if (overlay) overlay.classList.remove('active');
         }
     });
 }
@@ -129,7 +131,10 @@ function openTab(event, tabName) {
         var sidebar = document.querySelector('.sidebar');
         if (sidebar) {
             sidebar.classList.add('collapsed');
+            DashboardState.sidebarCollapsed = true;
             localStorage.setItem('ascc_sidebar', 'closed');
+            var overlay = document.getElementById('sidebarOverlay');
+            if (overlay) overlay.classList.remove('active');
         }
     }
 }
