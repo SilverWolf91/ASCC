@@ -109,7 +109,10 @@ $mp_response = json_decode($response, true);
 $init_point = "";
 
 if ($http_code == 200 || $http_code == 201) {
-    // Si el token es de prueba (TEST-), usamos el sandbox_init_point, sino el init_point real
+    $preference_id = $mp_response['id'];
+    $public_key = $producto['mp_public_key'];
+    
+    // Fallback URL just in case
     if (strpos($access_token, 'TEST-') === 0) {
         $init_point = $mp_response['sandbox_init_point'];
     } else {
@@ -202,11 +205,32 @@ if ($http_code == 200 || $http_code == 201) {
 
             <!-- Íconos de pago removidos a petición del usuario, Mercado Pago lo maneja todo -->
 
-            <form id="mpForm" action="<?= $init_point ?>" method="GET" target="_top">
-                <button type="submit" class="btn-pay-wompi" style="background-color: #009ee3; color: white;">
-                    💳 Pagar con Mercado Pago - $<?= number_format($total + $costo_envio, 0, ",", ".") ?> COP
-                </button>
-            </form>
+            <!-- Botón oficial de Mercado Pago usando el SDK -->
+            <div class="cho-container" style="text-align: center;"></div>
+            
+            <script>
+                // Inicializar Mercado Pago
+                const mp = new MercadoPago('<?= $public_key ?>', {
+                    locale: 'es-CO'
+                });
+
+                // Renderizar el botón de pago
+                mp.checkout({
+                    preference: {
+                        id: '<?= $preference_id ?>'
+                    },
+                    render: {
+                        container: '.cho-container', // Indica dónde se mostrará el botón
+                        label: '💳 Pagar con Mercado Pago - $<?= number_format($total + $costo_envio, 0, ",", ".") ?> COP', // Texto del botón
+                    }
+                });
+            </script>
+            
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="<?= $init_point ?>" target="_top" style="font-size: 12px; color: #666; text-decoration: underline;">
+                    Si el botón no carga, haz clic aquí
+                </a>
+            </div>
 
             <div class="security-badge">
                 <p>
