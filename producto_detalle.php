@@ -342,12 +342,8 @@ $calificacion_vendedor = 5.0;
                         💳 <?= t('buy_now') ?>
                     </button>
 
-                    <div class="payment-methods">
-                        <div class="payment-icon">PSE</div>
-                        <div class="payment-icon">VISA</div>
-                        <div class="payment-icon">MASTERCARD</div>
-                        <div class="payment-icon">NEQUI</div>
-                        <div class="payment-icon">DAVIPLATA</div>
+                    <div class="payment-methods" style="justify-content: center; margin-top: 15px;">
+                        <img src="https://http2.mlstatic.com/frontend-assets/ui-navigation/5.19.5/mercadopago/logo__large.png" alt="Mercado Pago" style="height: 30px; object-fit: contain;">
                     </div>
 
                     <p class="secure-payment-text">

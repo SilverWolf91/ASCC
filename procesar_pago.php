@@ -201,13 +201,7 @@ if ($http_code == 200 || $http_code == 201) {
                 </p>
             </div>
 
-            <div class="payment-methods">
-                <div class="payment-icon">💳 PSE</div>
-                <div class="payment-icon">💳 Tarjetas</div>
-                <div class="payment-icon">💰 Nequi</div>
-                <div class="payment-icon">💰 Daviplata</div>
-                <div class="payment-icon">🏪 Corresponsales</div>
-            </div>
+            <!-- Íconos de pago removidos a petición del usuario, Mercado Pago lo maneja todo -->
 
             <form id="mpForm" action="<?= $init_point ?>" method="GET">
                 <button type="submit" class="btn-pay-wompi" style="background-color: #009ee3; color: white;">
