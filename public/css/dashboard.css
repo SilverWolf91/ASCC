@@ -1208,14 +1208,20 @@
     .main-content         { margin-left: 0 !important; }
     .topbar               { padding: 16px; }
     .topbar-welcome h1    { font-size: 20px; }
-    .container            { padding: 16px; }
-    .stats-grid           { grid-template-columns: 1fr; }
+    .container            { padding: 12px; }
+    .stats-grid           { grid-template-columns: 1fr; gap: 12px; margin-bottom: 20px; }
+    .stat-card            { padding: 16px; }
     .messages-container   { grid-template-columns: 1fr; height: auto; }
     .conversations-list   { border-right: none; border-bottom: 1px solid var(--border-color); max-height: 300px; }
     .products-grid        { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
-    .profile-card   { position: static; }
-    .trending-grid  { grid-template-columns: repeat(2, 1fr); }
+    .profile-card   { position: static; padding: 20px; margin-bottom: 20px; }
+    .trending-grid  { grid-template-columns: 1fr; gap: 10px; }
+    .trending-section, .discounts-section, .activity-section, .notif-section {
+        padding: 16px;
+    }
+    .products-grid  { grid-template-columns: 1fr; gap: 16px; }
+    .section-title  { font-size: 16px; }
 }

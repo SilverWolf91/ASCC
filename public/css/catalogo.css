@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ═══════════════════════════════════════════════════════════
  * ASCC CATÁLOGO - ESTILOS SEPARADOS
  * Todos los estilos del catálogo de productos
@@ -117,8 +117,8 @@
 
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -272,7 +272,7 @@
 
     .products-grid {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 1.25rem;
     }
 
     .radio-options {
@@ -280,7 +280,17 @@
     }
 
     #catalogMap {
-        height: 400px;
+        height: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container-catalogo {
+        padding: 0.75rem;
+    }
+    
+    .view-toggle {
+        flex-direction: column;
     }
 }
 

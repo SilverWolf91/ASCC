@@ -177,3 +177,22 @@ body {
     display: block;
     margin-bottom: 8px;
 }
+
+@media (max-width: 768px) {
+    .payment-container {
+        padding: 10px;
+        margin: 20px auto;
+    }
+    .payment-card {
+        padding: 15px;
+    }
+    .payment-header {
+        padding: 15px;
+    }
+    .payment-header h1 {
+        font-size: 20px;
+    }
+    .summary-row:last-child {
+        font-size: 16px;
+    }
+}

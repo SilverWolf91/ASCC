@@ -684,11 +684,12 @@ body {
 @media (max-width: 768px) {
     .product-detail {
         grid-template-columns: 1fr;
-        padding: 20px;
+        padding: 15px;
+        gap: 20px;
     }
     
     .carousel-container {
-        height: 350px;
+        height: 250px;
     }
     
     .product-title-detail {
