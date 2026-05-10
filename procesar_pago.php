@@ -113,7 +113,12 @@ $mp_response = json_decode($response, true);
 $init_point = "";
 
 if ($http_code == 200 || $http_code == 201) {
-    $init_point = $mp_response['init_point']; // URL de redirección al Checkout Pro
+    // Si el token es de prueba (TEST-), usamos el sandbox_init_point, sino el init_point real
+    if (strpos($access_token, 'TEST-') === 0) {
+        $init_point = $mp_response['sandbox_init_point'];
+    } else {
+        $init_point = $mp_response['init_point'];
+    }
 } else {
     // Si hay error al crear la preferencia
     $error_msg = $mp_response['message'] ?? 'Error desconocido en Mercado Pago';
