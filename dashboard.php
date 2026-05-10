@@ -651,11 +651,18 @@ function tendenciaEmoji(string $cat, string $tipo): string {
                             $thumb = !empty($imgs) ? $imgs[0] : 'img/no-image.png';
                         ?>
                         <div class="product-card">
+                            <?php
+                            $dias_publicado = (strtotime('now') - strtotime($producto['fecha_publicacion'])) / (60 * 60 * 24);
+                            if ($dias_publicado <= 7):
+                            ?>
+                            <div class="new-badge">⭐ Nuevo</div>
+                            <?php endif; ?>
                             <img src="<?= htmlspecialchars(getImageUrl($thumb)) ?>"
                                 alt="<?= htmlspecialchars($producto['tipo_producto']) ?>" class="product-image"
                                 onerror="this.src='/ascc/public/img/no-image.png'">
                             <div class="product-card-body">
                                 <h3 class="product-title"><?= htmlspecialchars($producto['tipo_producto']) ?></h3>
+                                <p style="font-size: 0.8em; color: #666; margin-bottom: 5px;">Código: <?= htmlspecialchars($producto['codigo_producto'] ?? 'N/A') ?></p>
                                 <div class="product-price">$<?= number_format($producto['precio'], 0, ',', '.') ?></div>
                                 <div class="product-quantity">
                                     <strong><?= t('quantity') ?>:</strong>
@@ -708,6 +715,7 @@ function tendenciaEmoji(string $cat, string $tipo): string {
                                 onerror="this.src='/ascc/public/img/no-image.png'">
                             <div class="product-card-body">
                                 <h3 class="product-title"><?= htmlspecialchars($producto['tipo_producto']) ?></h3>
+                                <p style="font-size: 0.8em; color: #666; margin-bottom: 5px;">Código: <?= htmlspecialchars($producto['codigo_producto'] ?? 'N/A') ?></p>
                                 <div class="product-price">$<?= number_format($producto['precio'], 0, ',', '.') ?></div>
                                 <div class="product-location">
                                     📍 <?= htmlspecialchars($producto['vereda']) ?>,
