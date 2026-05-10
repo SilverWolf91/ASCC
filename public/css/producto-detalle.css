@@ -692,7 +692,7 @@ body {
 /* RESPONSIVE */
 @media (max-width: 768px) {
     .detail-container {
-        padding: 20px 15px 20px 45px; /* Give room for the floating sidebar toggle */
+        padding: 20px 15px 20px 75px; /* 16px left + 48px button width + 11px clearance */
     }
     
     .product-detail {
