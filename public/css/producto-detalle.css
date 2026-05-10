@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ═══════════════════════════════════════════════════════════
  * ASCC - PRODUCTO DETALLE CSS MEJORADO
  * Sin colores feos, usa variables de tema
@@ -57,7 +57,7 @@ body {
 .carousel-container {
     position: relative;
     width: 100%;
-    height: 500px;
+    height: 350px;
     overflow: hidden;
     border-radius: 16px;
     border: 2px solid var(--border-color);
