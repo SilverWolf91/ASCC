@@ -41,6 +41,10 @@ if ($stmt->rowCount() === 0) {
 
 $producto = $stmt->fetch(PDO::FETCH_ASSOC);
 
+if ($producto['id_usuario'] == $_SESSION['id_usuario']) {
+    die("<div style='text-align:center; padding: 50px; font-family: sans-serif;'><h2>⚠️ Error: No puedes comprar tu propio producto.</h2><p>Mercado Pago bloquea automáticamente las transacciones donde el comprador y el vendedor son la misma persona.</p><p><a href='/ascc/catalogo.php' style='color:#009ee3;'>Volver al catálogo</a></p></div>");
+}
+
 // Obtener información del comprador
 $stmt = $conexion->prepare("SELECT * FROM usuarios WHERE id_usuario = :id");
 $stmt->bindParam(":id", $_SESSION["id_usuario"]);
@@ -132,18 +136,10 @@ if ($http_code == 200 || $http_code == 201) {
     <script src="https://sdk.mercadopago.com/js/v2"></script>
 </head>
 
-<body>
+<body class="theme-<?= $theme ?>" data-theme="<?= $theme ?>">
 
-    <div class="header">
-        <div class="logo" style="display: flex; align-items: center; gap: 12px;">
-            <img src="/ascc/public/img/logo.png" alt="<?= t('app_name') ?> Logo" style="height: 45px;">
-            <span style="font-size: 24px; font-weight: bold; color: #2e7d32;"><?= t('app_name') ?></span>
-        </div>
-        <div class="user-info">
-            <span class="user-name">👤 <?= htmlspecialchars($_SESSION['nombre']) ?></span>
-            <a href="/ascc/dashboard.php" class="btn-logout">Dashboard</a>
-        </div>
-    </div>
+    <!-- WIDGET DE TEMA E IDIOMA -->
+    <?php include __DIR__ . '/partials/header.php'; ?>
 
     <div class="payment-container">
         <a href="/ascc/producto_detalle.php?id=<?= $id_producto ?>" class="back-link">← Volver al producto</a>

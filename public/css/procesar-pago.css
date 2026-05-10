@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ═══════════════════════════════════════════════════════════
  * ASCC PROCESAR PAGO - ESTILOS
  * CSS extraído desde procesar_pago.php
@@ -6,7 +6,8 @@
  */
 
 body {
-    background: #f5f5f5;
+    background: var(--bg-body, #f5f5f5);
+    color: var(--text-primary, #333);
 }
 
 .payment-container {
@@ -16,11 +17,12 @@ body {
 }
 
 .payment-card {
-    background: white;
+    background: var(--bg-card, white);
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md, 0 2px 10px rgba(0, 0, 0, 0.1));
     margin-bottom: 20px;
+    border: 1px solid var(--border-color, #eee);
 }
 
 .payment-header {
@@ -42,24 +44,25 @@ body {
 }
 
 .order-summary {
-    background: #f9f9f9;
+    background: var(--bg-hover, #f9f9f9);
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 25px;
+    border: 1px solid var(--border-color, #eee);
 }
 
 .summary-row {
     display: flex;
     justify-content: space-between;
     padding: 12px 0;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid var(--border-color, #e0e0e0);
 }
 
 .summary-row:last-child {
     border-bottom: none;
     font-size: 20px;
     font-weight: bold;
-    color: #2e7d32;
+    color: var(--primary, #2e7d32);
     margin-top: 10px;
 }
 
@@ -109,14 +112,15 @@ body {
 .security-badge {
     text-align: center;
     padding: 15px;
-    background: #e3f2fd;
+    background: var(--bg-hover, #e3f2fd);
+    border: 1px solid var(--border-color, #cde4f7);
     border-radius: 8px;
     margin-top: 20px;
 }
 
 .security-badge p {
     margin: 0;
-    color: #1565c0;
+    color: var(--text-secondary, #1565c0);
     font-size: 14px;
 }
 
@@ -158,9 +162,9 @@ body {
 .warning-box {
     margin-top: 20px;
     padding: 15px;
-    background: #fff3e0;
+    background: var(--bg-hover, #fff3e0);
     border-radius: 8px;
-    border-left: 4px solid #ff9800;
+    border-left: 4px solid var(--accent, #ff9800);
 }
 
 .warning-box p {
