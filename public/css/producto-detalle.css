@@ -172,7 +172,8 @@ body {
 
 .info-row {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
     gap: 12px;
     padding: 14px;
     background: var(--bg-hover);
@@ -188,6 +189,10 @@ body {
 .info-value {
     color: var(--text-primary);
     font-weight: 600;
+    flex: 1;
+    min-width: 0;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 .description-box {
@@ -682,6 +687,10 @@ body {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
+    .detail-container {
+        padding: 20px 15px 20px 45px; /* Give room for the floating sidebar toggle */
+    }
+    
     .product-detail {
         grid-template-columns: 1fr;
         padding: 15px;
