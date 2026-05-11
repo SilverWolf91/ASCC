@@ -412,6 +412,10 @@ return [
     'pass_strong'            => 'Strong',
     'session_expired'        => 'Your session has expired. Please log in again.',
     'invalid_token'          => 'Invalid security token. Please reload the page.',
+    'exit_app_title'         => 'Leave ASCC?',
+    'exit_app_message'       => 'If you leave, your session will end and you will need to log in again.',
+    'exit_app_yes'           => 'Yes, exit',
+    'exit_app_no'            => 'No, stay',
 
     // 2FA / OTP
     'otp_email_info'    => 'To change your email, we will verify you own the new address. Click "Send code" and check the new email inbox.',

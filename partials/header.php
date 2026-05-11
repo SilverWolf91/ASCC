@@ -213,4 +213,15 @@ if (!isset($lang) || !isset($theme)) {
 <?php if (isset($_SESSION['id_usuario'])): ?>
 <!-- Cierre automático por inactividad (10 min) -->
 <script src="/ascc/public/js/session-timeout.js?v=<?= @filemtime(__DIR__ . '/../public/js/session-timeout.js') ?: '1' ?>"></script>
+
+<!-- Escudo del botón "atrás" (confirma antes de salir) -->
+<script>
+    window.ASCC_I18N = Object.assign(window.ASCC_I18N || {}, {
+        exit_app_title:   <?= json_encode(t('exit_app_title'),   JSON_UNESCAPED_UNICODE) ?>,
+        exit_app_message: <?= json_encode(t('exit_app_message'), JSON_UNESCAPED_UNICODE) ?>,
+        exit_app_yes:     <?= json_encode(t('exit_app_yes'),     JSON_UNESCAPED_UNICODE) ?>,
+        exit_app_no:      <?= json_encode(t('exit_app_no'),      JSON_UNESCAPED_UNICODE) ?>
+    });
+</script>
+<script src="/ascc/public/js/back-button-guard.js?v=<?= @filemtime(__DIR__ . '/../public/js/back-button-guard.js') ?: '1' ?>"></script>
 <?php endif; ?>

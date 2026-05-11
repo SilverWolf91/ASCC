@@ -418,6 +418,10 @@ return [
     'pass_strong'            => 'Fuerte',
     'session_expired'        => 'Tu sesión ha expirado. Inicia sesión de nuevo.',
     'invalid_token'          => 'Token de seguridad inválido. Recarga la página.',
+    'exit_app_title'         => '¿Salir de ASCC?',
+    'exit_app_message'       => 'Si sales, tu sesión se cerrará y tendrás que iniciar sesión de nuevo.',
+    'exit_app_yes'           => 'Sí, salir',
+    'exit_app_no'            => 'No, quedarme',
 
     // 2FA / OTP
     'otp_email_info'    => 'Para cambiar tu correo, verificaremos que eres el dueño del nuevo email. Haz clic en "Enviar código" y revisa la bandeja de entrada del nuevo correo.',
