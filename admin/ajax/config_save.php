@@ -1,42 +1,42 @@
 <?php
 
 /**
- * ASCC Ã¢â‚¬â€ AJAX: Guardar ConfiguraciÃƒÂ³n del Sistema
+ * ASCC — AJAX: Guardar Configuración del Sistema
  * Ruta: admin/ajax/config_save.php
  */
 
 session_start();
 
-// Ã¢â€â‚¬Ã¢â€â‚¬ AutenticaciÃƒÂ³n Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// ── Autenticación ─────────────────────────────────────────────────────────────
 if (!isset($_SESSION['user_id'], $_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'No autorizado']);
     exit;
 }
 
-// Ã¢â€â‚¬Ã¢â€â‚¬ CSRF Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// ── CSRF ──────────────────────────────────────────────────────────────────────
 $csrfPost    = trim($_POST['csrf_token'] ?? '');
 $csrfSession = $_SESSION['csrf_token']   ?? '';
 
 if (empty($csrfPost) || !hash_equals($csrfSession, $csrfPost)) {
     http_response_code(419);
-    echo json_encode(['success' => false, 'message' => 'Token CSRF invÃƒÂ¡lido.']);
+    echo json_encode(['success' => false, 'message' => 'Token CSRF inválido.']);
     exit;
 }
 
 header('Content-Type: application/json; charset=UTF-8');
 
-// Ã¢â€â‚¬Ã¢â€â‚¬ ConexiÃƒÂ³n BD Ã¢â‚¬â€ database.php expone $conexion directamente Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// ── Conexión BD — database.php expone $conexion directamente ──────────────────
 require_once '../../config/database.php';
-// A partir de aquÃƒÂ­ $conexion (PDO) estÃƒÂ¡ disponible
+// A partir de aquÁ $conexion (PDO) está disponible
 
-// Ã¢â€â‚¬Ã¢â€â‚¬ AcciÃƒÂ³n especial: test SMTP Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// ── Acción especial: test SMTP ────────────────────────────────────────────────
 if (($_POST['action'] ?? '') === 'test_smtp') {
     testSmtp($conexion);
     exit;
 }
 
-// Ã¢â€â‚¬Ã¢â€â‚¬ Guardar configuraciÃƒÂ³n Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬
+// ── Guardar configuración ─────────────────────────────────────────────────────
 saveConfig($conexion);
 exit;
 
@@ -152,19 +152,19 @@ function saveConfig(PDO $pdo): void
 
         if (in_array($key, $emailFields, true) && !empty($value)) {
             if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-                $errors[] = "Campo {$key}: email invÃƒÂ¡lido.";
+                $errors[] = "Campo {$key}: email inválido.";
                 continue;
             }
         }
 
         if (in_array($key, $numericFields, true) && !is_numeric($value)) {
-            $errors[] = "Campo {$key}: debe ser numÃƒÂ©rico.";
+            $errors[] = "Campo {$key}: debe ser numérico.";
             continue;
         }
 
         if (in_array($key, $urlFields, true) && !empty($value)) {
             if (!filter_var($value, FILTER_VALIDATE_URL)) {
-                $errors[] = "Campo {$key}: URL invÃƒÂ¡lida.";
+                $errors[] = "Campo {$key}: URL inválida.";
                 continue;
             }
         }
@@ -223,7 +223,7 @@ function saveConfig(PDO $pdo): void
             $stmt->execute($row);
         }
         $pdo->commit();
-        echo json_encode(['success' => true, 'message' => 'ConfiguraciÃƒÂ³n guardada correctamente.']);
+        echo json_encode(['success' => true, 'message' => 'Configuración guardada correctamente.']);
     } catch (PDOException $e) {
         $pdo->rollBack();
         echo json_encode(['success' => false, 'message' => 'Error de BD: ' . $e->getMessage()]);
@@ -252,11 +252,11 @@ function testSmtp(PDO $pdo): void
     $socket = @fsockopen($prefix . $host, $port, $errno, $errstr, 10);
 
     if (!$socket) {
-        echo json_encode(['success' => false, 'message' => "No se pudo conectar a {$host}:{$port} Ã¢â‚¬â€ {$errstr}"]);
+        echo json_encode(['success' => false, 'message' => "No se pudo conectar a {$host}:{$port} — {$errstr}"]);
         return;
     }
 
     fclose($socket);
     $toAdmin = $_SESSION['admin_email'] ?? $config['smtp_from_email'] ?? '';
-    echo json_encode(['success' => true, 'message' => "ConexiÃƒÂ³n exitosa a {$host}:{$port}. Correo enviado a {$toAdmin}."]);
+    echo json_encode(['success' => true, 'message' => "Conexión exitosa a {$host}:{$port}. Correo enviado a {$toAdmin}."]);
 }

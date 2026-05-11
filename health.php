@@ -1,12 +1,12 @@
 <?php
 
 /**
- * ASCC â€” Healthcheck endpoint
+ * ASCC — Healthcheck endpoint
  * Ruta: health.php
  *
- * Endpoint mÃ­nimo para Railway / monitoreo externo.
- * NO toca base de datos, sesiÃ³n, ni archivos de configuraciÃ³n del proyecto.
- * Su Ãºnico trabajo: confirmar que PHP responde con 200.
+ * Endpoint mínimo para Railway / monitoreo externo.
+ * NO toca base de datos, sesión, ni archivos de configuración del proyecto.
+ * Su único trabajo: confirmar que PHP responde con 200.
  */
 
 header('Content-Type: application/json; charset=utf-8');

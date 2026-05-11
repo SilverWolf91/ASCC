@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit;
         }
 
-        // Iniciar sesiÃ³n
+        // Iniciar sesión
         $_SESSION["id_usuario"] = $usuario["id_usuario"];
         $_SESSION["nombre"]     = $usuario["nombre"];
         $_SESSION["rol"]        = $usuario["rol"];
@@ -78,5 +78,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 // Si no es POST
 http_response_code(405);
-echo json_encode(["status" => "error", "message" => "MÃ©todo no permitido"]);
+echo json_encode(["status" => "error", "message" => "Método no permitido"]);
 exit;

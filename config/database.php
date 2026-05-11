@@ -1,16 +1,16 @@
 <?php
 
 /**
- * ASCC â€” ConexiÃ³n a la Base de Datos
+ * ASCC — Conexión a la Base de Datos
  * Ruta: config/database.php
  *
- * PatrÃ³n Singleton via static variable.
- * Compatible hacia atrÃ¡s: $conexion sigue disponible para mÃ³dulos existentes.
+ * Patrón Singleton vía variable estática.
+ * Compatible hacia atrás: $conexion sigue disponible para módulos existentes.
  */
 
 require_once __DIR__ . '/env_loader.php';
 
-// â”€â”€ ConfiguraciÃ³n â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Configuración ────────────────────────────────────────────────────────────
 define('DB_HOST',    getenv('DB_HOST')    ?: 'localhost');
 define('DB_NAME',    getenv('DB_NAME')    ?: 'ASCC');
 define('DB_USER',    getenv('DB_USER')    ?: 'root');
@@ -18,11 +18,11 @@ define('DB_PASS',    getenv('DB_PASS')    ?: '');
 define('DB_PORT',    getenv('DB_PORT')    ?: '3306');
 define('DB_CHARSET', 'utf8mb4');
 
-// â”€â”€ FunciÃ³n Singleton (mÃ³dulos nuevos) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Función Singleton (módulos nuevos) ───────────────────────────────────────
 
 /**
- * Retorna siempre la misma instancia PDO durante toda la ejecuciÃ³n.
- * No importa cuÃ¡ntas veces se llame â€” una sola conexiÃ³n abierta.
+ * Retorna siempre la misma instancia PDO durante toda la ejecución.
+ * No importa cuántas veces se llame: una sola conexión abierta.
  */
 function getDBConnection(): PDO
 {
@@ -38,7 +38,7 @@ function getDBConnection(): PDO
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES   => false,
                 PDO::ATTR_TIMEOUT            => 5,
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci, SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
             ]
         );
     }
@@ -46,7 +46,6 @@ function getDBConnection(): PDO
     return $pdo;
 }
 
-// â”€â”€ Compatibilidad hacia atrÃ¡s (mÃ³dulos existentes usan $conexion) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Compatibilidad hacia atrás (módulos existentes usan $conexion) ──────────
 // Los archivos que ya funcionan con $conexion->query() siguen igual.
-// No toques esta lÃ­nea.
 $conexion = getDBConnection();

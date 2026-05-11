@@ -1,11 +1,16 @@
 <?php
 
+// Charset UTF-8 forzado (header HTTP + interno)
+if (!headers_sent()) header('Content-Type: text/html; charset=UTF-8');
+ini_set('default_charset', 'UTF-8');
+if (function_exists('mb_internal_encoding')) mb_internal_encoding('UTF-8');
+
 /**
  * ASCC - Admin Banners
  * Ruta: admin/banners.php
- * DescripciÃ³n: GestiÃ³n de banners promocionales del marketplace.
+ * Descripción: Gestión de banners promocionales del marketplace.
  *              CRUD completo: listar, crear, activar/desactivar, eliminar.
- *              Las imÃ¡genes se guardan en /public/uploads/banners/ (ruta relativa en BD).
+ *              Las imágenes se guardan en /public/uploads/banners/ (ruta relativa en BD).
  *
  * Tabla: banners
  *   id_banner, titulo, subtitulo, url_destino, ruta_imagen, alt_imagen,
@@ -16,7 +21,7 @@
 session_start();
 
 // =============================================================================
-// SEGURIDAD â€” Triple capa
+// SEGURIDAD — Triple capa
 // =============================================================================
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
@@ -36,7 +41,7 @@ if (
 }
 
 // =============================================================================
-// INTERNACIONALIZACIÃ“N Y TEMA
+// INTERNACIONALIZACIÓN Y TEMA
 // =============================================================================
 $lang_code = $_SESSION['lang'] ?? $_COOKIE['ag_lang'] ?? 'es';
 $lang_file = __DIR__ . "/lang/{$lang_code}.php";
@@ -49,19 +54,19 @@ $theme = $_COOKIE['ag_theme'] ?? 'light';
 $theme = in_array($theme, ['light', 'dark']) ? $theme : 'light';
 
 // =============================================================================
-// CONEXIÃ“N
+// CONEXIÓN
 // =============================================================================
 require_once __DIR__ . '/../config/database.php';
 
 // =============================================================================
-// CONFIGURACIÃ“N DE SUBIDA DE IMÃGENES
+// CONFIGURACIÓN DE SUBIDA DE IMÁGENES
 // =============================================================================
-// Ruta relativa desde /public/ â€” compatible con migraciÃ³n a CDN/nube:
+// Ruta relativa desde /public/ — compatible con migración a CDN/nube:
 // solo cambia BASE_URL en config, no la BD.
 define('BANNERS_UPLOAD_DIR', __DIR__ . '/../public/uploads/banners/');
 define('BANNERS_UPLOAD_REL', 'uploads/banners/');
 define('BANNERS_MAX_SIZE',   3 * 1024 * 1024); // 3 MB
-define('BANNERS_MIN_WIDTH',  800);              // px mÃ­nimo
+define('BANNERS_MIN_WIDTH',  800);              // px mínimo
 define('BANNERS_TIPOS_MIME', ['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
 define('BANNERS_EXTENSIONES', ['jpg', 'jpeg', 'png', 'webp', 'gif']);
 
@@ -71,12 +76,12 @@ if (!is_dir(BANNERS_UPLOAD_DIR)) {
 }
 
 // =============================================================================
-// POSICIONES DISPONIBLES â€” sin hardcodear en vistas
+// POSICIONES DISPONIBLES — sin hardcodear en vistas
 // =============================================================================
 $posiciones_disponibles = [
     'hero'       => $lang['banner_pos_hero']       ?? 'Hero / Slider principal',
     'secundario' => $lang['banner_pos_secundario']  ?? 'Banner secundario',
-    'categorias' => $lang['banner_pos_categorias']  ?? 'SecciÃ³n categorÃ­as',
+    'categorias' => $lang['banner_pos_categorias']  ?? 'Sección categorías',
     'sidebar'    => $lang['banner_pos_sidebar']     ?? 'Barra lateral',
 ];
 
@@ -103,11 +108,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fecha_fin   = $_POST['fecha_fin']    ?? '';
         $activo      = isset($_POST['activo']) ? 1 : 0;
 
-        // ValidaciÃ³n bÃ¡sica
+        // Validación básica
         if ($titulo === '') {
-            $feedback = ['type' => 'error', 'msg' => $lang['banner_error_titulo'] ?? 'El tÃ­tulo es obligatorio.'];
+            $feedback = ['type' => 'error', 'msg' => $lang['banner_error_titulo'] ?? 'El título es obligatorio.'];
         } elseif (!array_key_exists($posicion, $posiciones_disponibles)) {
-            $feedback = ['type' => 'error', 'msg' => $lang['banner_error_posicion'] ?? 'PosiciÃ³n invÃ¡lida.'];
+            $feedback = ['type' => 'error', 'msg' => $lang['banner_error_posicion'] ?? 'Posición inválida.'];
         } elseif (empty($_FILES['imagen']['name'])) {
             $feedback = ['type' => 'error', 'msg' => $lang['banner_error_imagen'] ?? 'La imagen es obligatoria.'];
         } else {
@@ -184,7 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id_banner = (int)($_POST['id_banner'] ?? 0);
 
         if ($id_banner > 0) {
-            // Obtener ruta de imagen para borrar el archivo fÃ­sico
+            // Obtener ruta de imagen para borrar el archivo físico
             $row = $conexion->prepare(
                 "SELECT ruta_imagen FROM banners WHERE id_banner = :id"
             );
@@ -195,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "DELETE FROM banners WHERE id_banner = :id"
             )->execute([':id' => $id_banner]);
 
-            // Borrar archivo fÃ­sico del servidor (no crÃ­tico si falla)
+            // Borrar archivo físico del servidor (no crítico si falla)
             if ($banner_a_borrar) {
                 $archivo_fisico = __DIR__ . '/../public/' . $banner_a_borrar['ruta_imagen'];
                 if (is_file($archivo_fisico)) {
@@ -209,39 +214,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // =============================================================================
-// FUNCIÃ“N â€” Subida segura de imÃ¡genes
+// FUNCIÓN — Subida segura de imágenes
 // =============================================================================
 function subirImagenBanner(array $file): array
 {
     // 1. Verificar errores de PHP
     if ($file['error'] !== UPLOAD_ERR_OK) {
-        return ['error' => true, 'msg' => 'Error al subir el archivo (cÃ³digo ' . $file['error'] . ').'];
+        return ['error' => true, 'msg' => 'Error al subir el archivo (código ' . $file['error'] . ').'];
     }
 
-    // 2. Verificar tamaÃ±o
+    // 2. Verificar tamaño
     if ($file['size'] > BANNERS_MAX_SIZE) {
         $mb = round(BANNERS_MAX_SIZE / 1024 / 1024, 1);
-        return ['error' => true, 'msg' => "La imagen supera el tamaÃ±o mÃ¡ximo de {$mb} MB."];
+        return ['error' => true, 'msg' => "La imagen supera el tamaño máximo de {$mb} MB."];
     }
 
-    // 3. Validar MIME real (no confiar en la extensiÃ³n del cliente)
+    // 3. Validar MIME real (no confiar en la extensión del cliente)
     $mime_real = mime_content_type($file['tmp_name']);
     if (!in_array($mime_real, BANNERS_TIPOS_MIME)) {
         return ['error' => true, 'msg' => 'Formato no permitido. Use JPG, PNG, WebP o GIF.'];
     }
 
-    // 4. Verificar que sea una imagen vÃ¡lida con GD
+    // 4. Verificar que sea una imagen válida con GD
     $info = @getimagesize($file['tmp_name']);
     if (!$info) {
-        return ['error' => true, 'msg' => 'El archivo no es una imagen vÃ¡lida.'];
+        return ['error' => true, 'msg' => 'El archivo no es una imagen válida.'];
     }
 
-    // 5. Validar dimensiones mÃ­nimas
+    // 5. Validar dimensiones mínimas
     if ($info[0] < BANNERS_MIN_WIDTH) {
         return ['error' => true, 'msg' => 'La imagen debe tener al menos ' . BANNERS_MIN_WIDTH . 'px de ancho.'];
     }
 
-    // 6. Generar nombre Ãºnico seguro â€” sin path traversal posible
+    // 6. Generar nombre único seguro — sin path traversal posible
     $ext       = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     if (!in_array($ext, BANNERS_EXTENSIONES)) $ext = 'jpg';
     $nombre    = 'banner_' . uniqid('', true) . '_' . time() . '.' . $ext;
@@ -259,7 +264,7 @@ function subirImagenBanner(array $file): array
 }
 
 // =============================================================================
-// LEER BANNERS DE LA BD â€” con filtros opcionales
+// LEER BANNERS DE LA BD — con filtros opcionales
 // =============================================================================
 $filter_pos    = trim($_GET['posicion'] ?? '');
 $filter_estado = $_GET['estado'] ?? '';
@@ -287,7 +292,7 @@ $count_stmt->execute($params);
 $total_banners = (int)$count_stmt->fetchColumn();
 $total_pages   = (int)ceil($total_banners / $per_page);
 
-// PÃ¡gina actual
+// Página actual
 $params[':limit']  = $per_page;
 $params[':offset'] = $offset;
 
@@ -321,7 +326,7 @@ $kpi_raw = $conexion->query(
      FROM banners"
 )->fetch();
 
-// Banners por posiciÃ³n
+// Banners por posición
 $por_posicion = $conexion->query(
     "SELECT posicion, COUNT(*) AS total
      FROM banners
@@ -334,7 +339,7 @@ $por_posicion = $conexion->query(
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $lang['banner_page_title'] ?? 'Banners' ?> â€” ASCC Admin</title>
+    <title><?= $lang['banner_page_title'] ?? 'Banners' ?> — ASCC Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap"
@@ -436,7 +441,7 @@ $por_posicion = $conexion->query(
                         <?= $lang['banner_registered'] ?? 'banners registrados' ?>
                     </p>
                 </div>
-                <!-- BotÃ³n abrir modal crear -->
+                <!-- Botón abrir modal crear -->
                 <button class="ab-btn-crear" id="btnAbrirCrear">
                     <i class="fas fa-plus"></i>
                     <span><?= $lang['banner_btn_create'] ?? 'Nuevo banner' ?></span>
@@ -515,7 +520,7 @@ $por_posicion = $conexion->query(
             <?php if (empty($banners)): ?>
                 <div class="ab-empty">
                     <div class="ab-empty__icon"><i class="fas fa-images"></i></div>
-                    <h3><?= $lang['banner_empty_title'] ?? 'No hay banners aÃºn' ?></h3>
+                    <h3><?= $lang['banner_empty_title'] ?? 'No hay banners aún' ?></h3>
                     <p><?= $lang['banner_empty_desc'] ?? 'Crea tu primer banner para empezar a promocionar el marketplace.' ?>
                     </p>
                     <button class="ab-btn-crear"
@@ -532,7 +537,7 @@ $por_posicion = $conexion->query(
                         $tiene_vigencia = $b['fecha_inicio'] || $b['fecha_fin'];
                         $pos_label     = $posiciones_disponibles[$b['posicion']] ?? $b['posicion'];
 
-                        // Determinar si estÃ¡ dentro de la vigencia
+                        // Determinar si está dentro de la vigencia
                         $hoy = date('Y-m-d');
                         $vigente = true;
                         if ($b['fecha_inicio'] && $hoy < $b['fecha_inicio']) $vigente = false;
@@ -540,7 +545,7 @@ $por_posicion = $conexion->query(
                     ?>
                         <div class="ab-card <?= !$es_activo ? 'ab-card--inactive' : '' ?>" data-id="<?= $b['id_banner'] ?>">
 
-                            <!-- Imagen de previsualizaciÃ³n -->
+                            <!-- Imagen de previsualización -->
                             <div class="ab-card__img-wrap"
                                 onclick="abrirPreview('<?= $img_src ?>', '<?= htmlspecialchars(addslashes($b['titulo'])) ?>')">
                                 <img src="<?= $img_src ?>" alt="<?= htmlspecialchars($b['alt_imagen']) ?>" class="ab-card__img"
@@ -555,7 +560,7 @@ $por_posicion = $conexion->query(
 
                                 <div class="ab-card__header">
                                     <div class="ab-card__badges">
-                                        <!-- Badge de posiciÃ³n -->
+                                        <!-- Badge de posición -->
                                         <span class="ab-badge ab-badge--pos ab-badge--pos-<?= $b['posicion'] ?>">
                                             <?= htmlspecialchars($pos_label) ?>
                                         </span>
@@ -593,7 +598,7 @@ $por_posicion = $conexion->query(
                                     </a>
                                 <?php endif; ?>
 
-                                <!-- MÃ©tricas -->
+                                <!-- Métricas -->
                                 <div class="ab-card__meta">
                                     <span>
                                         <i class="fas fa-mouse-pointer"></i>
@@ -635,7 +640,7 @@ $por_posicion = $conexion->query(
                                     <input type="hidden" name="id_banner" value="<?= $b['id_banner'] ?>">
                                     <button type="submit" class="au-action-btn au-action-btn--delete"
                                         title="<?= $lang['banner_delete'] ?? 'Eliminar' ?>"
-                                        onclick="return confirm('<?= addslashes($lang['banner_confirm_delete'] ?? 'Â¿Eliminar este banner? No se puede deshacer.') ?>')">
+                                        onclick="return confirm('<?= addslashes($lang['banner_confirm_delete'] ?? '¿Eliminar este banner? No se puede deshacer.') ?>')">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
@@ -645,12 +650,12 @@ $por_posicion = $conexion->query(
                     <?php endforeach; ?>
                 </div>
 
-                <!-- PAGINACIÃ“N -->
+                <!-- PAGINACIÓN -->
                 <?php if ($total_pages > 1): ?>
                     <div class="au-pagination">
                         <span class="au-pagination__info">
                             <?= $lang['users_showing'] ?>
-                            <?= $offset + 1 ?>â€“<?= min($offset + $per_page, $total_banners) ?>
+                            <?= $offset + 1 ?>–<?= min($offset + $per_page, $total_banners) ?>
                             <?= $lang['users_of'] ?>
                             <?= $total_banners ?>
                         </span>
@@ -682,7 +687,7 @@ $por_posicion = $conexion->query(
     </main>
 
     <!-- =========================================================
-         MODAL â€” CREAR BANNER
+         MODAL — CREAR BANNER
     ========================================================== -->
     <div class="ab-modal-backdrop" id="modalBackdrop" onclick="cerrarModal()"></div>
 
@@ -704,14 +709,14 @@ $por_posicion = $conexion->query(
 
             <div class="ab-modal__body">
 
-                <!-- ZONA DE PREVISUALIZACIÃ“N + SUBIDA -->
+                <!-- ZONA DE PREVISUALIZACIÓN + SUBIDA -->
                 <div class="ab-upload-zone" id="uploadZone">
                     <input type="file" name="imagen" id="inputImagen" accept=".jpg,.jpeg,.png,.webp,.gif"
                         class="ab-upload-zone__input">
                     <div class="ab-upload-zone__placeholder" id="uploadPlaceholder">
                         <i class="fas fa-cloud-upload-alt"></i>
-                        <strong><?= $lang['banner_upload_prompt'] ?? 'Arrastra la imagen aquÃ­ o haz clic' ?></strong>
-                        <span><?= $lang['banner_upload_hint'] ?? 'JPG, PNG, WebP Â· MÃ¡x. 3MB Â· MÃ­n. 800px de ancho' ?></span>
+                        <strong><?= $lang['banner_upload_prompt'] ?? 'Arrastra la imagen aquí o haz clic' ?></strong>
+                        <span><?= $lang['banner_upload_hint'] ?? 'JPG, PNG, WebP · Máx. 3MB · Mín. 800px de ancho' ?></span>
                     </div>
                     <img src="" alt="" class="ab-upload-zone__preview" id="imgPreview" style="display:none">
                     <button type="button" class="ab-upload-zone__clear" id="btnClearImg" style="display:none"
@@ -723,10 +728,10 @@ $por_posicion = $conexion->query(
                 <!-- CAMPOS DEL FORMULARIO -->
                 <div class="ab-form-grid">
 
-                    <!-- TÃ­tulo -->
+                    <!-- Título -->
                     <div class="ab-form-field ab-form-field--full">
                         <label class="ab-form-label" for="titulo">
-                            <?= $lang['banner_field_title'] ?? 'TÃ­tulo' ?>
+                            <?= $lang['banner_field_title'] ?? 'Título' ?>
                             <span class="ab-required">*</span>
                         </label>
                         <input type="text" id="titulo" name="titulo" class="ab-form-input"
@@ -734,10 +739,10 @@ $por_posicion = $conexion->query(
                             maxlength="120" required>
                     </div>
 
-                    <!-- SubtÃ­tulo -->
+                    <!-- Subtítulo -->
                     <div class="ab-form-field ab-form-field--full">
                         <label class="ab-form-label" for="subtitulo">
-                            <?= $lang['banner_field_subtitle'] ?? 'SubtÃ­tulo' ?>
+                            <?= $lang['banner_field_subtitle'] ?? 'Subtítulo' ?>
                             <span class="ab-optional">(<?= $lang['optional'] ?? 'opcional' ?>)</span>
                         </label>
                         <input type="text" id="subtitulo" name="subtitulo" class="ab-form-input"
@@ -765,10 +770,10 @@ $por_posicion = $conexion->query(
                             maxlength="180">
                     </div>
 
-                    <!-- PosiciÃ³n -->
+                    <!-- Posición -->
                     <div class="ab-form-field">
                         <label class="ab-form-label" for="posicion">
-                            <?= $lang['banner_field_position'] ?? 'PosiciÃ³n' ?>
+                            <?= $lang['banner_field_position'] ?? 'Posición' ?>
                             <span class="ab-required">*</span>
                         </label>
                         <select id="posicion" name="posicion" class="ab-form-select" required>
@@ -781,7 +786,7 @@ $por_posicion = $conexion->query(
                     <!-- Orden -->
                     <div class="ab-form-field">
                         <label class="ab-form-label" for="orden">
-                            <?= $lang['banner_field_order'] ?? 'Orden de apariciÃ³n' ?>
+                            <?= $lang['banner_field_order'] ?? 'Orden de aparición' ?>
                         </label>
                         <input type="number" id="orden" name="orden" class="ab-form-input" value="0" min="0" max="99">
                         <span class="ab-form-hint"><?= $lang['banner_field_order_hint'] ?? '0 = primero' ?></span>
@@ -795,7 +800,7 @@ $por_posicion = $conexion->query(
                         </label>
                         <input type="date" id="fecha_inicio" name="fecha_inicio" class="ab-form-input">
                         <span
-                            class="ab-form-hint"><?= $lang['banner_field_date_hint'] ?? 'Dejar vacÃ­o = sin lÃ­mite' ?></span>
+                            class="ab-form-hint"><?= $lang['banner_field_date_hint'] ?? 'Dejar vacío = sin límite' ?></span>
                     </div>
 
                     <!-- Fecha fin -->
@@ -814,7 +819,7 @@ $por_posicion = $conexion->query(
                                 id="chkActivo">
                             <span class="ab-toggle-switch"></span>
                             <span class="ab-toggle-text" id="toggleText">
-                                <?= $lang['banner_active'] ?? 'Activo' ?> â€”
+                                <?= $lang['banner_active'] ?? 'Activo' ?> —
                                 <?= $lang['banner_toggle_hint'] ?? 'Visible en el marketplace' ?>
                             </span>
                         </label>
@@ -836,7 +841,7 @@ $por_posicion = $conexion->query(
     </div><!-- /.ab-modal -->
 
     <!-- =========================================================
-         LIGHTBOX â€” PrevisualizaciÃ³n de imagen
+         LIGHTBOX — Previsualización de imagen
     ========================================================== -->
     <div class="ap-lightbox" id="lightboxBanner" style="display:none">
         <div class="ap-lightbox__backdrop" onclick="cerrarLightbox()"></div>

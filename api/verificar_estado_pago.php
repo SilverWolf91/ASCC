@@ -2,7 +2,7 @@
 session_start();
 require_once __DIR__ . "/../config/database.php";
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 $referencia = $_GET['ref'] ?? '';
 
@@ -11,7 +11,7 @@ if (empty($referencia)) {
     exit;
 }
 
-// Buscar transacciÃ³n en base de datos
+// Buscar transacción en base de datos
 $stmt = $conexion->prepare("SELECT estado FROM transacciones WHERE referencia = :ref");
 $stmt->bindParam(":ref", $referencia);
 $stmt->execute();
@@ -22,8 +22,8 @@ if ($stmt->rowCount() > 0) {
 } else {
     // Si no existe en BD, verificar con API de Wompi
 
-    // CONFIGURACIÃ“N WOMPI
-    $WOMPI_PRIVATE_KEY = "prv_test_as45sd78hjk9lqw34ert56yui8op90"; // Cambiar en producciÃ³n
+    // CONFIGURACIÓN WOMPI
+    $WOMPI_PRIVATE_KEY = "prv_test_as45sd78hjk9lqw34ert56yui8op90"; // Cambiar en producción
 
     // Consultar estado en Wompi
     $url = "https://sandbox.wompi.co/v1/transactions?reference=" . urlencode($referencia);

@@ -2,12 +2,12 @@
 
 /**
  * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
- * ASCC â€” API: Notificaciones en Tiempo Real
+ * ASCC — API: Notificaciones en Tiempo Real
  * Ruta: api/get_notificaciones.php
  *
- * GET  â†’ Devuelve notificaciones no leÃ­das del usuario.
- * POST action=marcar_leida  â†’ Marca una notificaciÃ³n como leÃ­da.
- * POST action=marcar_todas  â†’ Marca todas como leÃ­das.
+ * GET  â†’ Devuelve notificaciones no leídas del usuario.
+ * POST action=marcar_leida  â†’ Marca una notificación como leída.
+ * POST action=marcar_todas  â†’ Marca todas como leídas.
  * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  */
 
@@ -21,7 +21,7 @@ ob_end_clean();
 
 header('Content-Type: application/json; charset=utf-8');
 
-/* â”€â”€ Verificar sesiÃ³n â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* â”€â”€ Verificar sesión â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 if (!isset($_SESSION['id_usuario'])) {
     http_response_code(401);
     exit(json_encode(['success' => false, 'message' => 'No autorizado.']));
@@ -33,7 +33,7 @@ $rol        = $_SESSION['rol'] ?? 'comprador';
 ob_end_clean();
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   GET â€” Listar notificaciones no leÃ­das
+   GET — Listar notificaciones no leídas
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   POST â€” Marcar como leÃ­da(s)
+   POST — Marcar como leída(s)
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'marcar_leida') {
         $id_notif = (int) ($_POST['id_notificacion'] ?? 0);
         if ($id_notif <= 0) {
-            exit(json_encode(['success' => false, 'message' => 'ID invÃ¡lido.']));
+            exit(json_encode(['success' => false, 'message' => 'ID inválido.']));
         }
 
         try {
@@ -136,8 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit(json_encode(['success' => true]));
     }
 
-    exit(json_encode(['success' => false, 'message' => 'AcciÃ³n desconocida.']));
+    exit(json_encode(['success' => false, 'message' => 'Acción desconocida.']));
 }
 
 http_response_code(405);
-exit(json_encode(['success' => false, 'message' => 'MÃ©todo no permitido.']));
+exit(json_encode(['success' => false, 'message' => 'Método no permitido.']));

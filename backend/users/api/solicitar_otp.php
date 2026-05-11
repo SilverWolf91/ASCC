@@ -2,11 +2,11 @@
 
 /**
  * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
- * ASCC â€” API: Solicitar cÃ³digo OTP (2FA)
+ * ASCC — API: Solicitar código OTP (2FA)
  * Ruta: api/solicitar_otp.php
  *
  * POST: csrf_token, tipo (email|password), email_nuevo (solo si tipo=email)
- * Genera un cÃ³digo de 6 dÃ­gitos, lo guarda en sesiÃ³n y lo envÃ­a por email.
+ * Genera un código de 6 dígitos, lo guarda en sesión y lo envía por email.
  * Expira en 5 minutos.
  * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  */
@@ -17,7 +17,7 @@ ini_set('log_errors',     '1');
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     header('Content-Type: application/json; charset=utf-8');
-    exit(json_encode(['success' => false, 'message' => 'MÃ©todo no permitido.']));
+    exit(json_encode(['success' => false, 'message' => 'Método no permitido.']));
 }
 
 ob_start();
@@ -31,7 +31,7 @@ header('Content-Type: application/json; charset=utf-8');
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-/* â”€â”€ SesiÃ³n â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* â”€â”€ Sesión â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 if (!isset($_SESSION['id_usuario'])) {
     http_response_code(401);
     exit(json_encode(['success' => false, 'message' => t('session_expired')]));
@@ -61,7 +61,7 @@ $tipo = trim($_POST['tipo'] ?? '');
 $otp_code = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 $expiry   = time() + 300; // 5 minutos
 
-/* â”€â”€ Procesar segÃºn tipo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* â”€â”€ Procesar según tipo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 if ($tipo === 'email') {
 
     $email_nuevo = trim($_POST['email_nuevo'] ?? '');
@@ -74,7 +74,7 @@ if ($tipo === 'email') {
         exit(json_encode(['success' => false, 'message' => t('otp_same_email')]));
     }
 
-    /* Verificar que el nuevo email no estÃ© tomado */
+    /* Verificar que el nuevo email no esté tomado */
     $stmt2 = $conexion->prepare(
         'SELECT id_usuario FROM usuarios WHERE email = :email AND id_usuario != :id'
     );
@@ -82,7 +82,7 @@ if ($tipo === 'email') {
     $stmt2->bindParam(':id',    $id_usuario, PDO::PARAM_INT);
     $stmt2->execute();
     if ($stmt2->fetch()) {
-        exit(json_encode(['success' => false, 'message' => 'Este correo ya estÃ¡ registrado por otro usuario.']));
+        exit(json_encode(['success' => false, 'message' => 'Este correo ya está registrado por otro usuario.']));
     }
 
     $_SESSION['otp']['email'] = [
@@ -103,7 +103,7 @@ if ($tipo === 'email') {
     $enviado = enviarEmailOtp($usuario['email'], $usuario['nombre'], $otp_code, 'password');
 
 } else {
-    exit(json_encode(['success' => false, 'message' => 'Tipo de verificaciÃ³n invÃ¡lido.']));
+    exit(json_encode(['success' => false, 'message' => 'Tipo de verificación inválido.']));
 }
 
 /* â”€â”€ Respuesta â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
@@ -114,19 +114,19 @@ if ($enviado) {
 }
 
 /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   FunciÃ³n: enviar email con cÃ³digo OTP
+   Función: enviar email con código OTP
 â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function enviarEmailOtp(string $email, string $nombre, string $codigo, string $tipo): bool
 {
     $mail = new PHPMailer(true);
 
     $asunto = $tipo === 'email'
-        ? 'ðŸ” CÃ³digo para cambiar tu correo â€” ASCC'
-        : 'ðŸ” CÃ³digo para cambiar tu contraseÃ±a â€” ASCC';
+        ? 'ðŸ” Código para cambiar tu correo — ASCC'
+        : 'ðŸ” Código para cambiar tu contraseña — ASCC';
 
     $accion = $tipo === 'email'
-        ? 'cambiar tu <strong>correo electrÃ³nico</strong>'
-        : 'cambiar tu <strong>contraseÃ±a</strong>';
+        ? 'cambiar tu <strong>correo electrónico</strong>'
+        : 'cambiar tu <strong>contraseña</strong>';
 
     try {
         $mail->isSMTP();
@@ -170,31 +170,31 @@ function enviarEmailOtp(string $email, string $nombre, string $codigo, string $t
         </head>
         <body>
         <div class='container'>
-            <div class='header'><h1>ðŸ” VerificaciÃ³n de seguridad</h1></div>
+            <div class='header'><h1>ðŸ” Verificación de seguridad</h1></div>
             <div class='content'>
                 <p>Hola <strong>$nombre</strong>,</p>
-                <p>Recibimos una solicitud para $accion en <strong>ASCC</strong>. Usa el siguiente cÃ³digo de verificaciÃ³n:</p>
+                <p>Recibimos una solicitud para $accion en <strong>ASCC</strong>. Usa el siguiente código de verificación:</p>
                 <div class='otp-box'>
                     <div class='otp-code'>$codigo</div>
-                    <p style='color:#555;margin:8px 0 0;font-size:13px;'>VÃ¡lido por <strong>5 minutos</strong></p>
+                    <p style='color:#555;margin:8px 0 0;font-size:13px;'>Válido por <strong>5 minutos</strong></p>
                 </div>
                 <div class='warning'>
                     <p style='margin:0;color:#92400e;'>
                         <strong>âš ï¸ Seguridad:</strong><br>
-                        â€¢ Nunca compartas este cÃ³digo con nadie<br>
-                        â€¢ ASCC jamÃ¡s te lo pedirÃ¡ por telÃ©fono o chat<br>
-                        â€¢ Si no solicitaste este cambio, ignora este email
+                        • Nunca compartas este código con nadie<br>
+                        • ASCC jamás te lo pedirá por teléfono o chat<br>
+                        • Si no solicitaste este cambio, ignora este email
                     </p>
                 </div>
             </div>
             <div class='footer'>
-                <p>Â© 2025 ASCC â€” Marketplace Agropecuario de Colombia ðŸ‡¨ðŸ‡´</p>
-                <p>Correo automÃ¡tico, no respondas.</p>
+                <p>© 2025 ASCC — Marketplace Agropecuario de Colombia ðŸ‡¨ðŸ‡´</p>
+                <p>Correo automático, no respondas.</p>
             </div>
         </div>
         </body></html>";
 
-        $mail->AltBody = "Hola $nombre,\n\nTu cÃ³digo de verificaciÃ³n ASCC es: $codigo\n\nVÃ¡lido por 5 minutos. No lo compartas con nadie.";
+        $mail->AltBody = "Hola $nombre,\n\nTu código de verificación ASCC es: $codigo\n\nVálido por 5 minutos. No lo compartas con nadie.";
 
         $mail->send();
         return true;

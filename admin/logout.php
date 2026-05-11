@@ -1,8 +1,13 @@
 <?php
+
+// Charset UTF-8 forzado (header HTTP + interno)
+if (!headers_sent()) header('Content-Type: text/html; charset=UTF-8');
+ini_set('default_charset', 'UTF-8');
+if (function_exists('mb_internal_encoding')) mb_internal_encoding('UTF-8');
 /**
  * ASCC - Admin Logout
  * Ruta: admin/logout.php
- * DescripciÃ³n: Cierra la sesiÃ³n del administrador de forma segura
+ * Descripción: Cierra la sesión del administrador de forma segura
  */
 
 session_start();
@@ -10,7 +15,7 @@ session_start();
 // Verificar que era realmente admin antes de destruir
 $was_admin = isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 
-// Destruir toda la sesiÃ³n
+// Destruir toda la sesión
 $_SESSION = [];
 
 if (ini_get('session.use_cookies')) {
@@ -27,6 +32,6 @@ if (ini_get('session.use_cookies')) {
 
 session_destroy();
 
-// Redirigir siempre al login de admin (nunca al pÃºblico)
+// Redirigir siempre al login de admin (nunca al público)
 header('Location: login.php?logout=1');
 exit;

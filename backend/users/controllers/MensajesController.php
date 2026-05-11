@@ -6,22 +6,22 @@ error_reporting(E_ALL);
 /**
  * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  * MENSAJES CONTROLLER - CORREGIDO
- * GestiÃ³n completa del sistema de chat
+ * Gestión completa del sistema de chat
  * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  */
 
 session_start();
 require_once __DIR__ . "/../config/database.php";
 
-// Verificar autenticaciÃ³n
+// Verificar autenticación
 if (!isset($_SESSION['id_usuario'])) {
     http_response_code(401);
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['success' => false, 'message' => 'No autenticado']);
     exit;
 }
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 $id_usuario = $_SESSION['id_usuario'];
 $accion = $_POST['accion'] ?? $_GET['accion'] ?? $_GET['action'] ?? '';
@@ -92,7 +92,7 @@ switch ($accion) {
                 $id_comprador = $id_usuario;
             }
 
-            // Buscar o crear conversaciÃ³n
+            // Buscar o crear conversación
             $stmt = $conexion->prepare("
                 SELECT id_conversacion
                 FROM conversaciones
@@ -107,10 +107,10 @@ switch ($accion) {
             $conversacion = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($conversacion) {
-                // Ya existe la conversaciÃ³n
+                // Ya existe la conversación
                 $id_conversacion = (int)$conversacion['id_conversacion'];
             } else {
-                // Crear nueva conversaciÃ³n
+                // Crear nueva conversación
                 $stmt = $conexion->prepare("
                     INSERT INTO conversaciones (id_producto, id_comprador, id_vendedor)
                     VALUES (:id_producto, :id_comprador, :id_vendedor)
@@ -133,7 +133,7 @@ switch ($accion) {
             $stmt->bindParam(':mensaje', $mensaje, PDO::PARAM_STR);
             $stmt->execute();
 
-            // Actualizar timestamp de conversaciÃ³n
+            // Actualizar timestamp de conversación
             $stmt = $conexion->prepare("
                 UPDATE conversaciones
                 SET ultima_actualizacion = NOW()
@@ -218,19 +218,19 @@ switch ($accion) {
         break;
 
     /**
-     * OBTENER MENSAJES DE UNA CONVERSACIÃ“N
+     * OBTENER MENSAJES DE UNA CONVERSACIÓN
      */
     case 'obtener_mensajes':
     case 'mensajes':
         $id_conversacion = (int)($_GET['id_conversacion'] ?? 0);
 
         if (!$id_conversacion) {
-            echo json_encode(['success' => false, 'message' => 'ConversaciÃ³n no especificada']);
+            echo json_encode(['success' => false, 'message' => 'Conversación no especificada']);
             exit;
         }
 
         try {
-            // Verificar acceso y obtener info de la conversaciÃ³n
+            // Verificar acceso y obtener info de la conversación
             $stmt = $conexion->prepare("
                 SELECT 
                     c.*,
@@ -281,7 +281,7 @@ switch ($accion) {
             $stmt->execute();
             $mensajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Marcar como leÃ­dos
+            // Marcar como leídos
             $stmt = $conexion->prepare("
                 UPDATE mensajes 
                 SET leido = 1
@@ -318,7 +318,7 @@ switch ($accion) {
         break;
 
     /**
-     * ENVIAR MENSAJE EN CONVERSACIÃ“N EXISTENTE
+     * ENVIAR MENSAJE EN CONVERSACIÓN EXISTENTE
      */
     case 'enviar_mensaje':
         $id_conversacion = (int)($_POST['id_conversacion'] ?? 0);
@@ -359,7 +359,7 @@ switch ($accion) {
 
             $id_mensaje = $conexion->lastInsertId();
 
-            // Actualizar timestamp de conversaciÃ³n
+            // Actualizar timestamp de conversación
             $stmt = $conexion->prepare("
                 UPDATE conversaciones
                 SET ultima_actualizacion = NOW()
@@ -380,7 +380,7 @@ switch ($accion) {
         break;
 
     /**
-     * LIMPIAR CONVERSACIÃ“N (BORRADO SUAVE - SOLO PARA QUIEN BORRA)
+     * LIMPIAR CONVERSACIÓN (BORRADO SUAVE - SOLO PARA QUIEN BORRA)
      */
     case 'limpiar_conversacion':
         $id_conversacion = (int)($_POST['id_conversacion'] ?? 0);
@@ -447,7 +447,7 @@ switch ($accion) {
         break;
 
     /**
-     * ELIMINAR CONVERSACIÃ“N COMPLETA (BORRADO SUAVE - SOLO PARA QUIEN ELIMINA)
+     * ELIMINAR CONVERSACIÓN COMPLETA (BORRADO SUAVE - SOLO PARA QUIEN ELIMINA)
      */
     case 'eliminar_conversacion':
         $id_conversacion = (int)($_POST['id_conversacion'] ?? 0);
@@ -480,7 +480,7 @@ switch ($accion) {
                 exit;
             }
 
-            // Determinar si es comprador o vendedor y marcar la conversaciÃ³n como borrada
+            // Determinar si es comprador o vendedor y marcar la conversación como borrada
             if ($conversacion['id_comprador'] == $id_usuario) {
                 // Es el comprador, marcar borrado_por_comprador
                 $stmt = $conexion->prepare("
@@ -500,7 +500,7 @@ switch ($accion) {
             $stmt->bindParam(':id_conversacion', $id_conversacion, PDO::PARAM_INT);
             $stmt->execute();
 
-            // TambiÃ©n marcar todos los mensajes como borrados para este usuario
+            // También marcar todos los mensajes como borrados para este usuario
             // Mensajes enviados
             $stmt = $conexion->prepare("
                 UPDATE mensajes 
@@ -523,7 +523,7 @@ switch ($accion) {
             $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
             $stmt->execute();
 
-            echo json_encode(['success' => true, 'message' => 'ConversaciÃ³n eliminada (solo para ti)']);
+            echo json_encode(['success' => true, 'message' => 'Conversación eliminada (solo para ti)']);
         } catch (PDOException $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'error' => 'Error al eliminar: ' . $e->getMessage()]);
@@ -560,7 +560,7 @@ switch ($accion) {
                 exit;
             }
 
-            // Obtener solo mensajes nuevos (con ID mayor al Ãºltimo conocido, excluyendo borrados)
+            // Obtener solo mensajes nuevos (con ID mayor al último conocido, excluyendo borrados)
             $stmt = $conexion->prepare("
                 SELECT 
                     m.id_mensaje,
@@ -586,7 +586,7 @@ switch ($accion) {
             $stmt->execute();
             $mensajes_nuevos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Marcar como leÃ­dos los mensajes nuevos que no son del usuario actual
+            // Marcar como leídos los mensajes nuevos que no son del usuario actual
             if (count($mensajes_nuevos) > 0) {
                 $stmt = $conexion->prepare("
                     UPDATE mensajes 
@@ -615,6 +615,6 @@ switch ($accion) {
 
     default:
         http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'AcciÃ³n no vÃ¡lida']);
+        echo json_encode(['success' => false, 'message' => 'Acción no válida']);
         break;
 }

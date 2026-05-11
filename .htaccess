@@ -1,0 +1,5 @@
+# ASCC — Apache root config
+# Refuerza UTF-8 a nivel de servidor para todo el sitio (XAMPP local y Railway).
+
+AddDefaultCharset UTF-8
+AddCharset UTF-8 .html .htm .php .css .js .json .xml .svg .txt

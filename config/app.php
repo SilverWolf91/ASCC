@@ -21,6 +21,24 @@
  * ═══════════════════════════════════════════════════════════
  */
 
+// ── 0. CHARSET GLOBAL UTF-8 ───────────────────────────────────
+// Garantiza que todas las vistas/respuestas que dependan del bootstrap
+// salgan con Content-Type charset=UTF-8 en el header HTTP.
+// (Solo se envía si todavía no se ha emitido un Content-Type previo.)
+if (!headers_sent()) {
+    $alreadySet = false;
+    foreach (headers_list() as $h) {
+        if (stripos($h, 'Content-Type:') === 0) { $alreadySet = true; break; }
+    }
+    if (!$alreadySet) {
+        header('Content-Type: text/html; charset=UTF-8');
+    }
+}
+ini_set('default_charset', 'UTF-8');
+if (function_exists('mb_internal_encoding')) {
+    mb_internal_encoding('UTF-8');
+}
+
 // ── 1. SESIÓN ────────────────────────────────────────────────
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

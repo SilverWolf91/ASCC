@@ -1,5 +1,10 @@
 <?php
 
+// Charset UTF-8 forzado (header HTTP + interno)
+if (!headers_sent()) header('Content-Type: text/html; charset=UTF-8');
+ini_set('default_charset', 'UTF-8');
+if (function_exists('mb_internal_encoding')) mb_internal_encoding('UTF-8');
+
 /**
  * ASCC - Admin Usuarios
  * Ruta: admin/users.php

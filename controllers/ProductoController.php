@@ -46,7 +46,7 @@ try {
 }
 
 // ============================================
-// FUNCIÃ“N: CREAR PRODUCTO
+// FUNCIÓN: CREAR PRODUCTO
 // ============================================
 function crearProducto($conexion, $id_usuario)
 {
@@ -61,10 +61,10 @@ function crearProducto($conexion, $id_usuario)
     $lat = $_POST['lat'] ?? null;
     $lng = $_POST['lng'] ?? null;
 
-    // AÃ‘ADIDO: limpiar precio (viene "15.000" â†’ necesitamos 15000)
+    // AÑADIDO: limpiar precio (viene "15.000" â†’ necesitamos 15000)
     $precio = floatval(str_replace('.', '', $_POST['precio'] ?? '0'));
 
-    // AÃ‘ADIDO: campos de categorÃ­a que envÃ­a el formulario
+    // AÑADIDO: campos de categoría que envía el formulario
     $categoria_principal = trim($_POST['categoria_principal'] ?? '');
     $subcategoria        = trim($_POST['subcategoria']        ?? '');
     $producto_especifico = trim($_POST['producto_especifico'] ?? '');
@@ -97,7 +97,7 @@ function crearProducto($conexion, $id_usuario)
         exit;
     }
 
-    /* â”€â”€ Validar que las coordenadas estÃ©n dentro de Colombia â”€â”€ */
+    /* â”€â”€ Validar que las coordenadas estén dentro de Colombia â”€â”€ */
     $latF = (float)$lat;
     $lngF = (float)$lng;
     if ($latF < -4.5 || $latF > 13.0 || $lngF < -79.5 || $lngF > -66.5) {
@@ -109,7 +109,7 @@ function crearProducto($conexion, $id_usuario)
         exit;
     }
 
-    // Verificar imÃ¡genes
+    // Verificar imágenes
     if (!isset($_FILES['imagenes']) || empty($_FILES['imagenes']['name'][0])) {
         if (isset($_POST['ajax']) && $_POST['ajax'] === '1') {
             ob_clean(); echo json_encode(['success' => false, 'error' => 'Sin imágenes']); exit;
@@ -121,7 +121,7 @@ function crearProducto($conexion, $id_usuario)
     $conexion->beginTransaction();
 
     try {
-        // 1. Buscar o crear ubicaciÃ³n
+        // 1. Buscar o crear ubicación
         $stmt = $conexion->prepare("
             SELECT id_ubicacion FROM ubicaciones 
             WHERE departamento = :depto AND municipio = :muni AND vereda = :vereda 
@@ -150,7 +150,7 @@ function crearProducto($conexion, $id_usuario)
                 ':id' => $id_ubicacion
             ]);
         } else {
-            // Crear nueva ubicaciÃ³n
+            // Crear nueva ubicación
             $stmt = $conexion->prepare("
                 INSERT INTO ubicaciones (departamento, municipio, vereda, lat, lng) 
                 VALUES (:depto, :muni, :vereda, :lat, :lng)
@@ -166,7 +166,7 @@ function crearProducto($conexion, $id_usuario)
         }
 
         // 2. Crear producto
-        // AÃ‘ADIDO: categoria_principal, subcategoria, producto_especifico al INSERT
+        // AÑADIDO: categoria_principal, subcategoria, producto_especifico al INSERT
         $stmt = $conexion->prepare("
             INSERT INTO productos (
                 tipo_producto, descripcion, precio, cantidad, unidad, 
@@ -194,7 +194,7 @@ function crearProducto($conexion, $id_usuario)
 
         $id_producto = $conexion->lastInsertId();
 
-        // AÃ‘ADIDO: generar y guardar codigo_producto dentro de la misma transacciÃ³n
+        // AÑADIDO: generar y guardar codigo_producto dentro de la misma transacción
         $prefijos = [
             'huevos' => 'HUV',
             'aves' => 'AVE',
@@ -215,7 +215,7 @@ function crearProducto($conexion, $id_usuario)
         $stmt = $conexion->prepare("UPDATE productos SET codigo_producto = :codigo WHERE id_producto = :id");
         $stmt->execute([':codigo' => $codigo_producto, ':id' => $id_producto]);
 
-        // 3. Subir imÃ¡genes
+        // 3. Subir imágenes
         $uploadDir = __DIR__ . "/../public/uploads/productos/";
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0777, true);
@@ -231,13 +231,13 @@ function crearProducto($conexion, $id_usuario)
                 $originalName = $imagenes['name'][$i];
                 $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
 
-                // Validar extensiÃ³n
+                // Validar extensión
                 $extensionesPermitidas = ['jpg', 'jpeg', 'png', 'webp'];
                 if (!in_array($extension, $extensionesPermitidas)) {
                     continue;
                 }
 
-                // Validar tamaÃ±o (5MB mÃ¡ximo)
+                // Validar tamaño (5MB máximo)
                 if ($imagenes['size'][$i] > 20 * 1024 * 1024) {
                     continue;
                 }
@@ -261,7 +261,7 @@ function crearProducto($conexion, $id_usuario)
 
         $conexion->commit();
 
-        // Redirigir con Ã©xito al Dashboard o devolver JSON si es AJAX
+        // Redirigir con éxito al Dashboard o devolver JSON si es AJAX
         ob_clean();
         if (isset($_POST['ajax']) && $_POST['ajax'] === '1') {
             echo json_encode(['success' => true]);
@@ -281,7 +281,7 @@ function crearProducto($conexion, $id_usuario)
 }
 
 // ============================================
-// FUNCIÃ“N: MARCAR VENDIDO
+// FUNCIÓN: MARCAR VENDIDO
 // ============================================
 function marcarVendido($conexion, $id_usuario)
 {
@@ -320,7 +320,7 @@ function marcarVendido($conexion, $id_usuario)
 }
 
 // ============================================
-// FUNCIÃ“N: ELIMINAR PRODUCTO
+// FUNCIÓN: ELIMINAR PRODUCTO
 // ============================================
 function eliminarProducto($conexion, $id_usuario)
 {
@@ -349,12 +349,12 @@ function eliminarProducto($conexion, $id_usuario)
     $conexion->beginTransaction();
 
     try {
-        // 1. Obtener rutas de imÃ¡genes
+        // 1. Obtener rutas de imágenes
         $stmt = $conexion->prepare("SELECT ruta_imagen FROM imagenes_productos WHERE id_producto = :id");
         $stmt->execute([':id' => $id_producto]);
         $imagenes = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-        // 2. Eliminar imÃ¡genes fÃ­sicas
+        // 2. Eliminar imágenes físicas
         foreach ($imagenes as $ruta) {
             $rutaCompleta = __DIR__ . "/../public/" . $ruta;
             if (file_exists($rutaCompleta)) {
@@ -362,7 +362,7 @@ function eliminarProducto($conexion, $id_usuario)
             }
         }
 
-        // 3. Eliminar registros de imÃ¡genes
+        // 3. Eliminar registros de imágenes
         $stmt = $conexion->prepare("DELETE FROM imagenes_productos WHERE id_producto = :id");
         $stmt->execute([':id' => $id_producto]);
 
@@ -383,21 +383,21 @@ function eliminarProducto($conexion, $id_usuario)
 }
 
 // ============================================
-// FUNCIÃ“N: OBTENER PRODUCTO POR CONVERSACIÃ“N
+// FUNCIÓN: OBTENER PRODUCTO POR CONVERSACIÓN
 // ============================================
 function obtenerProductoPorConversacion($conexion, $id_usuario)
 {
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
 
     $id_conversacion = (int)($_GET['id_conversacion'] ?? 0);
 
     if (!$id_conversacion) {
-        echo json_encode(['success' => false, 'error' => 'ID conversaciÃ³n requerido']);
+        echo json_encode(['success' => false, 'error' => 'ID conversación requerido']);
         exit;
     }
 
     try {
-        // Verificar acceso a la conversaciÃ³n y obtener el producto
+        // Verificar acceso a la conversación y obtener el producto
         $stmt = $conexion->prepare("
             SELECT 
                 p.id_producto,

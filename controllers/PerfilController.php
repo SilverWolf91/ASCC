@@ -3,7 +3,7 @@
 /**
  * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  * PERFIL CONTROLLER
- * GestiÃ³n de perfil de usuario y foto
+ * Gestión de perfil de usuario y foto
  * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  */
 
@@ -16,7 +16,7 @@ session_start();
 require_once __DIR__ . "/../config/database.php";
 require_once __DIR__ . "/../config/image_helper.php";
 
-// Verificar autenticaciÃ³n
+// Verificar autenticación
 if (!isset($_SESSION['id_usuario'])) {
     http_response_code(401);
     echo json_encode(['error' => 'No autenticado']);
@@ -35,7 +35,7 @@ switch ($accion) {
 
         if (!isset($_FILES['foto']) || $_FILES['foto']['error'] !== UPLOAD_ERR_OK) {
             ob_clean();
-            echo json_encode(['error' => 'No se recibiÃ³ ninguna foto (Error: ' . ($_FILES['foto']['error'] ?? 'Desconocido') . ')']);
+            echo json_encode(['error' => 'No se recibió ninguna foto (Error: ' . ($_FILES['foto']['error'] ?? 'Desconocido') . ')']);
             exit;
         }
 
@@ -49,7 +49,7 @@ switch ($accion) {
             exit;
         }
 
-        // Validar tamaÃ±o (max 5MB)
+        // Validar tamaño (max 5MB)
         if ($foto['size'] > 20 * 1024 * 1024) {
             ob_clean();
             echo json_encode(['error' => 'La foto no debe superar 20MB']);
@@ -163,7 +163,7 @@ switch ($accion) {
             $stmt->bindParam(':id_usuario', $id_usuario);
             $stmt->execute();
 
-            // Actualizar sesiÃ³n
+            // Actualizar sesión
             $_SESSION['nombre'] = $nombre;
 
             echo json_encode([
@@ -218,6 +218,6 @@ switch ($accion) {
 
     default:
         http_response_code(400);
-        echo json_encode(['error' => 'AcciÃ³n no vÃ¡lida']);
+        echo json_encode(['error' => 'Acción no válida']);
         break;
 }

@@ -18,37 +18,37 @@ ob_start();
 
 session_start();
 
-// Verificar autenticaciÃ³n
+// Verificar autenticación
 if (!isset($_SESSION['id_usuario'])) {
     ob_clean();
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     http_response_code(401);
     die(json_encode(['success' => false, 'error' => 'No autenticado']));
 }
 
-// Incluir conexiÃ³n a base de datos
+// Incluir conexión a base de datos
 require_once __DIR__ . "/config/database.php";
 
 // Verificar que existe la variable $conexion
 if (!isset($conexion)) {
     ob_clean();
-    header('Content-Type: application/json');
-    die(json_encode(['success' => false, 'error' => 'Error de conexiÃ³n a base de datos']));
+    header('Content-Type: application/json; charset=utf-8');
+    die(json_encode(['success' => false, 'error' => 'Error de conexión a base de datos']));
 }
 
 // Verificar que sea POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     ob_clean();
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     http_response_code(405);
-    die(json_encode(['success' => false, 'error' => 'MÃ©todo no permitido']));
+    die(json_encode(['success' => false, 'error' => 'Método no permitido']));
 }
 
 // Verificar que venga un archivo
 if (!isset($_FILES['foto_perfil'])) {
     ob_clean();
-    header('Content-Type: application/json');
-    die(json_encode(['success' => false, 'error' => 'No se recibiÃ³ el campo foto_perfil']));
+    header('Content-Type: application/json; charset=utf-8');
+    die(json_encode(['success' => false, 'error' => 'No se recibió el campo foto_perfil']));
 }
 
 if ($_FILES['foto_perfil']['error'] !== UPLOAD_ERR_OK) {
@@ -61,16 +61,16 @@ if ($_FILES['foto_perfil']['error'] !== UPLOAD_ERR_OK) {
             $error_msg .= 'El archivo excede MAX_FILE_SIZE';
             break;
         case UPLOAD_ERR_PARTIAL:
-            $error_msg .= 'El archivo se subiÃ³ parcialmente';
+            $error_msg .= 'El archivo se subió parcialmente';
             break;
         case UPLOAD_ERR_NO_FILE:
-            $error_msg .= 'No se subiÃ³ ningÃºn archivo';
+            $error_msg .= 'No se subió ningún archivo';
             break;
         default:
             $error_msg .= 'Error desconocido (' . $_FILES['foto_perfil']['error'] . ')';
     }
     ob_clean();
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     die(json_encode(['success' => false, 'error' => $error_msg]));
 }
 
@@ -81,30 +81,30 @@ $archivo = $_FILES['foto_perfil'];
 $extensiones_permitidas = ['jpg', 'jpeg', 'png', 'webp'];
 $tamano_maximo = 20 * 1024 * 1024; // 5MB
 
-// Obtener extensiÃ³n
+// Obtener extensión
 $nombre_archivo = $archivo['name'];
 $extension = strtolower(pathinfo($nombre_archivo, PATHINFO_EXTENSION));
 
-// Validar extensiÃ³n
+// Validar extensión
 if (!in_array($extension, $extensiones_permitidas)) {
     ob_clean();
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     die(json_encode(['success' => false, 'error' => 'Formato no permitido. Solo JPG, PNG o WebP']));
 }
 
-// Validar tamaÃ±o
+// Validar tamaño
 if ($archivo['size'] > $tamano_maximo) {
     ob_clean();
-    header('Content-Type: application/json');
-    die(json_encode(['success' => false, 'error' => 'La imagen es muy grande. MÃ¡ximo 5MB']));
+    header('Content-Type: application/json; charset=utf-8');
+    die(json_encode(['success' => false, 'error' => 'La imagen es muy grande. Máximo 5MB']));
 }
 
 // Validar que sea una imagen real
 $imagen_info = @getimagesize($archivo['tmp_name']);
 if ($imagen_info === false) {
     ob_clean();
-    header('Content-Type: application/json');
-    die(json_encode(['success' => false, 'error' => 'El archivo no es una imagen vÃ¡lida']));
+    header('Content-Type: application/json; charset=utf-8');
+    die(json_encode(['success' => false, 'error' => 'El archivo no es una imagen válida']));
 }
 
 // PROCESAR IMAGEN
@@ -137,7 +137,7 @@ try {
     $ancho_original = imagesx($imagen_original);
     $alto_original = imagesy($imagen_original);
 
-    // TamaÃ±o final (cuadrado, alta calidad)
+    // Tamaño final (cuadrado, alta calidad)
     $tamano_final = 400;
 
     // Calcular dimensiones para recorte centrado
@@ -188,7 +188,7 @@ try {
         throw new Exception('Error al redimensionar imagen');
     }
 
-    // Generar nombre Ãºnico
+    // Generar nombre único
     $nombre_nuevo = 'perfil_' . $id_usuario . '_' . time() . '.jpg';
 
     // Ruta del directorio (crear carpeta profiles dentro de uploads)
@@ -242,7 +242,7 @@ try {
 
     // Respuesta exitosa
     ob_clean();
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     echo json_encode([
         'success' => true,
         'message' => 'Foto actualizada correctamente',
@@ -250,7 +250,7 @@ try {
     ]);
 } catch (Exception $e) {
     ob_clean();
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     http_response_code(500);
     echo json_encode([
         'success' => false,

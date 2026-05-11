@@ -2,11 +2,11 @@
 
 /**
  * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
- * ASCC â€” API: Reenviar Token de VerificaciÃ³n de Registro
+ * ASCC — API: Reenviar Token de Verificación de Registro
  * Ruta: api/reenviar_token_registro.php
  *
- * Genera un nuevo token, actualiza la sesiÃ³n y reenvÃ­a el email.
- * LÃ­mite: mÃ­nimo 60 segundos entre reenvÃ­os.
+ * Genera un nuevo token, actualiza la sesión y reenvía el email.
+ * Límite: mínimo 60 segundos entre reenvíos.
  * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  */
 
@@ -19,18 +19,18 @@ require_once __DIR__ . '/../config/email_config.php';
 if (!isset($_SESSION['pending_registro'])) {
     exit(json_encode([
         'success' => false,
-        'message' => 'SesiÃ³n expirada. Por favor regÃ­strate nuevamente.',
+        'message' => 'Sesión expirada. Por favor regístrate nuevamente.',
     ]));
 }
 
-/* â”€â”€ LÃ­mite de velocidad: 60 segundos entre reenvÃ­os â”€â”€â”€â”€â”€â”€â”€ */
+/* â”€â”€ Límite de velocidad: 60 segundos entre reenvíos â”€â”€â”€â”€â”€â”€â”€ */
 $last_sent = $_SESSION['pending_registro']['last_sent'] ?? 0;
 $wait      = 60 - (time() - $last_sent);
 
 if ($wait > 0) {
     exit(json_encode([
         'success' => false,
-        'message' => "Espera {$wait} segundos antes de solicitar otro cÃ³digo.",
+        'message' => "Espera {$wait} segundos antes de solicitar otro código.",
     ]));
 }
 
@@ -51,7 +51,7 @@ $enviado = enviarEmailVerificacionRegistro($email, $nombre, $token);
 if ($enviado) {
     exit(json_encode([
         'success' => true,
-        'message' => 'Nuevo cÃ³digo enviado. Revisa tu bandeja de entrada.',
+        'message' => 'Nuevo código enviado. Revisa tu bandeja de entrada.',
     ]));
 } else {
     exit(json_encode([
