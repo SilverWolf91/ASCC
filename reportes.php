@@ -953,8 +953,7 @@ $estado_badge = [
             <div class="rep-card" style="margin-bottom:1.5rem">
                 <div class="rep-card__header">
                     <h3><?= t('rep_vis_titulo_perfil') ?></h3>
-                    <a href="/ascc/visitas_detalle.php?tipo=perfil" class="rep-btn-primary"
-                        style="font-size:0.75rem;padding:6px 14px;text-decoration:none">
+                    <a href="/ascc/visitas_detalle.php?tipo=perfil" class="rep-btn-primary rep-btn-primary--sm" style="text-decoration:none">
                         👁️ <?= t('vis_ver_perfil') ?>
                     </a>
                 </div>
@@ -1294,7 +1293,7 @@ $estado_badge = [
                     <h3>📊 ¿Qué es Power BI y cómo usarlo?</h3>
                 </div>
                 <div class="rep-card__body">
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                    <div class="rep-powerbi-grid">
 
                         <div class="rep-powerbi-paso">
                             <div class="rep-powerbi-num">1</div>
