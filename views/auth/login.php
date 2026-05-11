@@ -82,6 +82,10 @@
                     <div class="alert alert-error">
                         🚫 Tu cuenta ha sido suspendida. Contacta al administrador.
                     </div>
+                <?php elseif ($_GET['error'] === 'sesion_expirada'): ?>
+                    <div class="alert alert-error" style="background:#fef3c7;color:#92400e;border:1px solid #fcd34d;">
+                        ⏱ <?= t('session_expired') ?>
+                    </div>
                 <?php else: ?>
                     <div class="alert alert-error">
                         ❌ Credenciales inválidas. Verifica tu correo y contraseña

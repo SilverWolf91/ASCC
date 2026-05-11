@@ -209,3 +209,8 @@ if (!isset($lang) || !isset($theme)) {
         }
     }());
 </script>
+
+<?php if (isset($_SESSION['id_usuario'])): ?>
+<!-- Cierre automático por inactividad (10 min) -->
+<script src="/ascc/public/js/session-timeout.js?v=<?= @filemtime(__DIR__ . '/../public/js/session-timeout.js') ?: '1' ?>"></script>
+<?php endif; ?>

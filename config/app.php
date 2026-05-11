@@ -26,6 +26,41 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// ── 1.B INACTIVIDAD: cerrar sesión tras 10 min sin actividad ─
+if (!defined('ASCC_SESSION_TIMEOUT')) {
+    define('ASCC_SESSION_TIMEOUT', 600); // 10 minutos
+}
+
+if (isset($_SESSION['id_usuario'])) {
+    if (isset($_SESSION['last_activity'])
+        && (time() - $_SESSION['last_activity']) > ASCC_SESSION_TIMEOUT) {
+
+        // Borrar variables de sesión
+        $_SESSION = [];
+
+        // Borrar cookie de sesión del navegador
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params['path'],
+                $params['domain'],
+                $params['secure'],
+                $params['httponly']
+            );
+        }
+
+        session_destroy();
+        header('Location: /ascc/views/auth/login.php?error=sesion_expirada');
+        exit;
+    }
+
+    // Refrescar la marca de tiempo en cada petición autenticada
+    $_SESSION['last_activity'] = time();
+}
+
 // ── 2. CONSTANTE DE SEGURIDAD PARA PARTIALS ──────────────────
 if (!defined('ASCC')) {
     define('ASCC', true);
