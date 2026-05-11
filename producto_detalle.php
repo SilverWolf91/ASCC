@@ -189,42 +189,6 @@ $calificacion_vendedor = 5.0;
     <!-- Google Maps API -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfQiFq34PJh6XvksXGxvkpMi3badLWEQc"></script>
 
-    <style>
-    /* Botón ver perfil vendedor en producto_detalle */
-    .btn-ver-perfil-vendedor {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin: 14px 0 4px;
-        padding: 10px 18px;
-        background: rgba(16, 185, 129, 0.08);
-        border: 1px solid rgba(16, 185, 129, 0.3);
-        border-radius: 10px;
-        color: #10b981;
-        font-size: 0.875rem;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.2s;
-        width: fit-content;
-    }
-
-    .btn-ver-perfil-vendedor:hover {
-        background: rgba(16, 185, 129, 0.15);
-        border-color: #10b981;
-        transform: translateY(-1px);
-    }
-
-    [data-theme="light"] .btn-ver-perfil-vendedor {
-        background: #ecfdf5;
-        border-color: #6ee7b7;
-        color: #065f46;
-    }
-
-    [data-theme="light"] .btn-ver-perfil-vendedor:hover {
-        background: #d1fae5;
-        border-color: #059669;
-    }
-    </style>
 </head>
 
 <body class="theme-<?= $theme ?>" data-theme="<?= $theme ?>" data-precio-unitario="<?= $producto['precio'] ?>"
