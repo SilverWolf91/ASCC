@@ -4,8 +4,18 @@ require_once __DIR__ . '/config/database.php';
 try {
     $conexion->beginTransaction();
 
-    // Crear el producto en la tabla 'productos'
-    // id_usuario = 43, id_ubicacion = 6
+    // Obtener un usuario válido (vendedor, mixto o admin)
+    $stmt_user = $conexion->query("SELECT id_usuario FROM usuarios WHERE rol IN ('vendedor', 'mixto', 'admin') LIMIT 1");
+    $user = $stmt_user->fetch(PDO::FETCH_ASSOC);
+    if (!$user) die("Error: No se encontró ningún usuario vendedor en la base de datos.");
+    $id_usuario = $user['id_usuario'];
+
+    // Obtener una ubicación válida
+    $stmt_ubi = $conexion->query("SELECT id_ubicacion FROM ubicaciones LIMIT 1");
+    $ubi = $stmt_ubi->fetch(PDO::FETCH_ASSOC);
+    if (!$ubi) die("Error: No se encontró ninguna ubicación en la base de datos.");
+    $id_ubicacion = $ubi['id_ubicacion'];
+
     $codigo = 'TOM-' . strtoupper(substr(md5(uniqid()), 0, 6));
     
     $sql_prod = "INSERT INTO productos (
@@ -13,7 +23,7 @@ try {
         categoria_principal, subcategoria, producto_especifico,
         descripcion, cantidad, unidad, precio, estado
     ) VALUES (
-        :codigo, 43, 6, 'Tomates Frescos de Cosecha',
+        :codigo, :id_usuario, :id_ubicacion, 'Tomates Frescos de Cosecha',
         'Verduras y Hortalizas', 'Hortalizas', 'Tomate',
         'Hermosos tomates frescos, cultivados de manera natural y seleccionados a mano. Tienen un color rojo intenso, textura firme y un sabor delicioso, ideales para ensaladas, guisos o salsas. Producto 100% campesino.',
         50, 'kg', 3500.00, 'disponible'
@@ -21,7 +31,9 @@ try {
 
     $stmt = $conexion->prepare($sql_prod);
     $stmt->execute([
-        ':codigo' => $codigo
+        ':codigo' => $codigo,
+        ':id_usuario' => $id_usuario,
+        ':id_ubicacion' => $id_ubicacion
     ]);
 
     $id_producto = $conexion->lastInsertId();
