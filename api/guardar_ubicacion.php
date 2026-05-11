@@ -60,6 +60,17 @@ $departamento = isset($body['departamento']) ? trim($body['departamento']) : '';
 $municipio    = isset($body['municipio'])    ? trim($body['municipio'])    : '';
 $vereda       = isset($body['vereda'])       ? trim($body['vereda'])       : '';
 
+/* Coordenadas opcionales: si el usuario ya posicionó el marcador en el
+   mapa, guardamos esas coords con la nueva fila para que futuras
+   búsquedas devuelvan el punto exacto sin depender de Google Geocoder. */
+$lat = isset($body['lat']) && is_numeric($body['lat']) ? (float) $body['lat'] : null;
+$lng = isset($body['lng']) && is_numeric($body['lng']) ? (float) $body['lng'] : null;
+
+/* Validación geográfica: Colombia ≈ lat[-4.5, 13.0] lng[-79.5, -66.5] */
+if ($lat !== null && ($lat < -4.5 || $lat > 13.0)) { $lat = null; }
+if ($lng !== null && ($lng < -79.5 || $lng > -66.5)) { $lng = null; }
+if ($lat === null || $lng === null) { $lat = null; $lng = null; }
+
 /* ── Validación ─────────────────────────────────────────── */
 if (empty($departamento) || empty($municipio)) {
     echo json_encode(['ok' => false, 'mensaje' => 'Departamento y municipio son obligatorios']);
@@ -106,6 +117,26 @@ try {
         ]);
 
         if ($stmtCheck->fetchColumn() > 0) {
+            /* Si ya existe pero sin coords y ahora nos llegan coords válidas,
+               actualizar la fila para enriquecer el dato. */
+            if ($lat !== null && $lng !== null) {
+                $stmtUpd = $conexion->prepare("
+                    UPDATE ubicaciones
+                       SET lat = :lat, lng = :lng
+                     WHERE departamento = :depto
+                       AND municipio    = :muni
+                       AND vereda       = :vereda
+                       AND lat IS NULL
+                       AND lng IS NULL
+                ");
+                $stmtUpd->execute([
+                    ':lat'    => $lat,
+                    ':lng'    => $lng,
+                    ':depto'  => $departamento,
+                    ':muni'   => $municipio,
+                    ':vereda' => $vereda
+                ]);
+            }
             echo json_encode([
                 'ok'       => true,
                 'mensaje'  => 'Ya existe en la base de datos',
@@ -114,15 +145,17 @@ try {
             exit;
         }
 
-        // Insertar nueva fila (lat/lng null: el ProductoController los actualiza)
+        // Insertar nueva fila con coords del marcador si las hay
         $stmtIns = $conexion->prepare("
             INSERT INTO ubicaciones (departamento, municipio, vereda, lat, lng)
-            VALUES (:depto, :muni, :vereda, NULL, NULL)
+            VALUES (:depto, :muni, :vereda, :lat, :lng)
         ");
         $stmtIns->execute([
             ':depto'  => $departamento,
             ':muni'   => $municipio,
-            ':vereda' => $vereda
+            ':vereda' => $vereda,
+            ':lat'    => $lat,
+            ':lng'    => $lng
         ]);
 
         echo json_encode([
@@ -148,6 +181,26 @@ try {
         ]);
 
         if ($stmtCheck->fetchColumn() > 0) {
+            /* Si ya existe el municipio pero la fila 'Centro' está sin coords
+               y ahora tenemos coords válidas, enriquecerla. */
+            if ($lat !== null && $lng !== null) {
+                $stmtUpd = $conexion->prepare("
+                    UPDATE ubicaciones
+                       SET lat = :lat, lng = :lng
+                     WHERE departamento = :depto
+                       AND municipio    = :muni
+                       AND vereda       = 'Centro'
+                       AND lat IS NULL
+                       AND lng IS NULL
+                    LIMIT 1
+                ");
+                $stmtUpd->execute([
+                    ':lat'   => $lat,
+                    ':lng'   => $lng,
+                    ':depto' => $departamento,
+                    ':muni'  => $municipio
+                ]);
+            }
             echo json_encode([
                 'ok'       => true,
                 'mensaje'  => 'Municipio ya existe en la base de datos',
@@ -156,15 +209,16 @@ try {
             exit;
         }
 
-        // Insertar con vereda "Centro" como placeholder
-        // para que aparezca en futuras búsquedas de veredas
+        // Insertar con vereda "Centro" como placeholder y las coords del marcador (si las hay)
         $stmtIns = $conexion->prepare("
             INSERT INTO ubicaciones (departamento, municipio, vereda, lat, lng)
-            VALUES (:depto, :muni, 'Centro', NULL, NULL)
+            VALUES (:depto, :muni, 'Centro', :lat, :lng)
         ");
         $stmtIns->execute([
             ':depto' => $departamento,
-            ':muni'  => $municipio
+            ':muni'  => $municipio,
+            ':lat'   => $lat,
+            ':lng'   => $lng
         ]);
 
         echo json_encode([

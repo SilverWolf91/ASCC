@@ -1979,7 +1979,15 @@
                     _llenarMunicipios(lista);
                 });
 
-            if (window.asccMapInstance && !window._gpsAutoFilling) { centrarMapaEnUbicacion(depto); }
+            /* Solo bloqueamos el centrado cuando el cambio fue programático
+               por la auto-detección de GPS. Los cambios manuales del usuario
+               (event.isTrusted) siempre mueven el mapa. */
+            if (window.asccMapInstance) {
+                var esManual = arguments[0] && arguments[0].isTrusted;
+                if (esManual || !window._gpsAutoFilling) {
+                    centrarMapaEnUbicacion(depto);
+                }
+            }
         });
 
         /* ── Evento: MUNICIPIO ───────────────────────────── */
@@ -2037,10 +2045,18 @@
                                     btnGuardar.disabled = true;
                                     btnGuardar.textContent = '⏳ ' + (getLang() === 'es' ? 'Guardando...' : 'Saving...');
 
+                                    var latEl = document.getElementById('lat');
+                                    var lngEl = document.getElementById('lng');
+                                    var payload = { departamento: deptoSelect.value, municipio: valor };
+                                    if (latEl && lngEl && latEl.value && lngEl.value) {
+                                        payload.lat = parseFloat(latEl.value);
+                                        payload.lng = parseFloat(lngEl.value);
+                                    }
+
                                     fetch('/ascc/api/guardar_ubicacion.php', {
                                         method: 'POST',
                                         headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify({ departamento: deptoSelect.value, municipio: valor })
+                                        body: JSON.stringify(payload)
                                     })
                                     .then(function (r) { return r.json(); })
                                     .then(function () {
@@ -2106,7 +2122,12 @@
             }
 
             _cargarVeredas(depto, mun);
-            if (window.asccMapInstance && !window._gpsAutoFilling) { centrarMapaEnUbicacion(depto, mun); }
+            if (window.asccMapInstance) {
+                var esManualMun = arguments[0] && arguments[0].isTrusted;
+                if (esManualMun || !window._gpsAutoFilling) {
+                    centrarMapaEnUbicacion(depto, mun);
+                }
+            }
         });
 
         /* ── Evento: VEREDA ──────────────────────────────── */
@@ -2190,10 +2211,18 @@
                                     btnGuardar.disabled = true;
                                     btnGuardar.textContent = '⏳ ' + (getLang() === 'es' ? 'Guardando...' : 'Saving...');
 
+                                    var latElV = document.getElementById('lat');
+                                    var lngElV = document.getElementById('lng');
+                                    var payloadV = { departamento: deptoSelect.value, municipio: mpioReal, vereda: valor };
+                                    if (latElV && lngElV && latElV.value && lngElV.value) {
+                                        payloadV.lat = parseFloat(latElV.value);
+                                        payloadV.lng = parseFloat(lngElV.value);
+                                    }
+
                                     fetch('/ascc/api/guardar_ubicacion.php', {
                                         method: 'POST',
                                         headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify({ departamento: deptoSelect.value, municipio: mpioReal, vereda: valor })
+                                        body: JSON.stringify(payloadV)
                                     })
                                     .then(function (r) { return r.json(); })
                                     .then(function () {
@@ -2245,7 +2274,16 @@
                 var btnCentroOcultar = document.getElementById('btn_vereda_centro');
                 if (btnCentroOcultar) { btnCentroOcultar.style.display = 'none'; }
                 if (window.asccMapInstance && depto && mun && vereda) {
-                    centrarMapaEnUbicacion(depto, mun, vereda);
+                    /* Si el municipio es "Otro", usar el valor del input custom
+                       para que el centrado del mapa funcione con el nombre real. */
+                    var mpioParaMapa = mun;
+                    if (mun === 'Otro (No aparece en la lista)') {
+                        var mpInputEl = document.getElementById('municipio_custom');
+                        if (mpInputEl && mpInputEl.value.trim()) {
+                            mpioParaMapa = mpInputEl.value.trim();
+                        }
+                    }
+                    centrarMapaEnUbicacion(depto, mpioParaMapa, vereda);
                 }
             }
         });

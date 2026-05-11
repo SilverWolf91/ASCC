@@ -17,9 +17,12 @@ if (empty($departamento)) {
     exit;
 }
 
+$VEREDA_OTRO    = 'Otro (No está en la lista)';
+$MUNICIPIO_OTRO = 'Otro (No aparece en la lista)';
+
 try {
-    /* Buscar coordenadas del nivel más específico disponible */
-    if (!empty($vereda) && $vereda !== 'Otro (No está en la lista)' && !empty($municipio)) {
+    /* 1. NIVEL VEREDA — buscar coordenadas exactas de la vereda */
+    if (!empty($vereda) && $vereda !== $VEREDA_OTRO && !empty($municipio) && $municipio !== $MUNICIPIO_OTRO) {
         $stmt = $conexion->prepare("
             SELECT lat, lng FROM ubicaciones
             WHERE departamento = :depto AND municipio = :muni AND vereda = :vereda
@@ -28,29 +31,41 @@ try {
         ");
         $stmt->execute([':depto' => $departamento, ':muni' => $municipio, ':vereda' => $vereda]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($row) { echo json_encode($row); exit; }
+        if ($row) {
+            echo json_encode($row);
+            exit;
+        }
+        /* La vereda específica no tiene coords → devolver null para que
+           el frontend caiga a Google Geocoder con el nombre real
+           (más preciso que un fallback arbitrario de la BD). */
+        echo json_encode(['lat' => null, 'lng' => null]);
+        exit;
     }
 
-    if (!empty($municipio) && $municipio !== 'Otro (No aparece en la lista)') {
+    /* 2. NIVEL MUNICIPIO — buscar el centro del municipio, priorizando vereda='Centro' */
+    if (!empty($municipio) && $municipio !== $MUNICIPIO_OTRO) {
         $stmt = $conexion->prepare("
             SELECT lat, lng FROM ubicaciones
             WHERE departamento = :depto AND municipio = :muni
               AND lat IS NOT NULL AND lng IS NOT NULL
-            ORDER BY id_ubicacion ASC LIMIT 1
+            ORDER BY (vereda = 'Centro') DESC, id_ubicacion ASC
+            LIMIT 1
         ");
         $stmt->execute([':depto' => $departamento, ':muni' => $municipio]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($row) { echo json_encode($row); exit; }
+        if ($row) {
+            echo json_encode($row);
+            exit;
+        }
+        /* Sin coords para ese municipio → devolver null para que el frontend
+           use Google Geocoder con el nombre del municipio. */
+        echo json_encode(['lat' => null, 'lng' => null]);
+        exit;
     }
 
-    $stmt = $conexion->prepare("
-        SELECT lat, lng FROM ubicaciones
-        WHERE departamento = :depto AND lat IS NOT NULL AND lng IS NOT NULL
-        ORDER BY id_ubicacion ASC LIMIT 1
-    ");
-    $stmt->execute([':depto' => $departamento]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    echo json_encode($row ?: ['lat' => null, 'lng' => null]);
+    /* 3. SOLO DEPARTAMENTO — devolver null para que el frontend use
+       _DEPT_COORDS (capital del departamento, dato curado y confiable). */
+    echo json_encode(['lat' => null, 'lng' => null]);
 
 } catch (Exception $e) {
     echo json_encode(['lat' => null, 'lng' => null]);
