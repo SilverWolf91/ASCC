@@ -45,18 +45,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function selectConversation(conversationId) {
     console.log('[MENSAJES] Seleccionando conversación:', conversationId);
-    
+
     // Detener polling anterior
     detenerPollingMensajes();
-    
+
     // Guardar conversación activa
     conversacionActiva = conversationId;
-    
+
     // Marcar visualmente como activa
     document.querySelectorAll('.conversation-item').forEach(item => {
         item.classList.remove('active');
     });
-    
+
     const selectedItem = document.querySelector(`.conversation-item[data-conversation-id="${conversationId}"]`);
     if (selectedItem) {
         selectedItem.classList.add('active');
@@ -65,12 +65,22 @@ function selectConversation(conversationId) {
         const badge = selectedItem.querySelector('.conversation-badge');
         if (badge) badge.remove();
     }
-    
+
+    // En móvil: cambiar a vista de chat (oculta sidebar)
+    const layout = document.querySelector('.mensajes-layout');
+    if (layout) layout.classList.add('chat-active');
+
     // Cargar mensajes
     loadMessages(conversationId);
-    
+
     // Iniciar polling de mensajes cada 2 segundos
     iniciarPollingMensajes();
+}
+
+// Volver a la lista de conversaciones (solo móvil)
+function backToConversationsList() {
+    const layout = document.querySelector('.mensajes-layout');
+    if (layout) layout.classList.remove('chat-active');
 }
 
 // ══════════════════════════════════════════════════════════
@@ -125,9 +135,12 @@ function renderChat(mensajes, producto, esVendedor) {
         : '/ascc/public/img/no-image.png';
     
     header.innerHTML = `
+        <button class="btn-back-to-list" onclick="backToConversationsList()" title="Volver a conversaciones" aria-label="Volver">
+            ←
+        </button>
         <div class="chat-product-info">
-            <img src="${imagenUrl}" 
-                 alt="${escapeHtml(producto.tipo_producto)}" 
+            <img src="${imagenUrl}"
+                 alt="${escapeHtml(producto.tipo_producto)}"
                  class="chat-product-image"
                  onclick="openProductModal()"
                  style="cursor: pointer;"

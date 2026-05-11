@@ -16,23 +16,54 @@
     overflow: hidden;
 }
 
+/* Botón "volver a la lista" — solo visible en móvil cuando hay chat abierto */
+.btn-back-to-list {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 22px;
+    cursor: pointer;
+    padding: 8px 12px 8px 0;
+    margin-right: 4px;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-back-to-list:hover {
+    color: #10B981;
+}
+
 @media (max-width: 768px) {
     .mensajes-layout {
         grid-template-columns: 1fr;
     }
-    
+
+    /* Por defecto en móvil: se ve la lista, NO el chat */
     .conversaciones-sidebar {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    .chat-area {
         display: none;
     }
-    
-    .conversaciones-sidebar.active {
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1000;
+
+    /* Cuando se selecciona conversación: se ve el chat, NO la lista */
+    .mensajes-layout.chat-active .conversaciones-sidebar {
+        display: none;
+    }
+
+    .mensajes-layout.chat-active .chat-area {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    /* Mostrar botón "volver" solo en móvil */
+    .btn-back-to-list {
+        display: inline-flex;
     }
 }
 
