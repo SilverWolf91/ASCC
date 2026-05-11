@@ -798,6 +798,61 @@
        RENDER DE CATEGORÍAS
     ══════════════════════════════════════════════════════ */
 
+    /* ══════════════════════════════════════════════════════
+       SECUENCIAS DE ANIMACIÓN POR CATEGORÍA
+       Cada categoría tiene una breve transición de emojis que
+       cuenta una mini historia agropecuaria al seleccionarla.
+       ══════════════════════════════════════════════════════ */
+    var ANIM_SEQ = {
+        huevos:     ['🥚', '🐣', '🐥', '🐣', '🥚'],
+        aves:       ['🥚', '🐣', '🐥', '🐔'],
+        bovinos:    ['🐄', '🌾', '🐄'],
+        equinos:    ['🐎', '🐴', '🐎'],
+        menor:      ['🐖', '🐷', '🐖'],
+        carnicos:   ['🥩', '🍖', '🥩'],
+        lacteos:    ['🥛', '🧀', '🥛'],
+        verduras:   ['🌱', '🌿', '🥦'],
+        frutas:     ['🌱', '🌳', '🍎'],
+        cereales:   ['🌱', '🌾', '🌾'],
+        plantas:    ['🌱', '🌿', '🌳'],
+        procesados: ['🫙', '✨', '🫙'],
+        peces:      ['🐟', '🐠', '🐟']
+    };
+
+    /**
+     * Ejecuta la animación de emojis sobre una tarjeta de categoría.
+     * @param {HTMLElement} card     - tarjeta .category-card
+     * @param {string}      key      - clave de la categoría (huevos, frutas, ...)
+     * @param {string}      iconBase - emoji original para restaurar al final
+     */
+    function animarCategoria(card, key, iconBase) {
+        var iconoEl = card.querySelector('.category-icon');
+        if (!iconoEl) { return; }
+
+        var secuencia = ANIM_SEQ[key];
+        if (!secuencia || !secuencia.length) { return; }
+
+        /* Evitar disparos repetidos en plena animación */
+        if (card.classList.contains('is-animating')) { return; }
+        card.classList.add('is-animating');
+
+        var FRAME_MS = 220;
+        var paso = 0;
+
+        var intervalId = setInterval(function () {
+            iconoEl.textContent = secuencia[paso];
+            paso++;
+            if (paso >= secuencia.length) {
+                clearInterval(intervalId);
+                /* Pequeña pausa con el último frame, luego volver al icono base */
+                setTimeout(function () {
+                    iconoEl.textContent = iconBase;
+                    card.classList.remove('is-animating');
+                }, FRAME_MS + 120);
+            }
+        }, FRAME_MS);
+    }
+
     function renderCategories() {
         var grid = document.getElementById('categoryGrid');
         if (!grid) { return; }
@@ -823,6 +878,7 @@
                 selectedCategory = key;
                 var input = document.getElementById('categoria_principal');
                 if (input) { input.value = key; }
+                animarCategoria(card, key, cat.icon);
             });
 
             grid.appendChild(card);
