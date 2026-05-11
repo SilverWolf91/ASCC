@@ -423,33 +423,34 @@ function tendenciaEmoji(string $cat, string $tipo): string {
 
             <div class="container">
 
-                <!-- Stats cards -->
-                <div class="stats-grid">
-                    <div class="stat-card green">
-                        <div class="stat-header">
-                            <div class="stat-icon green">📦</div>
-                        </div>
-                        <div class="stat-value"><?= $total_disponibles ?></div>
-                        <div class="stat-label"><?= t('stat_active_products') ?></div>
-                    </div>
-                    <div class="stat-card orange">
-                        <div class="stat-header">
-                            <div class="stat-icon orange">💰</div>
-                        </div>
-                        <div class="stat-value">$<?= number_format($valor_inventario, 0, ',', '.') ?></div>
-                        <div class="stat-label"><?= t('stat_inventory_value') ?></div>
-                    </div>
-                    <div class="stat-card blue">
-                        <div class="stat-header">
-                            <div class="stat-icon blue">✅</div>
-                        </div>
-                        <div class="stat-value"><?= $total_vendidos ?></div>
-                        <div class="stat-label"><?= t('stat_products_sold') ?></div>
-                    </div>
-                </div>
-
                 <!-- ── TAB: INICIO ─────────────────────────────── -->
                 <div id="inicio" class="tab-content active">
+
+                    <!-- Stats cards (solo visibles en la pestaña Inicio) -->
+                    <div class="stats-grid">
+                        <div class="stat-card green">
+                            <div class="stat-header">
+                                <div class="stat-icon green">📦</div>
+                            </div>
+                            <div class="stat-value"><?= $total_disponibles ?></div>
+                            <div class="stat-label"><?= t('stat_active_products') ?></div>
+                        </div>
+                        <div class="stat-card orange">
+                            <div class="stat-header">
+                                <div class="stat-icon orange">💰</div>
+                            </div>
+                            <div class="stat-value">$<?= number_format($valor_inventario, 0, ',', '.') ?></div>
+                            <div class="stat-label"><?= t('stat_inventory_value') ?></div>
+                        </div>
+                        <div class="stat-card blue">
+                            <div class="stat-header">
+                                <div class="stat-icon blue">✅</div>
+                            </div>
+                            <div class="stat-value"><?= $total_vendidos ?></div>
+                            <div class="stat-label"><?= t('stat_products_sold') ?></div>
+                        </div>
+                    </div>
+
                     <div class="inicio-grid">
 
                         <!-- Perfil -->
