@@ -224,7 +224,7 @@ $review_id   = $id_vendedor;
                 <!-- Avatar -->
                 <div class="vendor-avatar">
                     <?php if ($vendedor['foto_perfil']): ?>
-                    <img src="/ascc/frontend/users/public/<?= htmlspecialchars($vendedor['foto_perfil']) ?>"
+                    <img src="/ascc/public/<?= htmlspecialchars($vendedor['foto_perfil']) ?>"
                         alt="<?= htmlspecialchars($vendedor['nombre']) ?>"
                         style="width:100%;height:100%;border-radius:50%;object-fit:cover">
                     <?php else: ?>
@@ -303,7 +303,7 @@ $review_id   = $id_vendedor;
                         "
                     onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.2)'"
                     onmouseout="this.style.transform='';this.style.boxShadow=''">
-                    <img src="/ascc/frontend/users/public/<?= htmlspecialchars($prod['imagen'] ?? 'img/no-image.png') ?>"
+                    <img src="/ascc/public/<?= htmlspecialchars($prod['imagen'] ?? 'img/no-image.png') ?>"
                         alt="<?= htmlspecialchars($prod['tipo_producto']) ?>"
                         style="width:100%;height:130px;object-fit:cover"
                         onerror="this.src='/ascc/frontend/users/public/img/no-image.png'" loading="lazy">

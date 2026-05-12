@@ -250,8 +250,8 @@ $page_title = $tipo === 'producto'
             <div class="vis-header__info">
                 <?php if ($tipo === 'producto' && $producto_info): ?>
                     <div class="vis-producto-info">
-                        <img src="/ascc/frontend/users/public/<?= htmlspecialchars($producto_info['imagen'] ?? 'img/no-image.png') ?>"
-                            alt="<?= htmlspecialchars($producto_info['tipo_producto']) ?>" class="vis-producto-img"
+                        <img src="/ascc/public/<?= htmlspecialchars($producto_info['imagen'] ?? 'img/no-image.png') ?>"
+                            alt="<?= htmlspecialchars($producto_info['tipo_producto'] ?? 'Producto') ?>" class="producto-imagen"
                             onerror="this.src='/ascc/frontend/users/public/img/no-image.png'">
                         <div>
                             <h1 class="vis-title">

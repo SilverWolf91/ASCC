@@ -252,7 +252,7 @@ if (!empty($_FILES['avatar']['name']) && $_FILES['avatar']['error'] === UPLOAD_E
     /* Nombre de archivo único */
     $ext         = $ext_map[$mime_real];
     $nombre_file = 'avatar_' . $id_usuario . '_' . time() . '.' . $ext;
-    $dir_destino = __DIR__ . '/../../frontend/users/public/uploads/avatars/';
+    $dir_destino = __DIR__ . '/../../../public/uploads/avatars/';
     $ruta_db     = 'uploads/avatars/' . $nombre_file;
 
     /* Crear directorio si no existe */
@@ -349,9 +349,9 @@ $_SESSION['rol']    = $rol;
 
 /* â”€â”€ Construir URL del avatar para la respuesta â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 if ($foto_perfil_nueva !== null) {
-    $avatar_url = '/ascc/frontend/users/public/' . $foto_perfil_nueva;
+    $avatar_url = '/ascc/public/' . $foto_perfil_nueva;
 } elseif (!empty($foto_perfil_actual)) {
-    $avatar_url = '/ascc/frontend/users/public/' . $foto_perfil_actual;
+    $avatar_url = '/ascc/public/' . $foto_perfil_actual;
 } else {
     $avatar_url = null;
 }

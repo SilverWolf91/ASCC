@@ -199,7 +199,7 @@ function crearProducto($conexion, $id_usuario)
         $stmt->execute([':codigo' => $codigo_producto, ':id' => $id_producto]);
 
         // 3. Subir imágenes
-        $uploadDir = __DIR__ . "/../../frontend/users/public/uploads/productos/";
+        $uploadDir = __DIR__ . "/../../../public/uploads/productos/";
         if (!file_exists($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }

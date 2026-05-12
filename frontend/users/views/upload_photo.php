@@ -192,7 +192,7 @@ try {
     $nombre_nuevo = 'perfil_' . $id_usuario . '_' . time() . '.jpg';
 
     // Ruta del directorio (crear carpeta profiles dentro de uploads)
-    $ruta_directorio = __DIR__ . '/../public/uploads/profiles/';
+    $ruta_directorio = __DIR__ . '/../../../public/uploads/profiles/';
     $ruta_completa = $ruta_directorio . $nombre_nuevo;
 
     // Crear directorio si no existe
@@ -215,7 +215,7 @@ try {
 
     // Eliminar foto anterior si existe
     if ($usuario && !empty($usuario['foto_perfil'])) {
-        $foto_anterior = __DIR__ . '/../public/' . $usuario['foto_perfil'];
+        $foto_anterior = __DIR__ . '/../../../public/' . $usuario['foto_perfil'];
         if (file_exists($foto_anterior)) {
             @unlink($foto_anterior);
         }
@@ -246,7 +246,7 @@ try {
     echo json_encode([
         'success' => true,
         'message' => 'Foto actualizada correctamente',
-        'foto_url' => '/ascc/frontend/users/public/' . $ruta_bd
+        'foto_url' => '/ascc/public/' . $ruta_bd
     ]);
 } catch (Exception $e) {
     ob_clean();

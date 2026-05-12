@@ -249,7 +249,7 @@ $calificacion_vendedor = 5.0;
                 <div class="carousel-container" id="carouselContainer">
                     <?php if (count($imagenes) > 0): ?>
                     <?php foreach ($imagenes as $index => $img): ?>
-                    <img src="/ascc/frontend/users/public/<?= $img['ruta_imagen'] ?>"
+                    <img src="/ascc/public/<?= $img['ruta_imagen'] ?>"
                         alt="<?= htmlspecialchars($producto['tipo_producto']) ?> - Imagen <?= $index + 1 ?>"
                         class="carousel-image <?= $index === 0 ? 'active' : '' ?>"
                         onerror="this.src='/ascc/frontend/users/public/img/no-image.png'">

@@ -49,7 +49,7 @@ switch ($accion) {
 
         try {
             // Crear directorio si no existe
-            $directorio_fotos = __DIR__ . '/../public/img/perfiles/';
+            $directorio_fotos = __DIR__ . '/../../../public/uploads/perfiles/';
             if (!file_exists($directorio_fotos)) {
                 mkdir($directorio_fotos, 0755, true);
             }
@@ -65,7 +65,7 @@ switch ($accion) {
             $extension = pathinfo($foto['name'], PATHINFO_EXTENSION);
             $nombre_archivo = 'perfil_' . $id_usuario . '_' . time() . '.' . $extension;
             $ruta_completa = $directorio_fotos . $nombre_archivo;
-            $ruta_bd = 'img/perfiles/' . $nombre_archivo;
+            $ruta_bd = 'uploads/perfiles/' . $nombre_archivo;
 
             // Mover archivo
             if (move_uploaded_file($foto['tmp_name'], $ruta_completa)) {
@@ -81,13 +81,13 @@ switch ($accion) {
                 $stmt->execute();
 
                 // Eliminar foto anterior si existe
-                if ($foto_anterior && file_exists(__DIR__ . '/../public/' . $foto_anterior)) {
-                    unlink(__DIR__ . '/../public/' . $foto_anterior);
+                if ($foto_anterior && file_exists(__DIR__ . '/../../../public/' . $foto_anterior)) {
+                    unlink(__DIR__ . '/../../../public/' . $foto_anterior);
                 }
 
                 echo json_encode([
                     'success' => true,
-                    'ruta_foto' => '/ascc/frontend/users/public/' . $ruta_bd,
+                    'ruta_foto' => '/ascc/public/' . $ruta_bd,
                     'mensaje' => 'Foto actualizada correctamente'
                 ]);
             } else {
@@ -187,7 +187,7 @@ switch ($accion) {
 
             if ($usuario && $usuario['foto_perfil']) {
                 // Eliminar archivo
-                $ruta_archivo = __DIR__ . '/../public/' . $usuario['foto_perfil'];
+                $ruta_archivo = __DIR__ . '/../../../public/' . $usuario['foto_perfil'];
                 if (file_exists($ruta_archivo)) {
                     unlink($ruta_archivo);
                 }

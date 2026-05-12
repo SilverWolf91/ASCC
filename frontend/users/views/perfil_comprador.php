@@ -182,7 +182,7 @@ $estado_label = [
             <!-- Avatar -->
             <div class="pc-avatar-wrap">
                 <?php if ($comprador['foto_perfil']): ?>
-                    <img src="/ascc/frontend/users/public/<?= htmlspecialchars($comprador['foto_perfil']) ?>"
+                    <img src="/ascc/public/<?= htmlspecialchars($comprador['foto_perfil']) ?>"
                         alt="<?= htmlspecialchars($comprador['nombre']) ?>" class="pc-avatar-img"
                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                     <div class="pc-avatar" style="display:none">
@@ -288,7 +288,7 @@ $estado_label = [
                                     <tr>
                                         <td>
                                             <div class="pc-prod-cell">
-                                                <img src="/ascc/frontend/users/public/<?= htmlspecialchars($h['imagen'] ?? 'img/no-image.png') ?>"
+                                                <img src="/ascc/public/<?= htmlspecialchars($h['imagen'] ?? 'img/no-image.png') ?>"
                                                     alt="<?= htmlspecialchars($h['tipo_producto']) ?>" class="pc-prod-thumb"
                                                     onerror="this.src='/ascc/frontend/users/public/img/no-image.png'">
                                                 <span><?= htmlspecialchars($h['tipo_producto']) ?></span>
