@@ -413,7 +413,11 @@ $calificacion_vendedor = 5.0;
             <div class="vendor-info">
                 <div class="vendor-avatar">
                     <?php if (!empty($producto['vendedor_foto'])): ?>
-                        <img src="/ascc/public/<?= htmlspecialchars($producto['vendedor_foto']) ?>" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                        <img src="/ascc/public/<?= htmlspecialchars($producto['vendedor_foto']) ?>" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"
+                            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div style="display:none; width:100%; height:100%; justify-content:center; align-items:center;">
+                            <?= strtoupper(substr($nombre_vendedor_completo, 0, 1)) ?>
+                        </div>
                     <?php else: ?>
                         <?= strtoupper(substr($nombre_vendedor_completo, 0, 1)) ?>
                     <?php endif; ?>
