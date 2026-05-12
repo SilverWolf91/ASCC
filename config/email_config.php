@@ -283,9 +283,9 @@ function enviarEmailVerificacionRegistro(string $email, string $nombre, string $
   .greeting strong{color:#2D5016}
   .token-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#9ca3af;text-align:center;margin-bottom:18px}
   .token-wrap{text-align:center;margin:0 0 28px}
-  .token-card{display:inline-block;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2.5px solid #4ade80;border-radius:18px;padding:28px 44px;box-shadow:0 6px 28px rgba(74,222,128,.22)}
+  .token-card{display:inline-block;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:2.5px solid #4ade80;border-radius:18px;padding:20px 24px;box-shadow:0 6px 28px rgba(74,222,128,.22);max-width:100%;overflow:hidden;}
   .token-emoji{font-size:30px;margin-bottom:10px;display:block}
-  .token-code{font-family:'Courier New',Courier,monospace;font-size:40px;font-weight:800;letter-spacing:10px;color:#1d6d3b;display:block}
+  .token-code{font-family:'Courier New',Courier,monospace;font-size:34px;font-weight:800;letter-spacing:6px;color:#1d6d3b;display:block;word-wrap:break-word;}
   .token-valid{margin-top:14px;font-size:13px;color:#059669;font-weight:600}
   .alert-time{background:linear-gradient(135deg,#fffbeb,#fef3c7);border:1.5px solid #F2A71B;border-radius:12px;padding:18px 22px;margin:0 0 28px;display:flex;align-items:center;gap:14px}
   .at-icon{font-size:28px;flex-shrink:0}

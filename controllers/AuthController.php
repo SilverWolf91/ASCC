@@ -43,6 +43,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit;
         }
 
+        // Validar políticas de privacidad
+        $acepta_politicas = isset($_POST['acepta_politicas']) ? true : false;
+        if (!$acepta_politicas) {
+            header("Location: /ascc/views/auth/registro.php?error=politicas_requeridas");
+            exit;
+        }
+
         // Validar longitud de contraseña
         if (strlen($password) < 6) {
             header("Location: /ascc/views/auth/registro.php?error=password_corta");
@@ -91,6 +98,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 'expiry'    => time() + 300,
                 'intentos'  => 0,
                 'last_sent' => time(),
+                'acepta_politicas' => true,
+                'version_politica' => '1.0'
             ];
 
             // Enviar email de verificación
