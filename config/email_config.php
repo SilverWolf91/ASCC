@@ -27,7 +27,7 @@ function enviarPorBrevoAPI($toEmail, $toName, $subject, $htmlContent) {
     
     if (empty($apiKey)) {
         error_log("Error: BREVO_API_KEY no está configurada.");
-        return "Error: BREVO_API_KEY no configurada en Railway.";
+        return false;
     }
 
     $senderEmail = getenv('GMAIL_USER') ?: 'lopeztorresjosesamuel@gmail.com';
@@ -68,7 +68,7 @@ function enviarPorBrevoAPI($toEmail, $toName, $subject, $htmlContent) {
         return true;
     } else {
         error_log("Brevo API Error ($httpCode): " . $response);
-        return "Error de API ($httpCode)";
+        return false;
     }
 }
 
