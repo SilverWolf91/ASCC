@@ -967,17 +967,49 @@
         var lang = getLang();
         if (!cat) { return; }
 
+        var isFirst = true;
         Object.keys(cat.productos).forEach(function (subcatName) {
             var productos = cat.productos[subcatName];
             var section = document.createElement('div');
             section.className = 'subcategory-section';
 
             var titulo = document.createElement('h4');
-            titulo.textContent = cat.icon + ' ' + traducirSubcategoria(subcatName);
+            
+            var tituloContent = document.createElement('div');
+            tituloContent.className = 'subcategory-title-content';
+            tituloContent.textContent = cat.icon + ' ' + traducirSubcategoria(subcatName);
+            
+            var arrow = document.createElement('span');
+            arrow.className = 'accordion-arrow' + (isFirst ? ' open' : '');
+            arrow.textContent = '▼';
+
+            titulo.appendChild(tituloContent);
+            titulo.appendChild(arrow);
             section.appendChild(titulo);
 
             var lista = document.createElement('div');
-            lista.className = 'product-list';
+            lista.className = 'product-list' + (isFirst ? ' open' : '');
+
+            // Accordion click logic
+            titulo.addEventListener('click', function() {
+                var isOpen = lista.classList.contains('open');
+                
+                // Close all lists in the container
+                document.querySelectorAll('.subcategory-section .product-list').forEach(function(el) {
+                    el.classList.remove('open');
+                });
+                document.querySelectorAll('.subcategory-section .accordion-arrow').forEach(function(el) {
+                    el.classList.remove('open');
+                });
+                
+                // Toggle current
+                if (!isOpen) {
+                    lista.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+
+            isFirst = false;
 
             /* ── ID único por subcategoría para el panel custom ── */
             var panelId = 'otro_panel_' + selectedCategory + '_' + subcatName.replace(/\s+/g, '_');

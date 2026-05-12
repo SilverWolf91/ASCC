@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ═══════════════════════════════════════════════════════════
  * ASCC - FORMULARIO CREAR PRODUCTO
  * Archivo : public/js/crear-producto.js
@@ -798,6 +798,61 @@
        RENDER DE CATEGORÍAS
     ══════════════════════════════════════════════════════ */
 
+    /* ══════════════════════════════════════════════════════
+       SECUENCIAS DE ANIMACIÓN POR CATEGORÍA
+       Cada categoría tiene una breve transición de emojis que
+       cuenta una mini historia agropecuaria al seleccionarla.
+       ══════════════════════════════════════════════════════ */
+    var ANIM_SEQ = {
+        huevos:     ['🥚', '🐣', '🐥', '🐣', '🥚'],
+        aves:       ['🥚', '🐣', '🐥', '🐔'],
+        bovinos:    ['🐄', '🌾', '🐄'],
+        equinos:    ['🐎', '🐴', '🐎'],
+        menor:      ['🐖', '🐷', '🐖'],
+        carnicos:   ['🥩', '🍖', '🥩'],
+        lacteos:    ['🥛', '🧀', '🥛'],
+        verduras:   ['🌱', '🌿', '🥦'],
+        frutas:     ['🌱', '🌳', '🍎'],
+        cereales:   ['🌱', '🌾', '🌾'],
+        plantas:    ['🌱', '🌿', '🌳'],
+        procesados: ['🫙', '✨', '🫙'],
+        peces:      ['🐟', '🐠', '🐟']
+    };
+
+    /**
+     * Ejecuta la animación de emojis sobre una tarjeta de categoría.
+     * @param {HTMLElement} card     - tarjeta .category-card
+     * @param {string}      key      - clave de la categoría (huevos, frutas, ...)
+     * @param {string}      iconBase - emoji original para restaurar al final
+     */
+    function animarCategoria(card, key, iconBase) {
+        var iconoEl = card.querySelector('.category-icon');
+        if (!iconoEl) { return; }
+
+        var secuencia = ANIM_SEQ[key];
+        if (!secuencia || !secuencia.length) { return; }
+
+        /* Evitar disparos repetidos en plena animación */
+        if (card.classList.contains('is-animating')) { return; }
+        card.classList.add('is-animating');
+
+        var FRAME_MS = 220;
+        var paso = 0;
+
+        var intervalId = setInterval(function () {
+            iconoEl.textContent = secuencia[paso];
+            paso++;
+            if (paso >= secuencia.length) {
+                clearInterval(intervalId);
+                /* Pequeña pausa con el último frame, luego volver al icono base */
+                setTimeout(function () {
+                    iconoEl.textContent = iconBase;
+                    card.classList.remove('is-animating');
+                }, FRAME_MS + 120);
+            }
+        }, FRAME_MS);
+    }
+
     function renderCategories() {
         var grid = document.getElementById('categoryGrid');
         if (!grid) { return; }
@@ -823,6 +878,7 @@
                 selectedCategory = key;
                 var input = document.getElementById('categoria_principal');
                 if (input) { input.value = key; }
+                animarCategoria(card, key, cat.icon);
             });
 
             grid.appendChild(card);
@@ -911,17 +967,49 @@
         var lang = getLang();
         if (!cat) { return; }
 
+        var isFirst = true;
         Object.keys(cat.productos).forEach(function (subcatName) {
             var productos = cat.productos[subcatName];
             var section = document.createElement('div');
             section.className = 'subcategory-section';
 
             var titulo = document.createElement('h4');
-            titulo.textContent = cat.icon + ' ' + traducirSubcategoria(subcatName);
+            
+            var tituloContent = document.createElement('div');
+            tituloContent.className = 'subcategory-title-content';
+            tituloContent.textContent = cat.icon + ' ' + traducirSubcategoria(subcatName);
+            
+            var arrow = document.createElement('span');
+            arrow.className = 'accordion-arrow' + (isFirst ? ' open' : '');
+            arrow.textContent = '▼';
+
+            titulo.appendChild(tituloContent);
+            titulo.appendChild(arrow);
             section.appendChild(titulo);
 
             var lista = document.createElement('div');
-            lista.className = 'product-list';
+            lista.className = 'product-list' + (isFirst ? ' open' : '');
+
+            // Accordion click logic
+            titulo.addEventListener('click', function() {
+                var isOpen = lista.classList.contains('open');
+                
+                // Close all lists in the container
+                document.querySelectorAll('.subcategory-section .product-list').forEach(function(el) {
+                    el.classList.remove('open');
+                });
+                document.querySelectorAll('.subcategory-section .accordion-arrow').forEach(function(el) {
+                    el.classList.remove('open');
+                });
+                
+                // Toggle current
+                if (!isOpen) {
+                    lista.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+
+            isFirst = false;
 
             /* ── ID único por subcategoría para el panel custom ── */
             var panelId = 'otro_panel_' + selectedCategory + '_' + subcatName.replace(/\s+/g, '_');
@@ -1225,7 +1313,7 @@
                     ════════════════════════════════════════════ */
                     inputOtro.classList.remove('input-bloqueado');
 
-                    var url = '/ascc/backend/users/api/buscar_producto.php' +
+                    var url = '/ascc/api/buscar_producto.php' +
                         '?texto=' + encodeURIComponent(valor) +
                         '&categoria=' + encodeURIComponent(selectedCategory) +
                         '&subcategoria=' + encodeURIComponent(subcatName) +
@@ -1324,7 +1412,7 @@
                 btnGuardar.disabled = true;
                 btnGuardar.textContent = '⏳ ' + (langNow === 'es' ? 'Guardando...' : 'Saving...');
 
-                fetch('/ascc/backend/users/api/guardar_producto.php', {
+                fetch('/ascc/api/guardar_producto.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1377,9 +1465,10 @@
     ══════════════════════════════════════════════════════ */
 
     function validarFormularioCompleto(e) {
+        e.preventDefault();
+        
         var imagenes = document.getElementById('imagenes');
         if (!imagenes || imagenes.files.length === 0) {
-            e.preventDefault();
             mostrarError(msg('upload_image'));
             return false;
         }
@@ -1417,6 +1506,43 @@
             }
             veredaSelect.value = vrVal;
         }
+
+        var btnSubmit = document.getElementById('submitBtn');
+        if (btnSubmit) {
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '⏳ ' + (getLang() === 'es' ? 'Publicando...' : 'Publishing...');
+        }
+
+        var form = e.target;
+        var formData = new FormData(form);
+        formData.append('ajax', '1');
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(function(res) {
+            return res.json();
+        })
+        .then(function(data) {
+            if (data.success) {
+                window.top.location.href = '/ascc/dashboard.php?success=producto_creado';
+            } else {
+                mostrarError(data.error || 'Error al publicar');
+                if (btnSubmit) {
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = '🚀 ' + (getLang() === 'es' ? 'Publicar' : 'Publish');
+                }
+            }
+        })
+        .catch(function(err) {
+            console.error(err);
+            mostrarError('Error de conexión');
+            if (btnSubmit) {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = '🚀 ' + (getLang() === 'es' ? 'Publicar' : 'Publish');
+            }
+        });
     }
 
     /* ══════════════════════════════════════════════════════
@@ -1542,7 +1668,7 @@
         }
 
         /* 1. Consultar coordenadas en nuestra propia BD (gratis, sin Geocoder) */
-        var url = '/ascc/backend/users/api/get_coordenadas.php?departamento=' + encodeURIComponent(depto);
+        var url = '/ascc/api/get_coordenadas.php?departamento=' + encodeURIComponent(depto);
         if (mun && mun !== 'Otro (No aparece en la lista)') {
             url += '&municipio=' + encodeURIComponent(mun);
         }
@@ -1664,7 +1790,7 @@
             return;
         }
 
-        var url = '/ascc/backend/users/api/buscar_similitud.php' +
+        var url = '/ascc/api/buscar_similitud.php' +
             '?tipo=' + encodeURIComponent(tipo) +
             '&texto=' + encodeURIComponent(texto) +
             '&departamento=' + encodeURIComponent(depto);
@@ -1683,7 +1809,7 @@
         var body = { departamento: depto, municipio: municipio };
         if (vereda && vereda.trim() !== '') { body.vereda = vereda; }
 
-        fetch('/ascc/backend/users/api/guardar_ubicacion.php', {
+        fetch('/ascc/api/guardar_ubicacion.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
@@ -1710,7 +1836,7 @@
         veredaSelect.innerHTML = '<option value="">' +
             (lang === 'en' ? 'Loading villages...' : 'Cargando veredas...') + '</option>';
 
-        fetch('/ascc/backend/users/api/get_veredas.php' +
+        fetch('/ascc/api/get_veredas.php' +
             '?departamento=' + encodeURIComponent(depto) +
             '&municipio=' + encodeURIComponent(mun))
             .then(function (r) { if (!r.ok) { throw new Error('HTTP ' + r.status); } return r.json(); })
@@ -1863,7 +1989,7 @@
             }
 
             /* Luego fusionar con los de la BD (usuarios que agregaron municipios) */
-            fetch('/ascc/backend/users/api/get_municipios.php?departamento=' + encodeURIComponent(depto))
+            fetch('/ascc/api/get_municipios.php?departamento=' + encodeURIComponent(depto))
                 .then(function (r) { return r.ok ? r.json() : []; })
                 .then(function (dbMpios) {
                     var fusionados = staticMpios.slice();
@@ -1885,7 +2011,15 @@
                     _llenarMunicipios(lista);
                 });
 
-            if (window.asccMapInstance && !window._gpsAutoFilling) { centrarMapaEnUbicacion(depto); }
+            /* Solo bloqueamos el centrado cuando el cambio fue programático
+               por la auto-detección de GPS. Los cambios manuales del usuario
+               (event.isTrusted) siempre mueven el mapa. */
+            if (window.asccMapInstance) {
+                var esManual = arguments[0] && arguments[0].isTrusted;
+                if (esManual || !window._gpsAutoFilling) {
+                    centrarMapaEnUbicacion(depto);
+                }
+            }
         });
 
         /* ── Evento: MUNICIPIO ───────────────────────────── */
@@ -1943,10 +2077,18 @@
                                     btnGuardar.disabled = true;
                                     btnGuardar.textContent = '⏳ ' + (getLang() === 'es' ? 'Guardando...' : 'Saving...');
 
-                                    fetch('/ascc/backend/users/api/guardar_ubicacion.php', {
+                                    var latEl = document.getElementById('lat');
+                                    var lngEl = document.getElementById('lng');
+                                    var payload = { departamento: deptoSelect.value, municipio: valor };
+                                    if (latEl && lngEl && latEl.value && lngEl.value) {
+                                        payload.lat = parseFloat(latEl.value);
+                                        payload.lng = parseFloat(lngEl.value);
+                                    }
+
+                                    fetch('/ascc/api/guardar_ubicacion.php', {
                                         method: 'POST',
                                         headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify({ departamento: deptoSelect.value, municipio: valor })
+                                        body: JSON.stringify(payload)
                                     })
                                     .then(function (r) { return r.json(); })
                                     .then(function () {
@@ -2012,7 +2154,12 @@
             }
 
             _cargarVeredas(depto, mun);
-            if (window.asccMapInstance && !window._gpsAutoFilling) { centrarMapaEnUbicacion(depto, mun); }
+            if (window.asccMapInstance) {
+                var esManualMun = arguments[0] && arguments[0].isTrusted;
+                if (esManualMun || !window._gpsAutoFilling) {
+                    centrarMapaEnUbicacion(depto, mun);
+                }
+            }
         });
 
         /* ── Evento: VEREDA ──────────────────────────────── */
@@ -2096,10 +2243,18 @@
                                     btnGuardar.disabled = true;
                                     btnGuardar.textContent = '⏳ ' + (getLang() === 'es' ? 'Guardando...' : 'Saving...');
 
-                                    fetch('/ascc/backend/users/api/guardar_ubicacion.php', {
+                                    var latElV = document.getElementById('lat');
+                                    var lngElV = document.getElementById('lng');
+                                    var payloadV = { departamento: deptoSelect.value, municipio: mpioReal, vereda: valor };
+                                    if (latElV && lngElV && latElV.value && lngElV.value) {
+                                        payloadV.lat = parseFloat(latElV.value);
+                                        payloadV.lng = parseFloat(lngElV.value);
+                                    }
+
+                                    fetch('/ascc/api/guardar_ubicacion.php', {
                                         method: 'POST',
                                         headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify({ departamento: deptoSelect.value, municipio: mpioReal, vereda: valor })
+                                        body: JSON.stringify(payloadV)
                                     })
                                     .then(function (r) { return r.json(); })
                                     .then(function () {
@@ -2151,7 +2306,16 @@
                 var btnCentroOcultar = document.getElementById('btn_vereda_centro');
                 if (btnCentroOcultar) { btnCentroOcultar.style.display = 'none'; }
                 if (window.asccMapInstance && depto && mun && vereda) {
-                    centrarMapaEnUbicacion(depto, mun, vereda);
+                    /* Si el municipio es "Otro", usar el valor del input custom
+                       para que el centrado del mapa funcione con el nombre real. */
+                    var mpioParaMapa = mun;
+                    if (mun === 'Otro (No aparece en la lista)') {
+                        var mpInputEl = document.getElementById('municipio_custom');
+                        if (mpInputEl && mpInputEl.value.trim()) {
+                            mpioParaMapa = mpInputEl.value.trim();
+                        }
+                    }
+                    centrarMapaEnUbicacion(depto, mpioParaMapa, vereda);
                 }
             }
         });
@@ -2430,9 +2594,13 @@
     function init() {
         console.log('[ASCC] Iniciando crear-producto.js v3 — Dropdown combinado catálogo + BD');
 
-        renderCategories();
-        iniciarDropZone();
-        iniciarUbicacion();
+        try {
+            renderCategories();
+            iniciarDropZone();
+            iniciarUbicacion();
+        } catch (err) {
+            console.error('[ASCC] Error en setup:', err);
+        }
 
         /* El mapa se inicializa lazy en _setStep() al llegar al paso 5,
            cuando el div #map ya es visible y tiene dimensiones reales. */
