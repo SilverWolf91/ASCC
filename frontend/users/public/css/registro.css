@@ -572,3 +572,97 @@ form {
         grid-template-columns: 1fr;
     }
 }
+
+/* ══════════════════════════════════════════════════════════
+   MODAL DE POLÍTICAS DE PRIVACIDAD
+══════════════════════════════════════════════════════════ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 650px;
+    border-radius: 16px;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    animation: slideInDown 0.4s ease-out;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+.modal-content h2 {
+    font-size: 1.4rem;
+    color: var(--green-800);
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.policies-group {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.checkbox-label {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    font-size: 0.85rem !important;
+    line-height: 1.5 !important;
+    color: #555 !important;
+    font-weight: 400 !important;
+    cursor: pointer !important;
+}
+
+.checkbox-label input[type='checkbox'] {
+    margin-top: 4px !important;
+    width: 20px !important;
+    height: 20px !important;
+    cursor: pointer !important;
+    accent-color: var(--green-600) !important;
+    flex-shrink: 0 !important;
+}
+
+.checkbox-text {
+    flex: 1;
+}
+
+.checkbox-label a {
+    color: var(--green-700);
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+@keyframes slideInDown {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}

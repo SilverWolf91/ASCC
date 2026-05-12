@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ═══════════════════════════════════════════════════════════
  * ASCC REGISTRO - JAVASCRIPT
  * Validaciones profesionales de formulario
@@ -283,6 +283,18 @@ function validarFormulario(event) {
         esValido = false;
     }
     // ─────────────────────────────────────────────────────
+
+    // ── Validar Políticas de Privacidad ──────────────────
+    const aceptaPoliticas = document.getElementById('acepta_politicas').checked;
+    const politicasError = document.getElementById('politicas-error');
+    if (!aceptaPoliticas) {
+        politicasError.textContent = '❌ Debes aceptar las Políticas de Tratamiento de Datos Personales para continuar.';
+        politicasError.classList.add('show');
+        esValido = false;
+    } else {
+        politicasError.classList.remove('show');
+    }
+    // ─────────────────────────────────────────────────────
     
     // Si todo es válido, enviar formulario
     if (esValido) {
@@ -375,3 +387,29 @@ function seleccionarRol(rol) {
         rolError.classList.remove('show');
     }
 }
+
+// ═══════════════════════════════════════════════════════════
+// POLÍTICAS DE PRIVACIDAD
+// ═══════════════════════════════════════════════════════════
+
+function abrirModalPoliticas(event) {
+    if(event) event.preventDefault();
+    document.getElementById('modalPoliticas').style.display = 'flex';
+}
+
+function cerrarModalPoliticas() {
+    document.getElementById('modalPoliticas').style.display = 'none';
+}
+
+function cerrarModalYMarcar() {
+    cerrarModalPoliticas();
+    document.getElementById('acepta_politicas').checked = true;
+}
+
+// Cerrar modal si hacen click fuera del contenido
+window.addEventListener('click', function(event) {
+    var modal = document.getElementById('modalPoliticas');
+    if (event.target == modal) {
+        cerrarModalPoliticas();
+    }
+});

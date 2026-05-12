@@ -83,6 +83,8 @@
                         echo "⏱ El código expiró. Por favor regístrate nuevamente.";
                     } elseif ($_GET['error'] === 'demasiados_intentos') {
                         echo "🚫 Demasiados intentos fallidos. Por favor regístrate nuevamente.";
+                    } elseif ($_GET['error'] === 'politicas_requeridas') {
+                        echo "❌ Debes aceptar las Políticas de Tratamiento de Datos Personales para registrarte.";
                     } else {
                         echo "❌ Error en el registro. Por favor intenta nuevamente";
                     }
@@ -191,6 +193,20 @@
                 </div>
                 <!-- ══════════════════════════════════════════════ -->
 
+                <!-- ══════════════════════════════════════════════
+                     CHECKBOX DE POLÍTICAS DE PRIVACIDAD
+                ══════════════════════════════════════════════ -->
+                <div class="form-group policies-group">
+                    <label class="checkbox-label" for="acepta_politicas">
+                        <input type="checkbox" name="acepta_politicas" id="acepta_politicas" required>
+                        <span class="checkbox-text">
+                            Autorizo de manera previa, expresa e informada a Aromas y Sabores de mi Campo Colombiano (ASCC) para que realice el tratamiento de mis datos personales de acuerdo con su <a href="#" onclick="abrirModalPoliticas(event)">[Ver Política de Tratamiento de Datos Personales]</a>. Entiendo que mis datos serán utilizados para la gestión de pedidos, facturación, envíos y atención al cliente. Como titular, conozco que puedo ejercer mis derechos de acceso, rectificación y supresión a través del correo: aromasysaboresdemicampocolombiano@gmail.com.
+                        </span>
+                    </label>
+                    <div id="politicas-error" class="error-message"></div>
+                </div>
+                <!-- ══════════════════════════════════════════════ -->
+
                 <button type="submit" class="btn-primary">
                     Crear Cuenta 🚀
                 </button>
@@ -233,6 +249,53 @@
             </div>
         </aside>
 
+    </div>
+
+    <!-- MODAL DE POLÍTICAS DE PRIVACIDAD -->
+    <div id="modalPoliticas" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <span class="close-modal" onclick="cerrarModalPoliticas()">&times;</span>
+            <h2>POLÍTICA DE TRATAMIENTO DE DATOS PERSONALES - ASCC</h2>
+            <div class="modal-body" style="max-height: 60vh; overflow-y: auto; text-align: left; padding: 15px; background: #f9f9f9; border-radius: 8px; margin-bottom: 20px; font-size: 14px; line-height: 1.6; color: #333;">
+                <h3 style="color: var(--primary-color); margin-top: 0;">1. IDENTIFICACIÓN DEL RESPONSABLE</h3>
+                <p><strong>Razón Social:</strong> Aromas y Sabores de mi Campo Colombiano (ASCC)<br>
+                <strong>NIT:</strong> 1104069735-0<br>
+                <strong>Domicilio:</strong> Mosquera, Cundinamarca.<br>
+                <strong>Correo electrónico:</strong> aromasysaboresdemicampocolombiano@gmail.com</p>
+
+                <h3 style="color: var(--primary-color);">2. FINALIDAD DEL TRATAMIENTO</h3>
+                <p>Los datos personales que ASCC recolecta serán tratados con las siguientes finalidades:</p>
+                <ul style="padding-left: 20px;">
+                    <li>Procesar compras, gestionar el envío de productos y emitir facturas legales.</li>
+                    <li>Establecer comunicación directa para informar sobre el estado de los pedidos o novedades del servicio.</li>
+                    <li>Atender peticiones, quejas, reclamos y sugerencias (PQRS).</li>
+                    <li>Cumplir con las obligaciones legales y tributarias ante las autoridades colombianas.</li>
+                    <li>(Opcional) Enviar información comercial y promocional, siempre que el usuario no manifieste su oposición.</li>
+                </ul>
+
+                <h3 style="color: var(--primary-color);">3. DERECHOS DE LOS TITULARES</h3>
+                <p>De acuerdo con la Ley 1581 de 2012, usted como titular tiene derecho a:</p>
+                <ul style="padding-left: 20px;">
+                    <li>Conocer, actualizar y rectificar sus datos personales.</li>
+                    <li>Solicitar prueba de la autorización otorgada.</li>
+                    <li>Ser informado respecto del uso que se le ha dado a sus datos.</li>
+                    <li>Presentar quejas ante la Superintendencia de Industria y Comercio (SIC).</li>
+                    <li>Revocar la autorización o solicitar la supresión del dato cuando no se respeten los principios, derechos y garantías constitucionales y legales.</li>
+                </ul>
+
+                <h3 style="color: var(--primary-color);">4. PROCEDIMIENTO PARA EL EJERCICIO DE DERECHOS</h3>
+                <p>Usted puede dirigir cualquier solicitud relacionada con sus datos al correo electrónico: aromasysaboresdemicampocolombiano@gmail.com. Su solicitud será atendida en un término máximo de quince (15) días hábiles, según lo estipulado por la ley.</p>
+
+                <h3 style="color: var(--primary-color);">5. SEGURIDAD DE LA INFORMACIÓN</h3>
+                <p>ASCC cuenta con medidas técnicas y administrativas para garantizar la seguridad de sus datos y evitar su adulteración, pérdida, consulta o acceso no autorizado.</p>
+
+                <h3 style="color: var(--primary-color);">6. VIGENCIA</h3>
+                <p>La presente política rige a partir de su publicación y los datos permanecerán en nuestra base de datos durante el tiempo necesario para cumplir con la finalidad del tratamiento y las obligaciones legales contables.</p>
+            </div>
+            <div class="modal-footer" style="text-align: center;">
+                <button type="button" class="btn-primary" onclick="cerrarModalYMarcar()">He leído y acepto</button>
+            </div>
+        </div>
     </div>
 
     <script src="/ascc/frontend/users/public/js/registro.js"></script>

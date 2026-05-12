@@ -67,6 +67,38 @@ try {
 
     $id_usuario = $conexion->lastInsertId();
 
+    /* ── Registro de Políticas de Privacidad (Legal) ─────────────── */
+    if (!empty($pending['acepta_politicas'])) {
+        // Crear tabla si no existe
+        $conexion->exec("
+            CREATE TABLE IF NOT EXISTS aceptacion_politicas (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                id_usuario INT NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                fecha_aceptacion DATETIME NOT NULL,
+                version_politica VARCHAR(50) NOT NULL,
+                ip_address VARCHAR(45) DEFAULT NULL,
+                FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        ");
+
+        $ip_address = $_SERVER['REMOTE_ADDR'] ?? null;
+        $fecha = date('Y-m-d H:i:s');
+        $version = $pending['version_politica'] ?? '1.0';
+
+        $stmt_pol = $conexion->prepare("
+            INSERT INTO aceptacion_politicas (id_usuario, email, fecha_aceptacion, version_politica, ip_address)
+            VALUES (:id_usuario, :email, :fecha, :version, :ip)
+        ");
+        $stmt_pol->bindParam(':id_usuario', $id_usuario);
+        $stmt_pol->bindParam(':email', $pending['email']);
+        $stmt_pol->bindParam(':fecha', $fecha);
+        $stmt_pol->bindParam(':version', $version);
+        $stmt_pol->bindParam(':ip', $ip_address);
+        $stmt_pol->execute();
+    }
+    /* ────────────────────────────────────────────────────────────── */
+
     /* Limpiar datos pendientes */
     unset($_SESSION['pending_registro']);
 
