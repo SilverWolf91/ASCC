@@ -22,4 +22,12 @@ GMAIL_NAME=$GMAIL_NAME
 APP_URL=$APP_URL
 EOF
 
+# Volumen persistente de Railway: se monta vacio y como root.
+# Creamos las subcarpetas y damos permisos a www-data (usuario de Apache/PHP).
+mkdir -p /var/www/html/ascc/public/uploads/productos \
+         /var/www/html/ascc/public/uploads/perfiles \
+         /var/www/html/ascc/public/uploads/avatars
+chown -R www-data:www-data /var/www/html/ascc/public/uploads
+chmod -R 755 /var/www/html/ascc/public/uploads
+
 exec "$@"
