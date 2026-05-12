@@ -226,6 +226,61 @@ $visitante_id       = $visitante_logueado ? (int)$_SESSION['id_usuario'] : 0;
         padding: 24px 24px 16px;
         border-bottom: 1px solid var(--border-color);
         flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .filtros-header .filtros-titulo {
+        margin-bottom: 0;
+    }
+
+    .btn-toggle-filtros {
+        background: var(--bg-body);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        transition: all 0.2s;
+        flex-shrink: 0;
+    }
+
+    .btn-toggle-filtros:hover {
+        border-color: #10B981;
+        color: #10B981;
+    }
+
+    .btn-toggle-filtros .chevron {
+        transition: transform 0.3s;
+        display: inline-block;
+    }
+
+    .filtros-sidebar.collapsed .btn-toggle-filtros .chevron {
+        transform: rotate(-90deg);
+    }
+
+    .filtros-sidebar.collapsed {
+        height: auto;
+        max-height: none;
+    }
+
+    .filtros-sidebar.collapsed #formFiltros {
+        display: none;
+    }
+
+    #formFiltros {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
     }
 
     .filtros-body {
@@ -233,6 +288,7 @@ $visitante_id       = $visitante_logueado ? (int)$_SESSION['id_usuario'] : 0;
         overflow-y: auto;
         overflow-x: hidden;
         padding: 16px 0;
+        min-height: 0;
     }
 
     .filtros-body::-webkit-scrollbar {
@@ -817,12 +873,16 @@ $visitante_id       = $visitante_logueado ? (int)$_SESSION['id_usuario'] : 0;
     <?php endif; ?>
 
     <div class="catalogo-container">
-        <aside class="filtros-sidebar">
+        <aside class="filtros-sidebar" id="filtrosSidebar">
             <div class="filtros-header">
                 <h2 class="filtros-titulo">
                     <span>🔍</span>
                     <span><?= t('filters') ?></span>
                 </h2>
+                <button type="button" class="btn-toggle-filtros" onclick="toggleFiltros()"
+                    aria-label="<?= t('filters') ?>" title="<?= t('filters') ?>">
+                    <span class="chevron">▼</span>
+                </button>
             </div>
 
             <form method="GET" action="/ascc/catalogo.php" id="formFiltros">
@@ -1112,6 +1172,11 @@ $visitante_id       = $visitante_logueado ? (int)$_SESSION['id_usuario'] : 0;
     <script src="/ascc/public/js/colombia_locations.js"></script>
 
     <script>
+    function toggleFiltros() {
+        const sidebar = document.getElementById('filtrosSidebar');
+        sidebar.classList.toggle('collapsed');
+    }
+
     function toggleAcordeon(header) {
         const contenido = header.nextElementSibling;
         const todosHeaders = document.querySelectorAll('.acordeon-header');
