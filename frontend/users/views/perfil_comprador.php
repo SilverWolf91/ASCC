@@ -49,7 +49,7 @@ if ($id_comprador === $id_visitante) {
 
 // ── Obtener datos del comprador ───────────────────────────────
 $stmt = $conexion->prepare(
-    "SELECT id_usuario, nombre, email, foto_perfil,
+    "SELECT id_usuario, nombre, apellido, email, foto_perfil,
             telefono, rol, estado, fecha_registro
      FROM usuarios
      WHERE id_usuario = :id
@@ -59,6 +59,7 @@ $stmt = $conexion->prepare(
 );
 $stmt->execute([':id' => $id_comprador]);
 $comprador = $stmt->fetch();
+$nombre_completo = trim($comprador['nombre'] . ' ' . ($comprador['apellido'] ?? ''));
 
 if (!$comprador) {
     header('Location: /ascc/reportes.php');
@@ -163,7 +164,7 @@ $estado_label = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($comprador['nombre']) ?> — <?= t('app_name') ?></title>
+    <title><?= htmlspecialchars($nombre_completo) ?> — <?= t('app_name') ?></title>
     <link rel="icon" type="image/png" href="/ascc/frontend/users/public/img/logo.png">
     <?= ascc_theme_css() ?>
     <link rel="stylesheet" href="/ascc/frontend/users/public/css/visitas-detalle.css?v=<?= time() ?>">
@@ -183,21 +184,21 @@ $estado_label = [
             <div class="pc-avatar-wrap">
                 <?php if ($comprador['foto_perfil']): ?>
                     <img src="/ascc/public/<?= htmlspecialchars($comprador['foto_perfil']) ?>"
-                        alt="<?= htmlspecialchars($comprador['nombre']) ?>" class="pc-avatar-img"
+                        alt="<?= htmlspecialchars($nombre_completo) ?>" class="pc-avatar-img"
                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                     <div class="pc-avatar" style="display:none">
-                        <?= strtoupper(substr($comprador['nombre'], 0, 2)) ?>
+                        <?= strtoupper(substr($nombre_completo, 0, 2)) ?>
                     </div>
                 <?php else: ?>
                     <div class="pc-avatar">
-                        <?= strtoupper(substr($comprador['nombre'], 0, 2)) ?>
+                        <?= strtoupper(substr($nombre_completo, 0, 2)) ?>
                     </div>
                 <?php endif; ?>
             </div>
 
             <!-- Info principal -->
             <div class="pc-hero-info">
-                <h1 class="pc-nombre"><?= htmlspecialchars($comprador['nombre']) ?></h1>
+                <h1 class="pc-nombre"><?= htmlspecialchars($nombre_completo) ?></h1>
 
                 <div class="pc-badges">
                     <span class="pc-badge pc-badge--rol">
@@ -255,7 +256,7 @@ $estado_label = [
             <!-- Botón contactar -->
             <div class="pc-contactar">
                 <button class="vis-btn-primary"
-                    onclick="abrirModal(<?= $id_comprador ?>, '<?= addslashes($comprador['nombre']) ?>')">
+                    onclick="abrirModal(<?= $id_comprador ?>, '<?= addslashes($nombre_completo) ?>')">
                     💬 <?= t('pc_contactar') ?>
                 </button>
             </div>

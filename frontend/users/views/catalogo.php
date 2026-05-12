@@ -50,6 +50,8 @@ $sql = "
         u.lng,
         i.ruta_imagen,
         usr.nombre       AS vendedor_nombre,
+        usr.apellido     AS vendedor_apellido,
+        usr.foto_perfil  AS vendedor_foto,
         usr.telefono     AS vendedor_telefono,
         usr.email        AS vendedor_email,
         usr.rol          AS vendedor_rol
@@ -1077,11 +1079,11 @@ $visitante_id       = $visitante_logueado ? (int)$_SESSION['id_usuario'] : 0;
                                 <span class="icono-vendedor">👤</span>
                                 <?php if ($es_mi_producto): ?>
                                 <span class="link-vendedor" style="cursor:default">
-                                    <?= htmlspecialchars($prod['vendedor_nombre']) ?>
+                                    <?= htmlspecialchars(trim($prod['vendedor_nombre'] . ' ' . ($prod['vendedor_apellido'] ?? ''))) ?>
                                 </span>
                                 <?php else: ?>
                                 <a href="<?= $perfil_url ?>" class="link-vendedor" onclick="event.stopPropagation()">
-                                    <?= htmlspecialchars($prod['vendedor_nombre']) ?>
+                                    <?= htmlspecialchars(trim($prod['vendedor_nombre'] . ' ' . ($prod['vendedor_apellido'] ?? ''))) ?>
                                 </a>
                                 <?php endif; ?>
                             </div>

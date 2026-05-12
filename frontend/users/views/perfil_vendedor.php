@@ -26,6 +26,7 @@ $stmt = $conexion->prepare("
     SELECT
         id_usuario,
         nombre,
+        apellido,
         email,
         foto_perfil,
         telefono,
@@ -45,6 +46,7 @@ if ($stmt->rowCount() === 0) {
 }
 
 $vendedor = $stmt->fetch();
+$nombre_completo = trim($vendedor['nombre'] . ' ' . ($vendedor['apellido'] ?? ''));
 
 // Solo vendedores y mixtos tienen perfil público
 if (!in_array($vendedor['rol'], ['vendedor', 'mixto', 'admin'], true)) {
@@ -166,7 +168,7 @@ $review_id   = $id_vendedor;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($vendedor['nombre']) ?> — <?= t('app_name') ?></title>
+    <title><?= htmlspecialchars($nombre_completo) ?> — <?= t('app_name') ?></title>
 
     <link rel="icon" type="image/png" href="/ascc/frontend/users/public/img/logo.png">
 
@@ -225,16 +227,20 @@ $review_id   = $id_vendedor;
                 <div class="vendor-avatar">
                     <?php if ($vendedor['foto_perfil']): ?>
                     <img src="/ascc/public/<?= htmlspecialchars($vendedor['foto_perfil']) ?>"
-                        alt="<?= htmlspecialchars($vendedor['nombre']) ?>"
+                        alt="<?= htmlspecialchars($nombre_completo) ?>"
                         style="width:100%;height:100%;border-radius:50%;object-fit:cover">
                     <?php else: ?>
-                    <?= strtoupper(substr($vendedor['nombre'], 0, 1)) ?>
+                    <?= strtoupper(substr($nombre_completo, 0, 1)) ?>
                     <?php endif; ?>
                 </div>
 
                 <div class="vendor-details">
-                    <div class="vendor-name">
-                        <?= htmlspecialchars($vendedor['nombre']) ?>
+                    <div class="pv-header-info">
+                        <h1 class="pv-title"><?= htmlspecialchars($nombre_completo) ?></h1>
+                        <p class="pv-subtitle">
+                            ⭐ <?= number_format($promedioVendedor, 1) ?> (<?= $totalResenas ?> <?= t('reviews_varias') ?>)
+                            • Miembro desde <?= date('M Y', strtotime($vendedor['fecha_registro'])) ?>
+                        </p>
                     </div>
 
                     <!-- Estrellas promedio -->
@@ -282,7 +288,7 @@ $review_id   = $id_vendedor;
         <div class="vendor-card" style="margin-top:1.5rem">
             <h2 class="vendor-title">
                 📦 <?= t('reviews_productos_de') ?>
-                <?= htmlspecialchars($vendedor['nombre']) ?>
+                <?= htmlspecialchars($nombre_completo) ?>
             </h2>
             <div style="
                     display:grid;

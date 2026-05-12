@@ -28,6 +28,8 @@ $stmt = $conexion->prepare("
         u.lat,
         u.lng,
         usr.nombre as vendedor_nombre,
+        usr.apellido as vendedor_apellido,
+        usr.foto_perfil as vendedor_foto,
         usr.telefono as vendedor_telefono,
         usr.email as vendedor_email,
         usr.id_usuario as vendedor_id
@@ -45,6 +47,7 @@ if ($stmt->rowCount() === 0) {
 }
 
 $producto = $stmt->fetch(PDO::FETCH_ASSOC);
+$nombre_vendedor_completo = trim($producto['vendedor_nombre'] . ' ' . ($producto['vendedor_apellido'] ?? ''));
 
 // Verificar si el producto es del usuario actual
 $es_mi_producto   = false;
@@ -409,11 +412,15 @@ $calificacion_vendedor = 5.0;
 
             <div class="vendor-info">
                 <div class="vendor-avatar">
-                    <?= strtoupper(substr($producto['vendedor_nombre'], 0, 1)) ?>
+                    <?php if (!empty($producto['vendedor_foto'])): ?>
+                        <img src="/ascc/public/<?= htmlspecialchars($producto['vendedor_foto']) ?>" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                    <?php else: ?>
+                        <?= strtoupper(substr($nombre_vendedor_completo, 0, 1)) ?>
+                    <?php endif; ?>
                 </div>
                 <div class="vendor-details">
                     <div class="vendor-name">
-                        <?= htmlspecialchars($producto['vendedor_nombre']) ?>
+                        <?= htmlspecialchars($nombre_vendedor_completo) ?>
                     </div>
                     <div class="vendor-rating">⭐⭐⭐⭐⭐ <?= number_format($calificacion_vendedor, 1) ?></div>
                     <p class="vendor-verified">✅ <?= t('verified_vendor') ?></p>
@@ -423,7 +430,7 @@ $calificacion_vendedor = 5.0;
             <?php if (!$es_mi_producto): ?>
             <!-- Botón ver perfil completo del vendedor -->
             <a href="/ascc/frontend/users/views/perfil_vendedor.php?id=<?= $producto['vendedor_id'] ?>" class="btn-ver-perfil-vendedor">
-                👤 <?= t('vendor_info') ?> — <?= htmlspecialchars($producto['vendedor_nombre']) ?>
+                👤 <?= t('vendor_info') ?> — <?= htmlspecialchars($nombre_vendedor_completo) ?>
             </a>
             <?php endif; ?>
 
@@ -433,7 +440,7 @@ $calificacion_vendedor = 5.0;
             <div class="contact-buttons">
                 <button type="button" class="btn-contact btn-message" onclick="abrirModalMensaje()"
                     data-vendedor-id="<?= $producto['vendedor_id'] ?>"
-                    data-vendedor-nombre="<?= htmlspecialchars($producto['vendedor_nombre']) ?>"
+                    data-vendedor-nombre="<?= htmlspecialchars($nombre_vendedor_completo) ?>"
                     data-producto-id="<?= $producto['id_producto'] ?>"
                     data-producto-nombre="<?= htmlspecialchars($producto['tipo_producto']) ?>">
                     💬 <?= t('internal_message') ?>

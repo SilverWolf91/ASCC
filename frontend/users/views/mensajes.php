@@ -28,8 +28,8 @@ $stmt = $conexion->prepare("
         c.ultima_actualizacion,
         p.tipo_producto,
         CASE 
-            WHEN c.id_comprador = :id_usuario1 THEN u_vendedor.nombre
-            ELSE u_comprador.nombre
+            WHEN c.id_comprador = :id_usuario1 THEN TRIM(CONCAT(u_vendedor.nombre, ' ', IFNULL(u_vendedor.apellido, '')))
+            ELSE TRIM(CONCAT(u_comprador.nombre, ' ', IFNULL(u_comprador.apellido, '')))
         END as nombre_otro_usuario,
         CASE 
             WHEN c.id_comprador = :id_usuario2 THEN u_vendedor.id_usuario
